@@ -3,6 +3,7 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  width: 100%;
 }
 
 .logo {
@@ -11,9 +12,11 @@
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
@@ -22,6 +25,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -40,3 +44,52 @@
 .read-the-docs {
   color: #888;
 }
+
+input.focusClearanceFields:focus-visible,
+textarea.focusClearanceFields:focus-visible {
+  outline: none;
+  border-bottom: 2px solid #2684FF !important;
+  -webkit-transition: 0.2s all ease;
+  transition: 0.2s all ease;
+}
+
+input.focusClearanceFields::placeholder,
+textarea.focusClearanceFields::placeholder, .css-1jqq78o-placeholder {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+/* To Show * sign as required field */
+div.required::after {
+  color: red;
+  content: '  *';
+  display: inline;
+  font-size: large;
+  position: relative;
+  top: -5px;
+}
+
+.customError {
+  float: right;
+  margin-Right: 6px;
+  margin-Top: -30px;
+  position: relative;
+  z-Index: 2;
+  color: red;
+}
+
+.did-floating-select .css-13cymwt-control,
+.did-floating-select .css-t3ipsp-control {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #BDBDBD;
+  border-radius: 0px;
+  box-shadow: none !important;
+}
+
+.css-13cymwt-control:hover {
+  border: none !important;
+  border-bottom: 1px solid hsl(0, 0%, 70%) !important;
+  border-radius: 0px !important;
+}
+
