@@ -15,7 +15,7 @@ import {
 
 
 const RegistrationForm = React.lazy(() => import('./Components/RegistrationForm'));
-
+const Navbar = React.lazy(() => import('./Components/Navbar'));
 
 
 const App = () => {
@@ -33,13 +33,20 @@ const App = () => {
               display: 'flex',
               flexDirection: 'column',
             }}>
+              <Navbar />
             <Routes>
 
               {/* LOG IN */}
-              <Route path="/" name="Home"
+              {/* <Route path="/register" name="register"
                 element={
 
-                  <RegistrationForm />
+                  
+                }
+              /> */}
+              <Route path="/" name="Home"
+                element={
+<RegistrationForm />
+                  
                 }
               />
 

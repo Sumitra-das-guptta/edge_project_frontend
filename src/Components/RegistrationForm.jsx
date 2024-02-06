@@ -12,7 +12,9 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import moment from 'moment';
 import DeleteIcon from "../assets/Icons/DeleteIcon.svg";
-import univeristyList from './Common/UniversityList';
+import universityList from './Common/UniversityList';
+import { CreateApplicant } from './APIs/ApplicantCrudApis';
+import ResponseModal from './Common/ResponseModal';
 const customError = {
     float: 'right',
     marginRight: "6px",
@@ -27,8 +29,9 @@ const styles = {
     }
 }
 const RegistrationForm = () => {
-    console.log(univeristyList.length, "print length.......")
+    console.log(universityList.length, "print length.......")
     const inputRef = useRef();
+  const [responseModal, setResponseModal] = useState({ usedPurpose: '', visible: false, message: '', footerMessage: '' })
     const [SUPPORTED_FORMATS, setSUPPORTED_FORMATS] = useState([
         "image/jpg",
         "image/jpeg",
@@ -45,41 +48,83 @@ const RegistrationForm = () => {
     ]
     let gender = ['Male', 'Female', 'Other'];
     let religion = ['Islam', 'Hinduism', 'Buddhism', 'Christanity'];
+    let levelOfEducation = [
+        { value: 1, label: 'SSC/Equivalent' },
+        { value: 2, label: 'HSC/Equivalent' },
+        { value: 3, label: 'BSC/Equivalent' },
+        { value: 4, label: 'MSC/Equivalent' },
+
+    ]
+    const dummy =
+
+    {
+        "trainingOrganizerUniversity": "CUET",
+        "organizerDeptOrInstituteOrCenter": "IICT",
+        "candidateName": "Hkbhj",
+        "fatherName": "adkjab",
+        "motherName": "aKJDB",
+        "gender": "Male",
+        "religion": "AWDQD",
+        "birthDate": "2021-06-01",
+        "nationality": "dummy",
+        "identityNo": "dummy",
+        "presentAddressRoadNo": "dummy",
+        "presentAddressThanaName": "dummy",
+        "presentAddressdistrictName": "dummy",
+        "presentAddressdivisionName": "dummy",
+        "permanentAddressRoadNo": "",
+        "permanentAddressThanaName": "dummy",
+        "permanentAddressdistrictName": "dummy",
+        "permanentAddressdivisionName": "dummy",
+        "mobileNumber": "dgt",
+        "gurdianMobileNumber": "vfdsf",
+        "email": "dummy",
+        "levelOfEducation": "dummy",
+        "subject": "dummy",
+        "universityName": "dummy",
+        "departmentName": "dummy",
+        "trainingLocation": "CUET",
+        "linkedinProfile": "dummy",
+        "projectRepository": "dummy",
+        "freelancingProfile": "dummy",
+    }
+
     const formData = {
+        courseName: '',
         trainingOrganizerUniversity: 'CUET',
         organizerDeptOrInstituteOrCenter: 'IICT',
-        traineeName: '',
-        fatherName: '',
-        motherName: '',
+        candidateName: "",
+        fatherName: "",
+        motherName: "",
         gender: 'Male',
-        religion: '',
-        birthDate: moment().format('MM-DD-YYYY'),
-        nationality: '',
-        identityNo: '',
+        religion: "",
+        birthDate: new Date(),
+        nationality: "",
+        identityNo: "",
         presentAddress: {
-            roadNo: '',
-            thanaName: '',
-            districtName: '',
-            divisionName: ''
+            roadNo: "",
+            thanaName: "",
+            districtName: "",
+            divisionName: ""
         },
         permanentAddress: {
-            roadNo: '',
-            thanaName: '',
-            districtName: '',
-            divisionName: ''
+            roadNo: "",
+            thanaName: "",
+            districtName: "",
+            divisionName: ""
         },
         mobileNumber: '+88',
         gurdianMobileNumber: '+88',
-        email: '',
-        levelOfEducation: '',
-        subject: '',
-        universityName: '',
-        departmentName: '',
-        trainingLocation: 'CUET',
-        linkedinProfile: '',
-        projectRepository: '',
-        freelancingProfile: '',
-        file: ''
+        email: "",
+        levelOfEducation: "",
+        subject: "",
+        universityName: "",
+        departmentName: "",
+        trainingLocation: "CUET",
+        linkedinProfile: "",
+        projectRepository: "",
+        freelancingProfile: "",
+        file: ""
 
 
     }
@@ -101,7 +146,10 @@ const RegistrationForm = () => {
         initialValues: formData,
         // enableReinitialize: true,
         validationSchema: Yup.object({
-            traineeName: Yup.string()
+            courseName: Yup.string()
+                .required("Course is required")
+                .max(250, "Maximum 250 characters allowed"),
+            candidateName: Yup.string()
                 .required("Name is required")
                 .max(250, "Maximum 250 characters allowed"),
             fatherName: Yup.string()
@@ -209,48 +257,70 @@ const RegistrationForm = () => {
                 ),
         }),
         onSubmit: (values) => {
-            // let dataForSubmit = {
-            //     userName: values?.mobileNumber,
-            //     role: "ROLE_USER",
-            //     privilege: "ATL",
-            //     name: values?.name,
-            //     birthDate: values?.birthDate,
-            //     gender: values?.gender,
-            //     mobileNumber: values?.mobileNumber,
-            //     email: values?.email,
-            //     immediateSuperior: null,
-            // };
-            // if (props?.editMode) {
-            //     dataForSubmit.id = values?.id;
-            // }
+            let dataForSubmit = {
+                courseName: values?.courseName,
+                "trainingOrganizerUniversity": values?.trainingOrganizerUniversity,
+                "organizerDeptOrInstituteOrCenter": values?.organizerDeptOrInstituteOrCenter,
+                "candidateName": values?.candidateName,
+                "fatherName": values?.fatherName,
+                "motherName": values?.motherName,
+                "gender": values?.gender,
+                "religion": values?.religion,
+                "birthDate": values?.birthDate,
+                "nationality": values?.nationality,
+                "presentAddressRoadNo": values?.presentAddress?.roadNo,
+                "presentAddressThanaName": values?.presentAddress?.thanaName,
+                "presentAddressDistrictName": values?.presentAddress?.districtName,
+                "presentAddressDivisionName": values?.presentAddress?.divisionName,
+                "permanentAddressRoadNo": values?.permanentAddress?.roadNo,
+                "permanentAddressThanaName": values?.permanentAddress?.thanaName,
+                "permanentAddressDistrictName": values?.permanentAddress?.districtName,
+                "permanentAddressDivisionName": values?.permanentAddress?.divisionName,
+                "mobileNumber": values?.mobileNumber,
+                "gurdianMobileNumber": values?.gurdianMobileNumber,
+                "levelOfEducation": values?.levelOfEducation,
+                "subjectName": values?.subject,
+                "universityName": universityList?.filter(eachUniversity => eachUniversity?.value === values?.universityName)?.[0]?.label,
+                "departmentName": values?.departmentName,
+                "trainingLocation": values?.trainingLocation,
+                "linkedinProfile": values?.linkedinProfile !== "" ? values?.linkedinProfile : null,
+                "projectRepository": values?.projectRepository !== "" ? values?.projectRepository : null,
+                "freelancingProfile": values?.freelancingProfile !== "" ? values?.freelancingProfile : null,
+                "email": values?.email,
+                "identityNo": values?.identityNo
+            };
 
-            // let formData = new FormData();
+            let formData = new FormData();
             // formData.append(
-            //     "user",
+            //     "formdata",
             //     new Blob([JSON.stringify(dataForSubmit)], { type: "application/json" })
             // );
-            // formData.append("profilePhoto", inputFile?.imageFile);
-            //   if (props?.editMode) {
-            //     setShowLoader(true);
-            //     Update(formData, values?.id).then((updateSalesManagerResponse) => {
-            //       setShowLoader(false);
-            //       if (updateSalesManagerResponse[0]) {
-            //         modalCleanup();
-            //       } else {
-            //         setError(updateSalesManagerResponse[1]);
-            //       }
-            //     });
-            //   } else {
-            //     setShowLoader(true);
-            //     Create(formData).then((createSalesManagerResponse) => {
-            //       setShowLoader(false);
-            //       if (createSalesManagerResponse[0]) {
-            //         modalCleanup();
-            //       } else {
-            //         setError(createSalesManagerResponse[1]);
-            //       }
-            //     });
-            //   }
+            formData.append("formdata", JSON.stringify(dataForSubmit));
+            formData.append("image", inputFile?.imageFile);
+
+            // setShowLoader(true);
+            CreateApplicant(formData).then((response) => {
+                //   setShowLoader(false);
+                if (response[0]) {
+                    setResponseModal({
+                        ...responseModal,
+                        visible: true,
+                        usedPurpose: 'Success',
+                        message: 'Successfully updated',
+                        footerMessage: 'Back'
+                      });
+                } else {
+                    // setError(createSalesManagerResponse[1]);
+                    setResponseModal({
+                        ...responseModal,
+                        visible: true,
+                        usedPurpose: 'Error',
+                        message: response[1],
+                        footerMessage: 'Close'
+                      });
+                }
+            });
+
         },
     });
 
@@ -307,780 +377,799 @@ const RegistrationForm = () => {
 
         setValues((value) => ({
             ...value,
-            file: {},
+            file: null,
         }));
-
-
         setInputFile({ imageFile: "", imageURL: "" });
     };
+
+    const handleFooterClick = () => {
+        setResponseModal({
+            ...responseModal,
+            visible: false,
+            usedPurpose: '',
+            message: '',
+            footerMessage: ''
+          });
+    }
+    const handleResponseModalVisibility = (visibleState) => {
+        setResponseModal({
+          ...responseModal,
+          visible: visibleState
+        })
+      }
     return (
-        <div className='mx-[2%] sm:mx-[10%] my-auto border-2 border-[#e5e7eb] p-5 rounded shadow-[0px_0px_9px_0px]'>
-            <img src={edge_header} alt='edge_heading' className='w-full' />
-            <div style={{ fontSize: '20px', fontWeight: '600' }}>Enhancing Digital Government & Economy (EDGE) Project</div>
-            <div style={{ fontSize: '14px' }}>Digital Skills Training initiative for students, a premier
-                learning opportunity presented by the EDGE Project of the Bangladesh Computer Council,
-                ICT Division </div>
-            {/* Registration form questions */}
-            <div style={{ display: 'flex', flexDirection: 'column', marginTop: '20px' }}>
-                {/* QUESTION 1 */}
-                <div className='flex flex-col sm:flex-row items-start sm:items-center bg-[#77889914] p-2.5 rounded-sm'>
-                    <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
-                        className='required w-full sm:w-[50%] text-left'>
-                        1. Choose  preferred course
-                    </div>
-                    {/* ANSWER INPUT SECTION 1 */}
-                    <div style={{ marginBottom: '20px' }}>
-                        {
-                            courseName.map((eachCourse, index) => (
-                                <div className='flex items-center'>
-                                    <input
-                                        type='radio'
-                                        // checked={department?.departmentStatus === 'enable' || department?.departmentStatus === 'disable'}
-                                        // disabled={department?.departmentStatus === 'disable' || (moment(props?.clearanceData?.effectiveDateTo, 'YYYY-MM-DD').isBefore(moment()) && props?.usedFor !== 'admin')}
-                                        style={{ width: '17px', height: '17px' }}
-                                    // onChange={() => { handleChangeDepartmentStatus(department) }} 
-                                    />
-                                    <div className='pl-4 text-sm'>{eachCourse}</div>
-                                </div>
-
-                            ))
-                        }
-                    </div>
-                </div>
-
-
-                {/* QUESTION 2 */}
-                <div className='flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm'>
-                    <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px", width: '50%' }} className='required'>
-                        2. Trainee Name
-                    </div>
-                    {/* ANSWER INPUT SECTION 2 */}
-                    <div style={{ marginBottom: '20px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <input
-                                type='text'
-                                style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
-                                className='focusClearanceFields'
-                                value={values?.traineeName}
-                                placeholder='Write Name'
-                                onChange={(e) => handleChangeValue('traineeName', e.target.value)}
-
-                            />
-                            <span style={{
-                                float: "right",
-                                marginLeft: '-20px',
-                                position: "relative",
-                                zIndex: 2,
-                            }}>
-                                <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
-                            </span>
-
-                            {/* ERROR MESSAGE SHOWING TOOLTIP */}
-                            {touched?.traineeName && errors?.traineeName
-                                &&
-                                <span style={{ ...customError, marginTop: '-8px' }}>
-                                    <ErrorTooltip
-                                        content={errors?.traineeName}
-                                        origin={'traineeName'}
-                                        placement="right"
-                                    />
-                                </span>
+        <>
+            {/* RESPONSE MODAL */}
+            {responseModal?.visible &&
+                <ResponseModal usedPurpose={responseModal?.usedPurpose} message={responseModal?.message} footerMessage={responseModal?.footerMessage} handleFooterClick={handleFooterClick}
+                    setModalVisible={handleResponseModalVisibility}
+                />
+            }
+            <div className='mx-[2%] sm:mx-[10%] my-[14vh] border-2 border-[#e5e7eb] p-5 rounded shadow-[0px_0px_9px_0px]'>
+                <img src={edge_header} alt='edge_heading' className='w-full' />
+                <div style={{ fontSize: '20px', fontWeight: '600' }}>Enhancing Digital Government & Economy (EDGE) Project</div>
+                <div style={{ fontSize: '14px' }}>Digital Skills Training initiative for students, a premier
+                    learning opportunity presented by the EDGE Project of the Bangladesh Computer Council,
+                    ICT Division </div>
+                {/* Registration form questions */}
+                <div style={{ display: 'flex', flexDirection: 'column', marginTop: '20px' }}>
+                    {/* QUESTION 1 */}
+                    <div className='flex flex-col sm:flex-row items-start sm:items-center bg-[#77889914] p-2.5 rounded-sm'>
+                        <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
+                            className='required w-full sm:w-[50%] text-left'>
+                            1. Choose  preferred course
+                        </div>
+                        {/* ANSWER INPUT SECTION 1 */}
+                        <div style={{ marginBottom: '20px' }}>
+                            {
+                                courseName.map((eachCourse, index) => (
+                                    <div className='flex items-center'>
+                                        <input
+                                            type='radio'
+                                            checked={values?.courseName === eachCourse}
+                                            style={{ width: '17px', height: '17px' }}
+                                            onChange={() => { handleChangeValue('courseName', eachCourse) }}
+                                        />
+                                        <div className='pl-4 text-sm'>{eachCourse}</div>
+                                    </div>
+                                ))
                             }
                         </div>
                     </div>
-                </div>
 
 
-                {/* QUESTION 3 */}
-                <div className='flex flex-col sm:flex-row items-start sm:items-center bg-[#77889914] p-2.5 rounded-sm'>
-                    <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px", width: '50%' }} className='required'>
-                        2. Father's Name
-                    </div>
-                    {/* ANSWER INPUT SECTION 3 */}
-                    <div style={{ marginBottom: '20px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <input
-                                type='text'
-                                style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
-                                className='focusClearanceFields'
-                                value={values?.fatherName}
-                                placeholder="Write Father's Name"
-                                onChange={(e) => handleChangeValue('fatherName', e.target.value)}
-                            />
-                            <span style={{
-                                float: "right",
-                                marginLeft: '-20px',
-                                position: "relative",
-                                zIndex: 2,
-                            }}>
-                                <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
-                            </span>
+                    {/* QUESTION 2 */}
+                    <div className='flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm'>
+                        <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px", width: '50%' }} className='required'>
+                            2. Trainee Name
+                        </div>
+                        {/* ANSWER INPUT SECTION 2 */}
+                        <div style={{ marginBottom: '20px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <input
+                                    type='text'
+                                    style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
+                                    className='focusClearanceFields'
+                                    value={values?.candidateName}
+                                    placeholder='Write Name'
+                                    onChange={(e) => handleChangeValue('candidateName', e.target.value)}
 
-                            {/* ERROR MESSAGE SHOWING TOOLTIP */}
-                            {touched?.fatherName && errors?.fatherName
-                                &&
-                                <span style={{ ...customError, marginTop: '-8px' }}>
-                                    <ErrorTooltip
-                                        content={errors?.fatherName}
-                                        origin={'fatherName'}
-                                        placement="right"
-                                    />
+                                />
+                                <span style={{
+                                    float: "right",
+                                    marginLeft: '-20px',
+                                    position: "relative",
+                                    zIndex: 2,
+                                }}>
+                                    <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
                                 </span>
+
+                                {/* ERROR MESSAGE SHOWING TOOLTIP */}
+                                {touched?.candidateName && errors?.candidateName
+                                    &&
+                                    <span style={{ ...customError, marginTop: '-8px' }}>
+                                        <ErrorTooltip
+                                            content={errors?.candidateName}
+                                            origin={'candidateName'}
+                                            placement="right"
+                                        />
+                                    </span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+
+                    {/* QUESTION 3 */}
+                    <div className='flex flex-col sm:flex-row items-start sm:items-center bg-[#77889914] p-2.5 rounded-sm'>
+                        <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px", width: '50%' }} className='required'>
+                            2. Father's Name
+                        </div>
+                        {/* ANSWER INPUT SECTION 3 */}
+                        <div style={{ marginBottom: '20px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <input
+                                    type='text'
+                                    style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
+                                    className='focusClearanceFields'
+                                    value={values?.fatherName}
+                                    placeholder="Write Father's Name"
+                                    onChange={(e) => handleChangeValue('fatherName', e.target.value)}
+                                />
+                                <span style={{
+                                    float: "right",
+                                    marginLeft: '-20px',
+                                    position: "relative",
+                                    zIndex: 2,
+                                }}>
+                                    <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
+                                </span>
+
+                                {/* ERROR MESSAGE SHOWING TOOLTIP */}
+                                {touched?.fatherName && errors?.fatherName
+                                    &&
+                                    <span style={{ ...customError, marginTop: '-8px' }}>
+                                        <ErrorTooltip
+                                            content={errors?.fatherName}
+                                            origin={'fatherName'}
+                                            placement="right"
+                                        />
+                                    </span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+
+                    {/* QUESTION 4 */}
+                    <div className='flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm'>
+                        <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px", width: '50%' }} className='required'>
+                            4. Mother's Name
+                        </div>
+                        {/* ANSWER INPUT SECTION 4 */}
+                        <div style={{ marginBottom: '20px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <input
+                                    type='text'
+                                    style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
+                                    className='focusClearanceFields'
+                                    value={values?.motherName}
+                                    placeholder="Write Mother's Name"
+                                    onChange={(e) => handleChangeValue('motherName', e.target.value)}
+
+                                />
+                                <span style={{
+                                    float: "right",
+                                    marginLeft: '-20px',
+                                    position: "relative",
+                                    zIndex: 2,
+                                }}>
+                                    <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
+                                </span>
+
+                                {/* ERROR MESSAGE SHOWING TOOLTIP */}
+                                {touched?.motherName && errors?.motherName
+                                    &&
+                                    <span style={{ ...customError, marginTop: '-8px' }}>
+                                        <ErrorTooltip
+                                            content={errors?.motherName}
+                                            origin={'motherName'}
+                                            placement="right"
+                                        />
+                                    </span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* QUESTION 5 */}
+                    <div className='flex flex-col sm:flex-row items-start sm:items-center bg-[#77889914] p-2.5 rounded-sm'>
+                        <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
+                            className='required w-full sm:w-[50%] text-left'>
+                            5. Gender
+                        </div>
+                        {/* ANSWER INPUT SECTION 5 */}
+                        <div style={{ marginBottom: '20px' }}>
+                            {
+                                gender.map((eachGender, index) => (
+                                    <div className='flex items-center'>
+                                        <input
+                                            type='radio'
+                                            checked={values?.gender === eachGender}
+                                            style={{ width: '17px', height: '17px' }}
+                                            onChange={() => { handleChangeValue('gender', eachGender) }}
+                                        />
+                                        <div className='pl-4 text-sm'>{eachGender}</div>
+                                    </div>
+                                ))
                             }
                         </div>
                     </div>
-                </div>
 
-
-                {/* QUESTION 4 */}
-                <div className='flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm'>
-                    <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px", width: '50%' }} className='required'>
-                        4. Mother's Name
-                    </div>
-                    {/* ANSWER INPUT SECTION 4 */}
-                    <div style={{ marginBottom: '20px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <input
-                                type='text'
-                                style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
-                                className='focusClearanceFields'
-                                value={values?.motherName}
-                                placeholder="Write Mother's Name"
-                                onChange={(e) => handleChangeValue('motherName', e.target.value)}
-
-                            />
-                            <span style={{
-                                float: "right",
-                                marginLeft: '-20px',
-                                position: "relative",
-                                zIndex: 2,
-                            }}>
-                                <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
-                            </span>
-
-                            {/* ERROR MESSAGE SHOWING TOOLTIP */}
-                            {touched?.motherName && errors?.motherName
-                                &&
-                                <span style={{ ...customError, marginTop: '-8px' }}>
-                                    <ErrorTooltip
-                                        content={errors?.motherName}
-                                        origin={'motherName'}
-                                        placement="right"
-                                    />
-                                </span>
+                    {/* QUESTION 6 */}
+                    <div className='flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm'>
+                        <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
+                            className='required w-full sm:w-[50%] text-left'>
+                            6. Religion
+                        </div>
+                        {/* ANSWER INPUT SECTION 6 */}
+                        <div style={{ marginBottom: '20px' }}>
+                            {
+                                religion.map((eachReligion, index) => (
+                                    <div className='flex items-center'>
+                                        <input
+                                            type='radio'
+                                            checked={values?.religion === eachReligion}
+                                            style={{ width: '17px', height: '17px' }}
+                                            onChange={() => { handleChangeValue('religion', eachReligion) }}
+                                        />
+                                        <div className='pl-4 text-sm'>{eachReligion}</div>
+                                    </div>
+                                ))
                             }
                         </div>
                     </div>
-                </div>
 
-                {/* QUESTION 5 */}
-                <div className='flex flex-col sm:flex-row items-start sm:items-center bg-[#77889914] p-2.5 rounded-sm'>
-                    <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
-                        className='required w-full sm:w-[50%] text-left'>
-                        5. Gender
-                    </div>
-                    {/* ANSWER INPUT SECTION 5 */}
-                    <div style={{ marginBottom: '20px' }}>
-                        {
-                            gender.map((eachGender, index) => (
-                                <div className='flex items-center'>
-                                    <input
-                                        type='radio'
-                                        checked={values?.gender === eachGender}
-                                        style={{ width: '17px', height: '17px' }}
-                                        onChange={() => { handleChangeValue('gender', eachGender) }}
-                                    />
-                                    <div className='pl-4 text-sm'>{eachGender}</div>
-                                </div>
-                            ))
-                        }
-                    </div>
-                </div>
+                    {/* QUESTION 7 */}
+                    <div className='flex flex-col sm:flex-row items-start sm:items-center bg-[#77889914] p-2.5 rounded-sm'>
+                        <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
+                            className='required w-full sm:w-[50%] text-left'>
+                            7. Date of Birth
+                        </div>
+                        {/* ANSWER INPUT SECTION 7 */}
+                        <div style={{ marginBottom: '20px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <input
+                                    type='date'
+                                    style={{ maxWidth: '150px', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
+                                    className='focusClearanceFields'
+                                    value={values?.birthDate}
+                                    placeholder="Date of Birth"
+                                    onChange={(e) => handleChangeValue('birthDate', e.target.value)}
 
-                {/* QUESTION 6 */}
-                <div className='flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm'>
-                    <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
-                        className='required w-full sm:w-[50%] text-left'>
-                        6. Religion
-                    </div>
-                    {/* ANSWER INPUT SECTION 6 */}
-                    <div style={{ marginBottom: '20px' }}>
-                        {
-                            religion.map((eachReligion, index) => (
-                                <div className='flex items-center'>
-                                    <input
-                                        type='radio'
-                                        checked={values?.religion === eachReligion}
-                                        style={{ width: '17px', height: '17px' }}
-                                        onChange={() => { handleChangeValue('religion', eachReligion) }}
-                                    />
-                                    <div className='pl-4 text-sm'>{eachReligion}</div>
-                                </div>
-                            ))
-                        }
-                    </div>
-                </div>
-
-                {/* QUESTION 7 */}
-                <div className='flex flex-col sm:flex-row items-start sm:items-center bg-[#77889914] p-2.5 rounded-sm'>
-                    <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
-                        className='required w-full sm:w-[50%] text-left'>
-                        7. Date of Birth
-                    </div>
-                    {/* ANSWER INPUT SECTION 7 */}
-                    <div style={{ marginBottom: '20px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <input
-                                type='date'
-                                style={{ maxWidth: '150px', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
-                                className='focusClearanceFields'
-                                value={values?.birthDate}
-                                placeholder="Date of Birth"
-                                onChange={(e) => handleChangeValue('birthDate', e.target.value)}
-
-                            />
-                            <span style={{
-                                float: "right",
-                                marginLeft: '-20px',
-                                position: "relative",
-                                zIndex: 2,
-                            }}>
-                                <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
-                            </span>
-
-                            {/* ERROR MESSAGE SHOWING TOOLTIP */}
-                            {touched?.birthDate && errors?.birthDate
-                                &&
-                                <span style={{ ...customError, marginTop: '-8px' }}>
-                                    <ErrorTooltip
-                                        content={errors?.birthDate}
-                                        origin={'birthDate'}
-                                        placement="right"
-                                    />
+                                />
+                                <span style={{
+                                    float: "right",
+                                    marginLeft: '-20px',
+                                    position: "relative",
+                                    zIndex: 2,
+                                }}>
+                                    <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
                                 </span>
-                            }
+
+                                {/* ERROR MESSAGE SHOWING TOOLTIP */}
+                                {touched?.birthDate && errors?.birthDate
+                                    &&
+                                    <span style={{ ...customError, marginTop: '-8px' }}>
+                                        <ErrorTooltip
+                                            content={errors?.birthDate}
+                                            origin={'birthDate'}
+                                            placement="right"
+                                        />
+                                    </span>
+                                }
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                {/* QUESTION 8 */}
-                <div className='flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm'>
-                    <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
-                        className='required w-full sm:w-[50%] text-left'>
-                        8. Nationality
-                    </div>
-                    {/* ANSWER INPUT SECTION 8 */}
-                    <div style={{ marginBottom: '20px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <input
-                                type='text'
-                                style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
-                                className='focusClearanceFields'
-                                value={values?.nationality}
-                                placeholder="Write  nationality"
-                                onChange={(e) => handleChangeValue('nationality', e.target.value)}
+                    {/* QUESTION 8 */}
+                    <div className='flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm'>
+                        <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
+                            className='required w-full sm:w-[50%] text-left'>
+                            8. Nationality
+                        </div>
+                        {/* ANSWER INPUT SECTION 8 */}
+                        <div style={{ marginBottom: '20px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <input
+                                    type='text'
+                                    style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
+                                    className='focusClearanceFields'
+                                    value={values?.nationality}
+                                    placeholder="Write  nationality"
+                                    onChange={(e) => handleChangeValue('nationality', e.target.value)}
 
-                            />
-                            <span style={{
-                                float: "right",
-                                marginLeft: '-20px',
-                                position: "relative",
-                                zIndex: 2,
-                            }}>
-                                <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
-                            </span>
-
-                            {/* ERROR MESSAGE SHOWING TOOLTIP */}
-                            {touched?.nationality && errors?.nationality
-                                &&
-                                <span style={{ ...customError, marginTop: '-8px' }}>
-                                    <ErrorTooltip
-                                        content={errors?.nationality}
-                                        origin={'nationality'}
-                                        placement="right"
-                                    />
+                                />
+                                <span style={{
+                                    float: "right",
+                                    marginLeft: '-20px',
+                                    position: "relative",
+                                    zIndex: 2,
+                                }}>
+                                    <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
                                 </span>
-                            }
+
+                                {/* ERROR MESSAGE SHOWING TOOLTIP */}
+                                {touched?.nationality && errors?.nationality
+                                    &&
+                                    <span style={{ ...customError, marginTop: '-8px' }}>
+                                        <ErrorTooltip
+                                            content={errors?.nationality}
+                                            origin={'nationality'}
+                                            placement="right"
+                                        />
+                                    </span>
+                                }
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                {/* QUESTION 9 */}
-                <div className='flex flex-col sm:flex-row items-start sm:items-center bg-[#77889914] p-2.5 rounded-sm'>
-                    <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
-                        className='required w-full sm:w-[50%] text-left'>
+                    {/* QUESTION 9 */}
+                    <div className='flex flex-col sm:flex-row items-start sm:items-center bg-[#77889914] p-2.5 rounded-sm'>
+                        <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
+                            className='required w-full sm:w-[50%] text-left'>
 
-                        9. National ID Card Number/ Birth Registration Number
+                            9. National ID Card Number/ Birth Registration Number
 
-                    </div>
-                    {/* ANSWER INPUT SECTION 9 */}
-                    <div style={{ marginBottom: '20px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <input
-                                type='number'
-                                style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
-                                className='focusClearanceFields'
-                                value={values?.identityNo}
-                                placeholder="Write  National ID Card Number/Birth Registration No"
-                                onChange={(e) => handleChangeValue('identityNo', e.target.value)}
+                        </div>
+                        {/* ANSWER INPUT SECTION 9 */}
+                        <div style={{ marginBottom: '20px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <input
+                                    type='number'
+                                    style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
+                                    className='focusClearanceFields'
+                                    value={values?.identityNo}
+                                    placeholder="Write  National ID Card Number/Birth Registration No"
+                                    onChange={(e) => handleChangeValue('identityNo', e.target.value)}
 
-                            />
-                            <span style={{
-                                float: "right",
-                                marginLeft: '-20px',
-                                position: "relative",
-                                zIndex: 2,
-                            }}>
-                                <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
-                            </span>
-
-                            {/* ERROR MESSAGE SHOWING TOOLTIP */}
-                            {touched?.identityNo && errors?.identityNo
-                                &&
-                                <span style={{ ...customError, marginTop: '-8px' }}>
-                                    <ErrorTooltip
-                                        content={errors?.identityNo}
-                                        origin={'identityNo'}
-                                        placement="right"
-                                    />
+                                />
+                                <span style={{
+                                    float: "right",
+                                    marginLeft: '-20px',
+                                    position: "relative",
+                                    zIndex: 2,
+                                }}>
+                                    <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
                                 </span>
-                            }
+
+                                {/* ERROR MESSAGE SHOWING TOOLTIP */}
+                                {touched?.identityNo && errors?.identityNo
+                                    &&
+                                    <span style={{ ...customError, marginTop: '-8px' }}>
+                                        <ErrorTooltip
+                                            content={errors?.identityNo}
+                                            origin={'identityNo'}
+                                            placement="right"
+                                        />
+                                    </span>
+                                }
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                {/* QUESTION 10 */}
-                <div className='flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm'>
-                    <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
-                        className='required w-full sm:w-[50%] text-left'>
-                        10. Present Address
-                    </div>
-                    {/* ANSWER INPUT SECTION 10 */}
-                    <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
-                        {/* ROAD NO/HOUSE NO */}
-                        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
-                            <input
-                                type='text'
-                                style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
-                                className='focusClearanceFields'
-                                value={values?.presentAddress?.roadNo}
-                                placeholder="Write Road No/House No"
-                                onChange={(e) => handleChangeAddress('presentAddress', 'roadNo', e.target.value)}
-
-                            />
-                            <span style={{
-                                float: "right",
-                                marginLeft: '-20px',
-                                position: "relative",
-                                zIndex: 2,
-                            }}>
-                                <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
-                            </span>
-
-                            {/* ERROR MESSAGE SHOWING TOOLTIP */}
-                            {touched?.presentAddress && touched?.presentAddress?.roadNo
-                                && errors?.presentAddress && errors?.presentAddress?.roadNo
-                                &&
-                                <span style={{ ...customError, marginTop: '-8px' }}>
-                                    <ErrorTooltip
-                                        content={errors?.presentAddress?.roadNo}
-                                        origin={'presentAddressRoadNo'}
-                                        placement="right"
-                                    />
-                                </span>
-                            }
+                    {/* QUESTION 10 */}
+                    <div className='flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm'>
+                        <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
+                            className='required w-full sm:w-[50%] text-left'>
+                            10. Present Address
                         </div>
-                        {/* Thana Name */}
-                        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
-                            <input
-                                type='text'
-                                style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
-                                className='focusClearanceFields'
-                                value={values?.presentAddress?.thanaName}
-                                placeholder="Write Thana Name"
-                                onChange={(e) => handleChangeAddress('presentAddress', 'thanaName', e.target.value)}
+                        {/* ANSWER INPUT SECTION 10 */}
+                        <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
+                            {/* ROAD NO/HOUSE NO */}
+                            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
+                                <input
+                                    type='text'
+                                    style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
+                                    className='focusClearanceFields'
+                                    value={values?.presentAddress?.roadNo}
+                                    placeholder="Write Road No/House No"
+                                    onChange={(e) => handleChangeAddress('presentAddress', 'roadNo', e.target.value)}
 
-
-                            />
-                            <span style={{
-                                float: "right",
-                                marginLeft: '-20px',
-                                position: "relative",
-                                zIndex: 2,
-                            }}>
-                                <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
-                            </span>
-
-                            {/* ERROR MESSAGE SHOWING TOOLTIP */}
-                            {touched?.presentAddress && touched?.presentAddress?.thanaName
-                                && errors?.presentAddress && errors?.presentAddress?.thanaName
-                                &&
-                                <span style={{ ...customError, marginTop: '-8px' }}>
-                                    <ErrorTooltip
-                                        content={errors?.presentAddress?.thanaName}
-                                        origin={'presentAddressThanaName'}
-                                        placement="right"
-                                    />
+                                />
+                                <span style={{
+                                    float: "right",
+                                    marginLeft: '-20px',
+                                    position: "relative",
+                                    zIndex: 2,
+                                }}>
+                                    <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
                                 </span>
-                            }
-                        </div>
 
-                        {/* District Name */}
-                        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
-                            <input
-                                type='text'
-                                style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
-                                className='focusClearanceFields'
-                                value={values?.presentAddress?.districtName}
-                                placeholder="Write District Name"
-                                onChange={(e) => handleChangeAddress('presentAddress', 'districtName', e.target.value)}
+                                {/* ERROR MESSAGE SHOWING TOOLTIP */}
+                                {touched?.presentAddress && touched?.presentAddress?.roadNo
+                                    && errors?.presentAddress && errors?.presentAddress?.roadNo
+                                    &&
+                                    <span style={{ ...customError, marginTop: '-8px' }}>
+                                        <ErrorTooltip
+                                            content={errors?.presentAddress?.roadNo}
+                                            origin={'presentAddressRoadNo'}
+                                            placement="right"
+                                        />
+                                    </span>
+                                }
+                            </div>
+                            {/* Thana Name */}
+                            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
+                                <input
+                                    type='text'
+                                    style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
+                                    className='focusClearanceFields'
+                                    value={values?.presentAddress?.thanaName}
+                                    placeholder="Write Thana Name"
+                                    onChange={(e) => handleChangeAddress('presentAddress', 'thanaName', e.target.value)}
 
 
-                            />
-                            <span style={{
-                                float: "right",
-                                marginLeft: '-20px',
-                                position: "relative",
-                                zIndex: 2,
-                            }}>
-                                <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
-                            </span>
-
-                            {/* ERROR MESSAGE SHOWING TOOLTIP */}
-                            {touched?.presentAddress && touched?.presentAddress?.districtName
-                                && errors?.presentAddress && errors?.presentAddress?.districtName
-                                &&
-                                <span style={{ ...customError, marginTop: '-8px' }}>
-                                    <ErrorTooltip
-                                        content={errors?.presentAddress?.districtName}
-                                        origin={'presentAddressDistrictName'}
-                                        placement="right"
-                                    />
+                                />
+                                <span style={{
+                                    float: "right",
+                                    marginLeft: '-20px',
+                                    position: "relative",
+                                    zIndex: 2,
+                                }}>
+                                    <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
                                 </span>
-                            }
-                        </div>
 
-                        {/* Division Name */}
-                        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
-                            <input
-                                type='text'
-                                style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
-                                className='focusClearanceFields'
-                                value={values?.presentAddress?.divisionName}
-                                placeholder="Write Division Name"
-                                onChange={(e) => handleChangeAddress('presentAddress', 'divisionName', e.target.value)}
+                                {/* ERROR MESSAGE SHOWING TOOLTIP */}
+                                {touched?.presentAddress && touched?.presentAddress?.thanaName
+                                    && errors?.presentAddress && errors?.presentAddress?.thanaName
+                                    &&
+                                    <span style={{ ...customError, marginTop: '-8px' }}>
+                                        <ErrorTooltip
+                                            content={errors?.presentAddress?.thanaName}
+                                            origin={'presentAddressThanaName'}
+                                            placement="right"
+                                        />
+                                    </span>
+                                }
+                            </div>
+
+                            {/* District Name */}
+                            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
+                                <input
+                                    type='text'
+                                    style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
+                                    className='focusClearanceFields'
+                                    value={values?.presentAddress?.districtName}
+                                    placeholder="Write District Name"
+                                    onChange={(e) => handleChangeAddress('presentAddress', 'districtName', e.target.value)}
 
 
-                            />
-                            <span style={{
-                                float: "right",
-                                marginLeft: '-20px',
-                                position: "relative",
-                                zIndex: 2,
-                            }}>
-                                <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
-                            </span>
-
-                            {/* ERROR MESSAGE SHOWING TOOLTIP */}
-                            {touched?.presentAddress && touched?.presentAddress?.divisionName
-                                && errors?.presentAddress && errors?.presentAddress?.divisionName
-                                &&
-                                <span style={{ ...customError, marginTop: '-8px' }}>
-                                    <ErrorTooltip
-                                        content={errors?.presentAddress?.divisionName}
-                                        origin={'presentAddressDivisionName'}
-                                        placement="right"
-                                    />
+                                />
+                                <span style={{
+                                    float: "right",
+                                    marginLeft: '-20px',
+                                    position: "relative",
+                                    zIndex: 2,
+                                }}>
+                                    <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
                                 </span>
-                            }
-                        </div>
-                    </div>
-                </div>
 
-                {/* QUESTION 11 */}
-                <div className='flex flex-col sm:flex-row items-start sm:items-center bg-[#77889914] p-2.5 rounded-sm'>
-                    <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
-                        className='required w-full sm:w-[50%] text-left'>
-                        10. Permanent Address
-                    </div>
-                    {/* ANSWER INPUT SECTION 10 */}
-                    <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
-                        {/* ROAD NO/HOUSE NO */}
-                        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
-                            <input
-                                type='text'
-                                style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
-                                className='focusClearanceFields'
-                                value={values?.permanentAddress?.roadNo}
-                                placeholder="Write Road No/House No"
-                                onChange={(e) => handleChangeAddress('permanentAddress', 'roadNo', e.target.value)}
+                                {/* ERROR MESSAGE SHOWING TOOLTIP */}
+                                {touched?.presentAddress && touched?.presentAddress?.districtName
+                                    && errors?.presentAddress && errors?.presentAddress?.districtName
+                                    &&
+                                    <span style={{ ...customError, marginTop: '-8px' }}>
+                                        <ErrorTooltip
+                                            content={errors?.presentAddress?.districtName}
+                                            origin={'presentAddressDistrictName'}
+                                            placement="right"
+                                        />
+                                    </span>
+                                }
+                            </div>
 
-                            />
-                            <span style={{
-                                float: "right",
-                                marginLeft: '-20px',
-                                position: "relative",
-                                zIndex: 2,
-                            }}>
-                                <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
-                            </span>
+                            {/* Division Name */}
+                            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
+                                <input
+                                    type='text'
+                                    style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
+                                    className='focusClearanceFields'
+                                    value={values?.presentAddress?.divisionName}
+                                    placeholder="Write Division Name"
+                                    onChange={(e) => handleChangeAddress('presentAddress', 'divisionName', e.target.value)}
 
-                            {/* ERROR MESSAGE SHOWING TOOLTIP */}
-                            {touched?.permanentAddress && touched?.permanentAddress?.roadNo
-                                && errors?.permanentAddress && errors?.permanentAddress?.roadNo
-                                &&
-                                <span style={{ ...customError, marginTop: '-8px' }}>
-                                    <ErrorTooltip
-                                        content={errors?.permanentAddress?.roadNo}
-                                        origin={'permanentAddressRoadNo'}
-                                        placement="right"
-                                    />
+
+                                />
+                                <span style={{
+                                    float: "right",
+                                    marginLeft: '-20px',
+                                    position: "relative",
+                                    zIndex: 2,
+                                }}>
+                                    <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
                                 </span>
-                            }
-                        </div>
-                        {/* Thana Name */}
-                        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
-                            <input
-                                type='text'
-                                style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
-                                className='focusClearanceFields'
-                                value={values?.permanentAddress?.thanaName}
-                                placeholder="Write Thana Name"
-                                onChange={(e) => handleChangeAddress('permanentAddress', 'thanaName', e.target.value)}
 
-
-                            />
-                            <span style={{
-                                float: "right",
-                                marginLeft: '-20px',
-                                position: "relative",
-                                zIndex: 2,
-                            }}>
-                                <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
-                            </span>
-
-                            {/* ERROR MESSAGE SHOWING TOOLTIP */}
-                            {touched?.permanentAddress && touched?.permanentAddress?.thanaName
-                                && errors?.permanentAddress && errors?.permanentAddress?.thanaName
-                                &&
-                                <span style={{ ...customError, marginTop: '-8px' }}>
-                                    <ErrorTooltip
-                                        content={errors?.permanentAddress?.thanaName}
-                                        origin={'permanentAddressThanaName'}
-                                        placement="right"
-                                    />
-                                </span>
-                            }
-                        </div>
-
-                        {/* District Name */}
-                        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
-                            <input
-                                type='text'
-                                style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
-                                className='focusClearanceFields'
-                                value={values?.permanentAddress?.districtName}
-                                placeholder="Write District Name"
-                                onChange={(e) => handleChangeAddress('permanentAddress', 'districtName', e.target.value)}
-
-
-                            />
-                            <span style={{
-                                float: "right",
-                                marginLeft: '-20px',
-                                position: "relative",
-                                zIndex: 2,
-                            }}>
-                                <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
-                            </span>
-
-                            {/* ERROR MESSAGE SHOWING TOOLTIP */}
-                            {touched?.permanentAddress && touched?.permanentAddress?.districtName
-                                && errors?.permanentAddress && errors?.permanentAddress?.districtName
-                                &&
-                                <span style={{ ...customError, marginTop: '-8px' }}>
-                                    <ErrorTooltip
-                                        content={errors?.presentAddress?.districtName}
-                                        origin={'permanentAddressDistrictName'}
-                                        placement="right"
-                                    />
-                                </span>
-                            }
-                        </div>
-
-                        {/* Division Name */}
-                        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
-                            <input
-                                type='text'
-                                style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
-                                className='focusClearanceFields'
-                                value={values?.permanentAddress?.divisionName}
-                                placeholder="Write Division Name"
-                                onChange={(e) => handleChangeAddress('permanentAddress', 'divisionName', e.target.value)}
-
-
-                            />
-                            <span style={{
-                                float: "right",
-                                marginLeft: '-20px',
-                                position: "relative",
-                                zIndex: 2,
-                            }}>
-                                <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
-                            </span>
-
-                            {/* ERROR MESSAGE SHOWING TOOLTIP */}
-                            {touched?.permanentAddress && touched?.permanentAddress?.divisionName
-                                && errors?.permanentAddress && errors?.permanentAddress?.divisionName
-                                &&
-                                <span style={{ ...customError, marginTop: '-8px' }}>
-                                    <ErrorTooltip
-                                        content={errors?.permanentAddress?.divisionName}
-                                        origin={'permanentAddressDivisionName'}
-                                        placement="right"
-                                    />
-                                </span>
-                            }
+                                {/* ERROR MESSAGE SHOWING TOOLTIP */}
+                                {touched?.presentAddress && touched?.presentAddress?.divisionName
+                                    && errors?.presentAddress && errors?.presentAddress?.divisionName
+                                    &&
+                                    <span style={{ ...customError, marginTop: '-8px' }}>
+                                        <ErrorTooltip
+                                            content={errors?.presentAddress?.divisionName}
+                                            origin={'presentAddressDivisionName'}
+                                            placement="right"
+                                        />
+                                    </span>
+                                }
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                {/* QUESTION 12 */}
-                <div className='flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm'>
-                    <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
-                        className='required w-full sm:w-[50%] text-left'>
-                        12. Mobile Number
-                    </div>
-                    {/* ANSWER INPUT SECTION 12 */}
-                    <div style={{ marginBottom: '20px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <input
-                                type="text" inputMode="numeric"
-                                style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
-                                className='focusClearanceFields'
-                                value={values?.mobileNumber}
-                                placeholder="Ex: +880187......"
-                                onChange={(e) => handleChangeMobileNo('mobileNumber', e.target.value)}
+                    {/* QUESTION 11 */}
+                    <div className='flex flex-col sm:flex-row items-start sm:items-center bg-[#77889914] p-2.5 rounded-sm'>
+                        <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
+                            className='required w-full sm:w-[50%] text-left'>
+                            10. Permanent Address
+                        </div>
+                        {/* ANSWER INPUT SECTION 10 */}
+                        <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
+                            {/* ROAD NO/HOUSE NO */}
+                            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
+                                <input
+                                    type='text'
+                                    style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
+                                    className='focusClearanceFields'
+                                    value={values?.permanentAddress?.roadNo}
+                                    placeholder="Write Road No/House No"
+                                    onChange={(e) => handleChangeAddress('permanentAddress', 'roadNo', e.target.value)}
 
-                            />
-                            <span style={{
-                                float: "right",
-                                marginLeft: '-20px',
-                                position: "relative",
-                                zIndex: 2,
-                            }}>
-                                <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
-                            </span>
-
-                            {/* ERROR MESSAGE SHOWING TOOLTIP */}
-                            {touched?.mobileNumber && errors?.mobileNumber
-                                &&
-                                <span style={{ ...customError, marginTop: '-8px' }}>
-                                    <ErrorTooltip
-                                        content={errors?.mobileNumber}
-                                        origin={'mobileNumber'}
-                                        placement="right"
-                                    />
+                                />
+                                <span style={{
+                                    float: "right",
+                                    marginLeft: '-20px',
+                                    position: "relative",
+                                    zIndex: 2,
+                                }}>
+                                    <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
                                 </span>
-                            }
+
+                                {/* ERROR MESSAGE SHOWING TOOLTIP */}
+                                {touched?.permanentAddress && touched?.permanentAddress?.roadNo
+                                    && errors?.permanentAddress && errors?.permanentAddress?.roadNo
+                                    &&
+                                    <span style={{ ...customError, marginTop: '-8px' }}>
+                                        <ErrorTooltip
+                                            content={errors?.permanentAddress?.roadNo}
+                                            origin={'permanentAddressRoadNo'}
+                                            placement="right"
+                                        />
+                                    </span>
+                                }
+                            </div>
+                            {/* Thana Name */}
+                            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
+                                <input
+                                    type='text'
+                                    style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
+                                    className='focusClearanceFields'
+                                    value={values?.permanentAddress?.thanaName}
+                                    placeholder="Write Thana Name"
+                                    onChange={(e) => handleChangeAddress('permanentAddress', 'thanaName', e.target.value)}
+
+
+                                />
+                                <span style={{
+                                    float: "right",
+                                    marginLeft: '-20px',
+                                    position: "relative",
+                                    zIndex: 2,
+                                }}>
+                                    <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
+                                </span>
+
+                                {/* ERROR MESSAGE SHOWING TOOLTIP */}
+                                {touched?.permanentAddress && touched?.permanentAddress?.thanaName
+                                    && errors?.permanentAddress && errors?.permanentAddress?.thanaName
+                                    &&
+                                    <span style={{ ...customError, marginTop: '-8px' }}>
+                                        <ErrorTooltip
+                                            content={errors?.permanentAddress?.thanaName}
+                                            origin={'permanentAddressThanaName'}
+                                            placement="right"
+                                        />
+                                    </span>
+                                }
+                            </div>
+
+                            {/* District Name */}
+                            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
+                                <input
+                                    type='text'
+                                    style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
+                                    className='focusClearanceFields'
+                                    value={values?.permanentAddress?.districtName}
+                                    placeholder="Write District Name"
+                                    onChange={(e) => handleChangeAddress('permanentAddress', 'districtName', e.target.value)}
+
+
+                                />
+                                <span style={{
+                                    float: "right",
+                                    marginLeft: '-20px',
+                                    position: "relative",
+                                    zIndex: 2,
+                                }}>
+                                    <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
+                                </span>
+
+                                {/* ERROR MESSAGE SHOWING TOOLTIP */}
+                                {touched?.permanentAddress && touched?.permanentAddress?.districtName
+                                    && errors?.permanentAddress && errors?.permanentAddress?.districtName
+                                    &&
+                                    <span style={{ ...customError, marginTop: '-8px' }}>
+                                        <ErrorTooltip
+                                            content={errors?.presentAddress?.districtName}
+                                            origin={'permanentAddressDistrictName'}
+                                            placement="right"
+                                        />
+                                    </span>
+                                }
+                            </div>
+
+                            {/* Division Name */}
+                            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
+                                <input
+                                    type='text'
+                                    style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
+                                    className='focusClearanceFields'
+                                    value={values?.permanentAddress?.divisionName}
+                                    placeholder="Write Division Name"
+                                    onChange={(e) => handleChangeAddress('permanentAddress', 'divisionName', e.target.value)}
+
+
+                                />
+                                <span style={{
+                                    float: "right",
+                                    marginLeft: '-20px',
+                                    position: "relative",
+                                    zIndex: 2,
+                                }}>
+                                    <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
+                                </span>
+
+                                {/* ERROR MESSAGE SHOWING TOOLTIP */}
+                                {touched?.permanentAddress && touched?.permanentAddress?.divisionName
+                                    && errors?.permanentAddress && errors?.permanentAddress?.divisionName
+                                    &&
+                                    <span style={{ ...customError, marginTop: '-8px' }}>
+                                        <ErrorTooltip
+                                            content={errors?.permanentAddress?.divisionName}
+                                            origin={'permanentAddressDivisionName'}
+                                            placement="right"
+                                        />
+                                    </span>
+                                }
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                {/* QUESTION 13 */}
-                <div className='flex flex-col sm:flex-row items-start sm:items-center bg-[#77889914] p-2.5 rounded-sm'>
-                    <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
-                        className='required w-full sm:w-[50%] text-left'>
-                        13. Gurdian's Mobile Number
-                    </div>
-                    {/* ANSWER INPUT SECTION 13 */}
-                    <div style={{ marginBottom: '20px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <input
-                                type="text" inputMode="numeric"
-                                style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
-                                className='focusClearanceFields'
-                                value={values?.gurdianMobileNumber}
-                                placeholder="Ex: +880187......"
-                                onChange={(e) => handleChangeMobileNo('gurdianMobileNumber', e.target.value)}
+                    {/* QUESTION 12 */}
+                    <div className='flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm'>
+                        <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
+                            className='required w-full sm:w-[50%] text-left'>
+                            12. Mobile Number
+                        </div>
+                        {/* ANSWER INPUT SECTION 12 */}
+                        <div style={{ marginBottom: '20px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <input
+                                    type="text" inputMode="numeric"
+                                    style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
+                                    className='focusClearanceFields'
+                                    value={values?.mobileNumber}
+                                    placeholder="Ex: +880187......"
+                                    onChange={(e) => handleChangeMobileNo('mobileNumber', e.target.value)}
 
-                            />
-                            <span style={{
-                                float: "right",
-                                marginLeft: '-20px',
-                                position: "relative",
-                                zIndex: 2,
-                            }}>
-                                <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
-                            </span>
-
-                            {/* ERROR MESSAGE SHOWING TOOLTIP */}
-                            {touched?.gurdianMobileNumber && errors?.gurdianMobileNumber
-                                &&
-                                <span style={{ ...customError, marginTop: '-8px' }}>
-                                    <ErrorTooltip
-                                        content={errors?.gurdianMobileNumber}
-                                        origin={'gurdianMobileNumber'}
-                                        placement="right"
-                                    />
+                                />
+                                <span style={{
+                                    float: "right",
+                                    marginLeft: '-20px',
+                                    position: "relative",
+                                    zIndex: 2,
+                                }}>
+                                    <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
                                 </span>
-                            }
+
+                                {/* ERROR MESSAGE SHOWING TOOLTIP */}
+                                {touched?.mobileNumber && errors?.mobileNumber
+                                    &&
+                                    <span style={{ ...customError, marginTop: '-8px' }}>
+                                        <ErrorTooltip
+                                            content={errors?.mobileNumber}
+                                            origin={'mobileNumber'}
+                                            placement="right"
+                                        />
+                                    </span>
+                                }
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                {/* QUESTION 14 */}
-                <div className='flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm'>
-                    <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
-                        className='required w-full sm:w-[50%] text-left'>
-                        14. Email Address
-                    </div>
-                    {/* ANSWER INPUT SECTION 14 */}
-                    <div style={{ marginBottom: '20px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <input
-                                type='text'
-                                style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
-                                className='focusClearanceFields'
-                                value={values?.email}
-                                placeholder="Write email address"
-                                onChange={(e) => handleChangeValue('email', e.target.value)}
+                    {/* QUESTION 13 */}
+                    <div className='flex flex-col sm:flex-row items-start sm:items-center bg-[#77889914] p-2.5 rounded-sm'>
+                        <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
+                            className='required w-full sm:w-[50%] text-left'>
+                            13. Gurdian's Mobile Number
+                        </div>
+                        {/* ANSWER INPUT SECTION 13 */}
+                        <div style={{ marginBottom: '20px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <input
+                                    type="text" inputMode="numeric"
+                                    style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
+                                    className='focusClearanceFields'
+                                    value={values?.gurdianMobileNumber}
+                                    placeholder="Ex: +880187......"
+                                    onChange={(e) => handleChangeMobileNo('gurdianMobileNumber', e.target.value)}
 
-                            />
-                            <span style={{
-                                float: "right",
-                                marginLeft: '-20px',
-                                position: "relative",
-                                zIndex: 2,
-                            }}>
-                                <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
-                            </span>
-
-                            {/* ERROR MESSAGE SHOWING TOOLTIP */}
-                            {touched?.email && errors?.email
-                                &&
-                                <span style={{ ...customError, marginTop: '-8px' }}>
-                                    <ErrorTooltip
-                                        content={errors?.email}
-                                        origin={'email'}
-                                        placement="right"
-                                    />
+                                />
+                                <span style={{
+                                    float: "right",
+                                    marginLeft: '-20px',
+                                    position: "relative",
+                                    zIndex: 2,
+                                }}>
+                                    <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
                                 </span>
-                            }
+
+                                {/* ERROR MESSAGE SHOWING TOOLTIP */}
+                                {touched?.gurdianMobileNumber && errors?.gurdianMobileNumber
+                                    &&
+                                    <span style={{ ...customError, marginTop: '-8px' }}>
+                                        <ErrorTooltip
+                                            content={errors?.gurdianMobileNumber}
+                                            origin={'gurdianMobileNumber'}
+                                            placement="right"
+                                        />
+                                    </span>
+                                }
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                {/* QUESTION 15 */}
-                <div className='flex flex-col sm:flex-row items-start sm:items-center bg-[#77889914] px-2.5 py-5 rounded-sm'>
-                    <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600' }}
-                        className='required w-full sm:w-[50%] text-left'>
-                        15.  University Name
+                    {/* QUESTION 14 */}
+                    <div className='flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm'>
+                        <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
+                            className='required w-full sm:w-[50%] text-left'>
+                            14. Email Address
+                        </div>
+                        {/* ANSWER INPUT SECTION 14 */}
+                        <div style={{ marginBottom: '20px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <input
+                                    type='text'
+                                    style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
+                                    className='focusClearanceFields'
+                                    value={values?.email}
+                                    placeholder="Write email address"
+                                    onChange={(e) => handleChangeValue('email', e.target.value)}
+
+                                />
+                                <span style={{
+                                    float: "right",
+                                    marginLeft: '-20px',
+                                    position: "relative",
+                                    zIndex: 2,
+                                }}>
+                                    <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
+                                </span>
+
+                                {/* ERROR MESSAGE SHOWING TOOLTIP */}
+                                {touched?.email && errors?.email
+                                    &&
+                                    <span style={{ ...customError, marginTop: '-8px' }}>
+                                        <ErrorTooltip
+                                            content={errors?.email}
+                                            origin={'email'}
+                                            placement="right"
+                                        />
+                                    </span>
+                                }
+                            </div>
+                        </div>
                     </div>
-                    {/* ANSWER INPUT SECTION 15 */}
-                    <div style={{  }}>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                            {/* <input
+
+                    {/* QUESTION 15 */}
+                    <div className='flex flex-col sm:flex-row items-start sm:items-center bg-[#77889914] px-2.5 py-5 rounded-sm'>
+                        <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600' }}
+                            className='required w-full sm:w-[50%] text-left'>
+                            15.  University Name
+                        </div>
+                        {/* ANSWER INPUT SECTION 15 */}
+                        <div style={{}}>
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                {/* <input
                                 type='text'
                                 style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
                                 className='focusClearanceFields'
@@ -1097,50 +1186,134 @@ const RegistrationForm = () => {
                             }}>
                                 <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
                             </span> */}
-                            <Select
-                                className='did-floating-select w-[200px]'
-                                placeholder='Select University Name'
-                                name='type'
-                                options={univeristyList}
-                                // value={(DefaultFieldData?.typeOption?.filter(item => item?.value === values?.type))}
-                                // onChange={e => {
-                                //     setValues({ ...values, type: e?.value })
-                                // }}
-                                menuPortalTarget={document.body}
-                                styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
-                            />
+                                <Select
+                                    className='did-floating-select w-[200px]'
+                                    placeholder='Select University Name'
+                                    name='type'
+                                    options={universityList}
+                                    value={(universityList?.filter(item => item?.value === values?.universityName))}
+                                    onChange={e => {
+                                        handleChangeValue("universityName", e?.value)
+                                    }}
+                                    menuPortalTarget={document.body}
+                                    styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
+                                />
 
-                            {/* ERROR MESSAGE SHOWING TOOLTIP */}
-                            {touched?.universityName && errors?.universityName
-                                &&
-                                <span style={{ ...customError, marginTop: '-8px' }}>
-                                    <ErrorTooltip
-                                        content={errors?.universityName}
-                                        origin={'universityName'}
-                                        placement="right"
-                                    />
-                                </span>
-                            }
+                                {/* ERROR MESSAGE SHOWING TOOLTIP */}
+                                {touched?.universityName && errors?.universityName
+                                    &&
+                                    <span style={{ ...customError, marginTop: '-8px' }}>
+                                        <ErrorTooltip
+                                            content={errors?.universityName}
+                                            origin={'universityName'}
+                                            placement="right"
+                                        />
+                                    </span>
+                                }
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                {/* QUESTION 16 */}
-                <div className='flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm'>
-                    <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
-                        className='required w-full sm:w-[50%] text-left'>
-                        16. Name of Dept./Institute/Center
+                    {/* QUESTION 16 */}
+                    <div className='flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm'>
+                        <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
+                            className='required w-full sm:w-[50%] text-left'>
+                            16. Name of Dept./Institute/Center
+                        </div>
+                        {/* ANSWER INPUT SECTION 16 */}
+                        <div style={{ marginBottom: '20px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <input
+                                    type='text'
+                                    style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
+                                    className='focusClearanceFields'
+                                    value={values?.departmentName}
+                                    placeholder="Write  Dept./Institute/Center Name"
+                                    onChange={(e) => handleChangeValue('departmentName', e.target.value)}
+
+                                />
+                                <span style={{
+                                    float: "right",
+                                    marginLeft: '-20px',
+                                    position: "relative",
+                                    zIndex: 2,
+                                }}>
+                                    <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
+                                </span>
+
+                                {/* ERROR MESSAGE SHOWING TOOLTIP */}
+                                {touched?.departmentName && errors?.departmentName
+                                    &&
+                                    <span style={{ ...customError, marginTop: '-8px' }}>
+                                        <ErrorTooltip
+                                            content={errors?.departmentName}
+                                            origin={'departmentName'}
+                                            placement="right"
+                                        />
+                                    </span>
+                                }
+                            </div>
+                        </div>
                     </div>
-                    {/* ANSWER INPUT SECTION 16 */}
-                    <div style={{ marginBottom: '20px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <input
+
+                    {/* QUESTION 17 */}
+                    <div className='flex flex-col sm:flex-row items-start sm:items-center bg-[#77889914] p-2.5 rounded-sm'>
+                        <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
+                            className='required w-full sm:w-[50%] text-left'>
+                            17. Name of Subject/Diploma/Group
+                        </div>
+                        {/* ANSWER INPUT SECTION 17 */}
+                        <div style={{ marginBottom: '20px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <input
+                                    type='text'
+                                    style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
+                                    className='focusClearanceFields'
+                                    value={values?.subject}
+                                    placeholder="Write  Subject/Diploma/Group Name"
+                                    onChange={(e) => handleChangeValue('subject', e.target.value)}
+
+                                />
+                                <span style={{
+                                    float: "right",
+                                    marginLeft: '-20px',
+                                    position: "relative",
+                                    zIndex: 2,
+                                }}>
+                                    <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
+                                </span>
+
+                                {/* ERROR MESSAGE SHOWING TOOLTIP */}
+                                {touched?.subject && errors?.subject
+                                    &&
+                                    <span style={{ ...customError, marginTop: '-8px' }}>
+                                        <ErrorTooltip
+                                            content={errors?.subject}
+                                            origin={'subject'}
+                                            placement="right"
+                                        />
+                                    </span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* QUESTION 18 */}
+                    <div className='flex flex-col sm:flex-row items-start sm:items-center px-2.5 py-5 rounded-sm'>
+                        <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600' }}
+                            className='required w-full sm:w-[50%] text-left'>
+                            18. Level of Education
+                        </div>
+                        {/* ANSWER INPUT SECTION 15 */}
+                        <div style={{}}>
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                {/* <input
                                 type='text'
                                 style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
                                 className='focusClearanceFields'
-                                value={values?.departmentName}
-                                placeholder="Write  Dept./Institute/Center Name"
-                                onChange={(e) => handleChangeValue('departmentName', e.target.value)}
+                                value={values?.universityName}
+                                placeholder="Write University Name"
+                                onChange={(e) => handleChangeValue('universityName', e.target.value)}
 
                             />
                             <span style={{
@@ -1150,283 +1323,211 @@ const RegistrationForm = () => {
                                 zIndex: 2,
                             }}>
                                 <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
-                            </span>
+                            </span> */}
+                                <Select
+                                    className='did-floating-select w-[200px]'
+                                    placeholder='Select Level of Education'
+                                    name='type'
+                                    options={levelOfEducation}
+                                    value={(levelOfEducation?.filter(item => item?.value === values?.levelOfEducation))}
+                                    onChange={e => {
+                                        handleChangeValue("levelOfEducation", e?.value)
+                                    }}
+                                    menuPortalTarget={document.body}
+                                    styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
+                                />
 
-                            {/* ERROR MESSAGE SHOWING TOOLTIP */}
-                            {touched?.departmentName && errors?.departmentName
-                                &&
-                                <span style={{ ...customError, marginTop: '-8px' }}>
-                                    <ErrorTooltip
-                                        content={errors?.departmentName}
-                                        origin={'departmentName'}
-                                        placement="right"
-                                    />
+                                {/* ERROR MESSAGE SHOWING TOOLTIP */}
+                                {touched?.levelOfEducation && errors?.levelOfEducation
+                                    &&
+                                    <span style={{ ...customError, marginTop: '-8px' }}>
+                                        <ErrorTooltip
+                                            content={errors?.levelOfEducation}
+                                            origin={'levelOfEducation'}
+                                            placement="right"
+                                        />
+                                    </span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* QUESTION 19 */}
+                    <div className='flex flex-col sm:flex-row items-start sm:items-center bg-[#77889914] p-2.5 rounded-sm'>
+                        <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
+                            className='w-full sm:w-[50%] text-left'>
+                            19.  Linkedin Profile Link
+                        </div>
+                        {/* ANSWER INPUT SECTION 19 */}
+                        <div style={{ marginBottom: '20px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <input
+                                    type='text'
+                                    style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
+                                    className='focusClearanceFields'
+                                    value={values?.linkedinProfile}
+                                    placeholder="Write  Linkedin Profile Link"
+                                    onChange={(e) => handleChangeValue('linkedinProfile', e.target.value)}
+
+                                />
+                                <span style={{
+                                    float: "right",
+                                    marginLeft: '-20px',
+                                    position: "relative",
+                                    zIndex: 2,
+                                }}>
+                                    <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
                                 </span>
-                            }
+
+                                {/* ERROR MESSAGE SHOWING TOOLTIP */}
+                                {touched?.linkedinProfile && errors?.linkedinProfile
+                                    &&
+                                    <span style={{ ...customError, marginTop: '-8px' }}>
+                                        <ErrorTooltip
+                                            content={errors?.linkedinProfile}
+                                            origin={'linkedinProfile'}
+                                            placement="right"
+                                        />
+                                    </span>
+                                }
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                {/* QUESTION 17 */}
-                <div className='flex flex-col sm:flex-row items-start sm:items-center bg-[#77889914] p-2.5 rounded-sm'>
-                    <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
-                        className='required w-full sm:w-[50%] text-left'>
-                        17. Name of Subject/Diploma/Group
-                    </div>
-                    {/* ANSWER INPUT SECTION 17 */}
-                    <div style={{ marginBottom: '20px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <input
-                                type='text'
-                                style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
-                                className='focusClearanceFields'
-                                value={values?.subject}
-                                placeholder="Write  Subject/Diploma/Group Name"
-                                onChange={(e) => handleChangeValue('subject', e.target.value)}
+                    {/* QUESTION 20 */}
+                    <div className='flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm'>
+                        <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
+                            className='w-full sm:w-[50%] text-left'>
+                            20.  Link of Project Repository
+                        </div>
+                        {/* ANSWER INPUT SECTION 20 */}
+                        <div style={{ marginBottom: '20px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <input
+                                    type='text'
+                                    style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
+                                    className='focusClearanceFields'
+                                    value={values?.projectRepository}
+                                    placeholder="Add Project Reporsitory link"
+                                    onChange={(e) => handleChangeValue('projectRepository', e.target.value)}
 
-                            />
-                            <span style={{
-                                float: "right",
-                                marginLeft: '-20px',
-                                position: "relative",
-                                zIndex: 2,
-                            }}>
-                                <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
-                            </span>
-
-                            {/* ERROR MESSAGE SHOWING TOOLTIP */}
-                            {touched?.subject && errors?.subject
-                                &&
-                                <span style={{ ...customError, marginTop: '-8px' }}>
-                                    <ErrorTooltip
-                                        content={errors?.subject}
-                                        origin={'subject'}
-                                        placement="right"
-                                    />
+                                />
+                                <span style={{
+                                    float: "right",
+                                    marginLeft: '-20px',
+                                    position: "relative",
+                                    zIndex: 2,
+                                }}>
+                                    <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
                                 </span>
-                            }
+
+                                {/* ERROR MESSAGE SHOWING TOOLTIP */}
+                                {touched?.projectRepository && errors?.projectRepository
+                                    &&
+                                    <span style={{ ...customError, marginTop: '-8px' }}>
+                                        <ErrorTooltip
+                                            content={errors?.projectRepository}
+                                            origin={'projectRepository'}
+                                            placement="right"
+                                        />
+                                    </span>
+                                }
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                {/* QUESTION 18 */}
-                <div className='flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm'>
-                    <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
-                        className='required w-full sm:w-[50%] text-left'>
-                        18.  Level of Education
-                    </div>
-                    {/* ANSWER INPUT SECTION 18 */}
-                    <div style={{ marginBottom: '20px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <input
-                                type='text'
-                                style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
-                                className='focusClearanceFields'
-                                value={values?.levelOfEducation}
-                                placeholder="Write  Level of Education"
-                                onChange={(e) => handleChangeValue('levelOfEducation', e.target.value)}
+                    {/* QUESTION 21 */}
+                    <div className='flex flex-col sm:flex-row items-start sm:items-center bg-[#77889914] p-2.5 rounded-sm'>
+                        <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
+                            className='w-full sm:w-[50%] text-left'>
+                            21.  Link of Freelancing Profile
+                        </div>
+                        {/* ANSWER INPUT SECTION 21 */}
+                        <div style={{ marginBottom: '20px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <input
+                                    type='text'
+                                    style={{ maxWidth: '350px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
+                                    className='focusClearanceFields'
+                                    value={values?.freelancingProfile}
+                                    placeholder="Add Freelancing Profile link"
+                                    onChange={(e) => handleChangeValue('freelancingProfile', e.target.value)}
 
-                            />
-                            <span style={{
-                                float: "right",
-                                marginLeft: '-20px',
-                                position: "relative",
-                                zIndex: 2,
-                            }}>
-                                <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
-                            </span>
-
-                            {/* ERROR MESSAGE SHOWING TOOLTIP */}
-                            {touched?.levelOfEducation && errors?.levelOfEducation
-                                &&
-                                <span style={{ ...customError, marginTop: '-8px' }}>
-                                    <ErrorTooltip
-                                        content={errors?.levelOfEducation}
-                                        origin={'levelOfEducation'}
-                                        placement="right"
-                                    />
+                                />
+                                <span style={{
+                                    float: "right",
+                                    marginLeft: '-20px',
+                                    position: "relative",
+                                    zIndex: 2,
+                                }}>
+                                    <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
                                 </span>
-                            }
+
+                                {/* ERROR MESSAGE SHOWING TOOLTIP */}
+                                {touched?.freelancingProfile && errors?.freelancingProfile
+                                    &&
+                                    <span style={{ ...customError, marginTop: '-8px' }}>
+                                        <ErrorTooltip
+                                            content={errors?.freelancingProfile}
+                                            origin={'freelancingProfile'}
+                                            placement="right"
+                                        />
+                                    </span>
+                                }
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                {/* QUESTION 19 */}
-                <div className='flex flex-col sm:flex-row items-start sm:items-center bg-[#77889914] p-2.5 rounded-sm'>
-                    <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
-                        className='w-full sm:w-[50%] text-left'>
-                        19.  Linkedin Profile Link
-                    </div>
-                    {/* ANSWER INPUT SECTION 19 */}
-                    <div style={{ marginBottom: '20px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <input
-                                type='text'
-                                style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
-                                className='focusClearanceFields'
-                                value={values?.linkedinProfile}
-                                placeholder="Write  Linkedin Profile Link"
-                                onChange={(e) => handleChangeValue('linkedinProfile', e.target.value)}
-
-                            />
-                            <span style={{
-                                float: "right",
-                                marginLeft: '-20px',
-                                position: "relative",
-                                zIndex: 2,
-                            }}>
-                                <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
-                            </span>
-
-                            {/* ERROR MESSAGE SHOWING TOOLTIP */}
-                            {touched?.linkedinProfile && errors?.linkedinProfile
-                                &&
-                                <span style={{ ...customError, marginTop: '-8px' }}>
-                                    <ErrorTooltip
-                                        content={errors?.linkedinProfile}
-                                        origin={'linkedinProfile'}
-                                        placement="right"
-                                    />
-                                </span>
-                            }
+                    {/* QUESTION 22 */}
+                    <div className='flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm'>
+                        <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
+                            className='required w-full sm:w-[50%] text-left'>
+                            22.  Upload Picture
                         </div>
-                    </div>
-                </div>
+                        {/* ANSWER INPUT SECTION 22 */}
+                        <div style={{ marginBottom: '20px' }} className='flex justify-between w-full sm:w-1/2'>
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
 
-                {/* QUESTION 20 */}
-                <div className='flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm'>
-                    <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
-                        className='w-full sm:w-[50%] text-left'>
-                        20.  Link of Project Repository
-                    </div>
-                    {/* ANSWER INPUT SECTION 20 */}
-                    <div style={{ marginBottom: '20px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <input
-                                type='text'
-                                style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
-                                className='focusClearanceFields'
-                                value={values?.projectRepository}
-                                placeholder="Add Project Reporsitory link"
-                                onChange={(e) => handleChangeValue('projectRepository', e.target.value)}
+                                <img
+                                    src={uploadFileIcon}
+                                    style={{ width: '50px', cursor: 'pointer' }}
+                                    onClick={() => {
+                                        inputRef.current.click();
+                                        // FileUploader()
+                                    }} />
+                                <input ref={inputRef} type="file"
+                                    accept="image/x-png,image/gif,image/jpeg"
+                                    hidden
+                                    onChange={(e) => { profileImageChange(e) }}
+                                />
+                                {touched.file && errors.file &&
+                                    <span style={customError}>
+                                        <ErrorTooltip
+                                            content={errors.file}
+                                            origin={'image'}
+                                            placement="right" />
+                                    </span>}
 
-                            />
-                            <span style={{
-                                float: "right",
-                                marginLeft: '-20px',
-                                position: "relative",
-                                zIndex: 2,
-                            }}>
-                                <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
-                            </span>
+                            </div>
 
-                            {/* ERROR MESSAGE SHOWING TOOLTIP */}
-                            {touched?.projectRepository && errors?.projectRepository
-                                &&
-                                <span style={{ ...customError, marginTop: '-8px' }}>
-                                    <ErrorTooltip
-                                        content={errors?.projectRepository}
-                                        origin={'projectRepository'}
-                                        placement="right"
-                                    />
-                                </span>
-                            }
-                        </div>
-                    </div>
-                </div>
-
-                {/* QUESTION 21 */}
-                <div className='flex flex-col sm:flex-row items-start sm:items-center bg-[#77889914] p-2.5 rounded-sm'>
-                    <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
-                        className='w-full sm:w-[50%] text-left'>
-                        21.  Link of Freelancing Profile
-                    </div>
-                    {/* ANSWER INPUT SECTION 21 */}
-                    <div style={{ marginBottom: '20px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <input
-                                type='text'
-                                style={{ maxWidth: '350px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
-                                className='focusClearanceFields'
-                                value={values?.birthfreelancingProfileDate}
-                                placeholder="Add Freelancing Profile link"
-                                onChange={(e) => handleChangeValue('freelancingProfile', e.target.value)}
-
-                            />
-                            <span style={{
-                                float: "right",
-                                marginLeft: '-20px',
-                                position: "relative",
-                                zIndex: 2,
-                            }}>
-                                <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
-                            </span>
-
-                            {/* ERROR MESSAGE SHOWING TOOLTIP */}
-                            {touched?.freelancingProfile && errors?.freelancingProfile
-                                &&
-                                <span style={{ ...customError, marginTop: '-8px' }}>
-                                    <ErrorTooltip
-                                        content={errors?.freelancingProfile}
-                                        origin={'freelancingProfile'}
-                                        placement="right"
-                                    />
-                                </span>
-                            }
-                        </div>
-                    </div>
-                </div>
-
-                {/* QUESTION 22 */}
-                <div className='flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm'>
-                    <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
-                        className='required w-full sm:w-[50%] text-left'>
-                        22.  Upload Picture
-                    </div>
-                    {/* ANSWER INPUT SECTION 22 */}
-                    <div style={{ marginBottom: '20px' }} className='flex justify-between w-full sm:w-1/2'>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-
-                            <img
-                                src={uploadFileIcon}
-                                style={{ width: '50px', cursor: 'pointer' }}
-                                onClick={() => {
-                                    inputRef.current.click();
-                                    // FileUploader()
-                                }} />
-                            <input ref={inputRef} type="file"
-                                accept="image/x-png,image/gif,image/jpeg"
-                                hidden
-                                onChange={(e) => { profileImageChange(e) }}
-                            />
-                            {touched.file && errors.file &&
-                                <span style={customError}>
-                                    <ErrorTooltip
-                                        content={errors.file}
-                                        origin={'image'}
-                                        placement="right" />
-                                </span>}
-
-                        </div>
-
-                        {/* IMAGE PREVIEW */}
-                        {inputFile?.imageURL &&
-                            <div>
-                                <img src={inputFile?.imageURL} alt='image_preview' className='w-[100px] h-[100px]' />
-                                <div className="relative left-[74px] top-[-100px]">
-                                    <img
-                                        src={DeleteIcon}
-                                        alt="Preview"
-                                        className="hover:cursor-pointer w-[26px] h-[26px] !bg-[#FFFFFF]"
-                                        onClick={() => {
-                                            handleRemoveFile();
-                                        }}
-                                    />
-                                </div>
-                            </div>}
+                            {/* IMAGE PREVIEW */}
+                            {inputFile?.imageURL &&
+                                <div>
+                                    <img src={inputFile?.imageURL} alt='image_preview' className='w-[100px] h-[100px]' />
+                                    <div className="relative left-[74px] top-[-100px]">
+                                        <img
+                                            src={DeleteIcon}
+                                            alt="Preview"
+                                            className="hover:cursor-pointer w-[26px] h-[26px] !bg-[#FFFFFF]"
+                                            onClick={() => {
+                                                handleRemoveFile();
+                                            }}
+                                        />
+                                    </div>
+                                </div>}
 
 
-                        {/* {profileImage &&
+                            {/* {profileImage &&
                             <div style={{ display: 'flex' }}>
                                 <div style={{
                                     display: 'flex',
@@ -1459,20 +1560,22 @@ const RegistrationForm = () => {
 
                             </div>
                         } */}
+                        </div>
                     </div>
-                </div>
 
-                {/* SUBMIT BUTTON */}
-                <div className='flex justify-end'>
-                    <div className='bg-[#1960cb] text-white px-8 py-2 rounded-sm cursor-pointer w-fit font-semibold'
-                        onClick={() => handleSubmit()}>
-                        Submit
+                    {/* SUBMIT BUTTON */}
+                    <div className='flex justify-end'>
+                        <div className='bg-[#1960cb] text-white px-8 py-2 rounded-sm cursor-pointer w-fit font-semibold'
+                            onClick={() => handleSubmit()}>
+                            Submit
+                        </div>
                     </div>
+
                 </div>
 
             </div>
+        </>
 
-        </div>
     )
 }
 
