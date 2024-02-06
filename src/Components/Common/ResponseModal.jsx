@@ -34,7 +34,7 @@ const ResponseModal = (props) => {
   }, []);
 
   return (
-    <div id="myResponseModal" className="response-modal" style={{ display: "block", zIndex: '2' }}>
+    <div id="myResponseModal" className="response-modal" style={{ display: "block", zIndex: '9999' }}>
       {/* <!-- Modal content --> */}
       <div className="response-modal-content">
         <div className="response-modal-header" style={{

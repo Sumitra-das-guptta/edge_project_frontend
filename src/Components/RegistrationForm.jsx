@@ -2,6 +2,7 @@ import React from 'react'
 import { useState, useEffect } from 'react';
 import Select from 'react-select';
 import { useRef } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import edge_header from '../assets/newEdgeHeader.jpg';
 import Pencil from '../assets/Pencil.png';
 import uploadFileIcon from '../assets/icons/uploadFileIcon.svg';
@@ -29,9 +30,9 @@ const styles = {
     }
 }
 const RegistrationForm = () => {
-    console.log(universityList.length, "print length.......")
+    const navigate = useNavigate();
     const inputRef = useRef();
-  const [responseModal, setResponseModal] = useState({ usedPurpose: '', visible: false, message: '', footerMessage: '' })
+    const [responseModal, setResponseModal] = useState({ usedPurpose: '', visible: false, message: '', footerMessage: '' })
     const [SUPPORTED_FORMATS, setSUPPORTED_FORMATS] = useState([
         "image/jpg",
         "image/jpeg",
@@ -49,12 +50,89 @@ const RegistrationForm = () => {
     let gender = ['Male', 'Female', 'Other'];
     let religion = ['Islam', 'Hinduism', 'Buddhism', 'Christanity'];
     let levelOfEducation = [
-        { value: 1, label: 'SSC/Equivalent' },
-        { value: 2, label: 'HSC/Equivalent' },
-        { value: 3, label: 'BSC/Equivalent' },
-        { value: 4, label: 'MSC/Equivalent' },
+        { value: 1, label: 'Secondary / Equivalent' },
+        { value: 2, label: 'Higher Secondary / Equivalent' },
+        { value: 3, label: 'Undergraduate' },
+        { value: 4, label: 'Post-Graduate' },
 
+    ];
+    let divisionList = [
+        { value: 0, label: "Barishal" },
+        { value: 1, label: "Chattogram" },
+        { value: 2, label: "Dhaka" },
+        { value: 3, label: "Khulna" },
+        { value: 4, label: "Rajshahi" },
+        { value: 5, label: "Rangpur" },
+        { value: 6, label: "Mymensingh" },
+        { value: 7, label: "Sylhet" }
     ]
+    let districtList = [
+        { "value": 1, "label": "Dhaka" },
+        { "value": 2, "label": "Faridpur" },
+        { "value": 3, "label": "Gazipur" },
+        { "value": 4, "label": "Gopalganj" },
+        { "value": 5, "label": "Jamalpur" },
+        { "value": 6, "label": "Kishoreganj" },
+        { "value": 7, "label": "Madaripur" },
+        { "value": 8, "label": "Manikganj" },
+        { "value": 9, "label": "Munshiganj" },
+        { "value": 10, "label": "Mymensingh" },
+        { "value": 11, "label": "Narayanganj" },
+        { "value": 12, "label": "Narsingdi" },
+        { "value": 13, "label": "Netrokona" },
+        { "value": 14, "label": "Rajbari" },
+        { "value": 15, "label": "Shariatpur" },
+        { "value": 16, "label": "Sherpur" },
+        { "value": 17, "label": "Tangail" },
+        { "value": 18, "label": "Bogra" },
+        { "value": 19, "label": "Joypurhat" },
+        { "value": 20, "label": "Naogaon" },
+        { "value": 21, "label": "Natore" },
+        { "value": 22, "label": "Nawabganj" },
+        { "value": 23, "label": "Pabna" },
+        { "value": 24, "label": "Rajshahi" },
+        { "value": 25, "label": "Sirajgonj" },
+        { "value": 26, "label": "Dinajpur" },
+        { "value": 27, "label": "Gaibandha" },
+        { "value": 28, "label": "Kurigram" },
+        { "value": 29, "label": "Lalmonirhat" },
+        { "value": 30, "label": "Nilphamari" },
+        { "value": 31, "label": "Panchagarh" },
+        { "value": 32, "label": "Rangpur" },
+        { "value": 33, "label": "Thakurgaon" },
+        { "value": 34, "label": "Barguna" },
+        { "value": 35, "label": "Barisal" },
+        { "value": 36, "label": "Bhola" },
+        { "value": 37, "label": "Jhalokati" },
+        { "value": 38, "label": "Patuakhali" },
+        { "value": 39, "label": "Pirojpur" },
+        { "value": 40, "label": "Bandarban" },
+        { "value": 41, "label": "Brahmanbaria" },
+        { "value": 42, "label": "Chandpur" },
+        { "value": 43, "label": "Chittagong" },
+        { "value": 44, "label": "Comilla" },
+        { "value": 45, "label": "Cox's Bazar" },
+        { "value": 46, "label": "Feni" },
+        { "value": 47, "label": "Khagrachari" },
+        { "value": 48, "label": "Lakshmipur" },
+        { "value": 49, "label": "Noakhali" },
+        { "value": 50, "label": "Rangamati" },
+        { "value": 51, "label": "Habiganj" },
+        { "value": 52, "label": "Maulvibazar" },
+        { "value": 53, "label": "Sunamganj" },
+        { "value": 54, "label": "Sylhet" },
+        { "value": 55, "label": "Bagerhat" },
+        { "value": 56, "label": "Chuadanga" },
+        { "value": 57, "label": "Jessore" },
+        { "value": 58, "label": "Jhenaidah" },
+        { "value": 59, "label": "Khulna" },
+        { "value": 60, "label": "Kushtia" },
+        { "value": 61, "label": "Magura" },
+        { "value": 62, "label": "Meherpur" },
+        { "value": 63, "label": "Narail" },
+        { "value": 64, "label": "Satkhira" }
+    ]
+
     const dummy =
 
     {
@@ -90,16 +168,16 @@ const RegistrationForm = () => {
     }
 
     const formData = {
-        courseName: '',
+        courseName: 'Frontend Development',
         trainingOrganizerUniversity: 'CUET',
         organizerDeptOrInstituteOrCenter: 'IICT',
         candidateName: "",
         fatherName: "",
         motherName: "",
         gender: 'Male',
-        religion: "",
-        birthDate: new Date(),
-        nationality: "",
+        religion: "Islam",
+        birthDate: "",
+        nationality: "Bangladeshi",
         identityNo: "",
         presentAddress: {
             roadNo: "",
@@ -270,12 +348,12 @@ const RegistrationForm = () => {
                 "nationality": values?.nationality,
                 "presentAddressRoadNo": values?.presentAddress?.roadNo,
                 "presentAddressThanaName": values?.presentAddress?.thanaName,
-                "presentAddressDistrictName": values?.presentAddress?.districtName,
-                "presentAddressDivisionName": values?.presentAddress?.divisionName,
+                "presentAddressDistrictName": districtList?.filter(eachDistrict => eachDistrict?.value === values?.presentAddress?.districtName)?.[0]?.label,
+                "presentAddressDivisionName": divisionList?.filter(eachDivision => eachDivision?.value === values?.presentAddress?.divisionName)?.[0]?.label,
                 "permanentAddressRoadNo": values?.permanentAddress?.roadNo,
                 "permanentAddressThanaName": values?.permanentAddress?.thanaName,
-                "permanentAddressDistrictName": values?.permanentAddress?.districtName,
-                "permanentAddressDivisionName": values?.permanentAddress?.divisionName,
+                "permanentAddressDistrictName": districtList?.filter(eachDistrict => eachDistrict?.value === values?.permanentAddress?.districtName)?.[0]?.label,
+                "permanentAddressDivisionName": divisionList?.filter(eachDivision => eachDivision?.value === values?.permanentAddress?.divisionName)?.[0]?.label,
                 "mobileNumber": values?.mobileNumber,
                 "gurdianMobileNumber": values?.gurdianMobileNumber,
                 "levelOfEducation": values?.levelOfEducation,
@@ -308,7 +386,7 @@ const RegistrationForm = () => {
                         usedPurpose: 'Success',
                         message: 'Successfully updated',
                         footerMessage: 'Back'
-                      });
+                    });
                 } else {
                     // setError(createSalesManagerResponse[1]);
                     setResponseModal({
@@ -317,7 +395,7 @@ const RegistrationForm = () => {
                         usedPurpose: 'Error',
                         message: response[1],
                         footerMessage: 'Close'
-                      });
+                    });
                 }
             });
 
@@ -364,6 +442,7 @@ const RegistrationForm = () => {
     };
 
     const handleChangeAddress = (address, section, updatedValue) => {
+        debugger
         setValues({
             ...values,
             [address]: {
@@ -389,14 +468,15 @@ const RegistrationForm = () => {
             usedPurpose: '',
             message: '',
             footerMessage: ''
-          });
+        });
+        navigate('/');
     }
     const handleResponseModalVisibility = (visibleState) => {
         setResponseModal({
-          ...responseModal,
-          visible: visibleState
+            ...responseModal,
+            visible: visibleState
         })
-      }
+    }
     return (
         <>
             {/* RESPONSE MODAL */}
@@ -405,7 +485,7 @@ const RegistrationForm = () => {
                     setModalVisible={handleResponseModalVisibility}
                 />
             }
-            <div className='mx-[2%] sm:mx-[10%] my-[14vh] border-2 border-[#e5e7eb] p-5 rounded shadow-[0px_0px_9px_0px]'>
+            <div className='mx-[2%] sm:mx-[10%] mt-[14vh] mb-6 border-2 border-[#e5e7eb] p-5 rounded shadow-[0px_0px_9px_0px]'>
                 <img src={edge_header} alt='edge_heading' className='w-full' />
                 <div style={{ fontSize: '20px', fontWeight: '600' }}>Enhancing Digital Government & Economy (EDGE) Project</div>
                 <div style={{ fontSize: '14px' }}>Digital Skills Training initiative for students, a premier
@@ -699,7 +779,7 @@ const RegistrationForm = () => {
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
                             className='required w-full sm:w-[50%] text-left'>
 
-                            9. National ID Card Number/ Birth Registration Number
+                            9. NID / Birth Registration Number
 
                         </div>
                         {/* ANSWER INPUT SECTION 9 */}
@@ -747,8 +827,10 @@ const RegistrationForm = () => {
                         {/* ANSWER INPUT SECTION 10 */}
                         <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
                             {/* ROAD NO/HOUSE NO */}
-                            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
-                                <input
+                            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>     
+                            <div className='flex flex-col'>
+                                <div>
+                                    <input
                                     type='text'
                                     style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
                                     className='focusClearanceFields'
@@ -765,6 +847,9 @@ const RegistrationForm = () => {
                                 }}>
                                     <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
                                 </span>
+                                </div>
+                                <span className='text-xs font-medium'>Road/House No</span>
+                                </div>
 
                                 {/* ERROR MESSAGE SHOWING TOOLTIP */}
                                 {touched?.presentAddress && touched?.presentAddress?.roadNo
@@ -781,6 +866,8 @@ const RegistrationForm = () => {
                             </div>
                             {/* Thana Name */}
                             <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
+                                <div className='flex flex-col'>
+                                <div>
                                 <input
                                     type='text'
                                     style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
@@ -799,7 +886,9 @@ const RegistrationForm = () => {
                                 }}>
                                     <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
                                 </span>
-
+                                </div>
+                                <span className='text-xs font-medium'>Thana</span>
+                                </div>
                                 {/* ERROR MESSAGE SHOWING TOOLTIP */}
                                 {touched?.presentAddress && touched?.presentAddress?.thanaName
                                     && errors?.presentAddress && errors?.presentAddress?.thanaName
@@ -816,7 +905,7 @@ const RegistrationForm = () => {
 
                             {/* District Name */}
                             <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
-                                <input
+                                {/* <input
                                     type='text'
                                     style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
                                     className='focusClearanceFields'
@@ -833,7 +922,21 @@ const RegistrationForm = () => {
                                     zIndex: 2,
                                 }}>
                                     <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
-                                </span>
+                                </span> */}
+
+                                <div>
+                                    <Select
+                                        className='did-floating-select w-[200px]'
+                                        placeholder='Select District Name'
+                                        name='type'
+                                        options={districtList}
+                                        value={(districtList?.filter(item => item?.value === values?.presentAddress?.districtName))}
+                                        onChange={(e) => handleChangeAddress('presentAddress', 'districtName', e.value)}
+                                        menuPortalTarget={document.body}
+                                        styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
+                                    />
+                                    <span className='text-xs font-medium'>District</span>
+                                </div>
 
                                 {/* ERROR MESSAGE SHOWING TOOLTIP */}
                                 {touched?.presentAddress && touched?.presentAddress?.districtName
@@ -851,7 +954,7 @@ const RegistrationForm = () => {
 
                             {/* Division Name */}
                             <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
-                                <input
+                                {/* <input
                                     type='text'
                                     style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
                                     className='focusClearanceFields'
@@ -868,7 +971,21 @@ const RegistrationForm = () => {
                                     zIndex: 2,
                                 }}>
                                     <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
-                                </span>
+                                </span> */}
+                                <div>
+                                    <Select
+                                        className='did-floating-select w-[200px]'
+                                        placeholder='Select Division Name'
+                                        name='type'
+                                        options={divisionList}
+                                        value={(divisionList?.filter(item => item?.value === values?.presentAddress?.divisionName))}
+                                        onChange={(e) => handleChangeAddress('presentAddress', 'divisionName', e.value)}
+                                        menuPortalTarget={document.body}
+                                        styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
+                                    />
+                                    <span className='text-xs font-medium'>Division</span>
+                                </div>
+
 
                                 {/* ERROR MESSAGE SHOWING TOOLTIP */}
                                 {touched?.presentAddress && touched?.presentAddress?.divisionName
@@ -896,6 +1013,8 @@ const RegistrationForm = () => {
                         <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
                             {/* ROAD NO/HOUSE NO */}
                             <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
+                                <div className='flex flex-col'>
+                                <div>
                                 <input
                                     type='text'
                                     style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
@@ -913,6 +1032,11 @@ const RegistrationForm = () => {
                                 }}>
                                     <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
                                 </span>
+                                </div>
+                                <span className='text-xs font-medium'>Road/House No</span>
+                                </div>
+                                
+                                
 
                                 {/* ERROR MESSAGE SHOWING TOOLTIP */}
                                 {touched?.permanentAddress && touched?.permanentAddress?.roadNo
@@ -929,6 +1053,8 @@ const RegistrationForm = () => {
                             </div>
                             {/* Thana Name */}
                             <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
+                            <div className='flex flex-col'>
+                                <div>
                                 <input
                                     type='text'
                                     style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
@@ -947,7 +1073,9 @@ const RegistrationForm = () => {
                                 }}>
                                     <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
                                 </span>
-
+                                </div>
+                                <span className='text-xs font-medium'>Thana</span>
+                                </div>
                                 {/* ERROR MESSAGE SHOWING TOOLTIP */}
                                 {touched?.permanentAddress && touched?.permanentAddress?.thanaName
                                     && errors?.permanentAddress && errors?.permanentAddress?.thanaName
@@ -964,7 +1092,7 @@ const RegistrationForm = () => {
 
                             {/* District Name */}
                             <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
-                                <input
+                                {/* <input
                                     type='text'
                                     style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
                                     className='focusClearanceFields'
@@ -981,7 +1109,21 @@ const RegistrationForm = () => {
                                     zIndex: 2,
                                 }}>
                                     <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
-                                </span>
+                                </span> */}
+
+                                <div>
+                                    <Select
+                                        className='did-floating-select w-[200px]'
+                                        placeholder='Select District Name'
+                                        name='type'
+                                        options={districtList}
+                                        value={(districtList?.filter(item => item?.value === values?.permanentAddress?.districtName))}
+                                        onChange={(e) => handleChangeAddress('permanentAddress', 'districtName', e.value)}
+                                        menuPortalTarget={document.body}
+                                        styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
+                                    />
+                                    <span className='text-xs font-medium'>District</span>
+                                </div>
 
                                 {/* ERROR MESSAGE SHOWING TOOLTIP */}
                                 {touched?.permanentAddress && touched?.permanentAddress?.districtName
@@ -999,7 +1141,7 @@ const RegistrationForm = () => {
 
                             {/* Division Name */}
                             <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
-                                <input
+                                {/* <input
                                     type='text'
                                     style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
                                     className='focusClearanceFields'
@@ -1016,7 +1158,20 @@ const RegistrationForm = () => {
                                     zIndex: 2,
                                 }}>
                                     <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
-                                </span>
+                                </span> */}
+                                <div>
+                                    <Select
+                                        className='did-floating-select w-[200px]'
+                                        placeholder='Select Division Name'
+                                        name='type'
+                                        options={divisionList}
+                                        value={(divisionList?.filter(item => item?.value === values?.permanentAddress?.divisionName))}
+                                        onChange={(e) => handleChangeAddress('permanentAddress', 'divisionName', e.value)}
+                                        menuPortalTarget={document.body}
+                                        styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
+                                    />
+                                    <span className='text-xs font-medium'>Division</span>
+                                </div>
 
                                 {/* ERROR MESSAGE SHOWING TOOLTIP */}
                                 {touched?.permanentAddress && touched?.permanentAddress?.divisionName
@@ -1565,7 +1720,7 @@ const RegistrationForm = () => {
 
                     {/* SUBMIT BUTTON */}
                     <div className='flex justify-end'>
-                        <div className='bg-[#1960cb] text-white px-8 py-2 rounded-sm cursor-pointer w-fit font-semibold'
+                        <div className='bg-[#1960cb] text-white px-8 py-2 rounded-sm cursor-pointer w-fit font-semibold transition-transform transform-gpu hover:scale-125'
                             onClick={() => handleSubmit()}>
                             Submit
                         </div>

@@ -59,7 +59,7 @@ const Navbar = (props) => {
     const [profileShow, setProfileShow] = useState(false);
     const [toggle, setToggle] = useState(false);
     const [userDetails, setUserDetails] = useState({});
-    const [modalEdit,setModalEdit] = useState(false)
+    const [modalEdit, setModalEdit] = useState(false)
     const location = useLocation();
     const currentPath = location.pathname;
 
@@ -100,105 +100,106 @@ const Navbar = (props) => {
     // }, []);
 
     useEffect(() => {
-        if (currentPath.includes('inventory')) {
-            setNavText('Inventory');
-        } else if (currentPath.includes('request')) {
-            setNavText('Request')
+        if (currentPath.includes('register')) {
+            setNavText('Registration Form');
+        } else if (currentPath.includes('home')) {
+            setNavText('Home')
         } else if (currentPath.includes('job')) {
             setNavText('Job')
         } else if (currentPath.includes('approval')) {
             setNavText('Approval History')
         }
+        else {
+            setNavText('Home');
+        }
     }, [currentPath]);
-   
-    const handleClick = () => {
-        setProfileShow(!profileShow);
-      };
+
     return (
         <>
-        
-        <header className=''>
-            <div style={{ display: 'flex', width: '95%', justifyContent: 'space-between' }}>
-                <div style={{ display: 'flex' }}>
-                    {/* SMALL SCREEN HAMBURGER BUTTON */}
-                    <div className='flex items-center'>
-                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                            <FaBars onClick={toggleSideBar} className="bar pointer" style={{ height: '20px' }} />
+
+            <header className=''>
+                <div style={{ display: 'flex', width: '95%', justifyContent: 'space-between' }}>
+                    <div style={{ display: 'flex' }}>
+                        {/* SMALL SCREEN HAMBURGER BUTTON */}
+                        <div className='flex items-center'>
+                            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                <FaBars onClick={toggleSideBar} className="bar pointer" style={{ height: '20px' }} />
+                            </div>
+                            <div className={"bar"} style={{ marginLeft: '10px', fontSize: '14px', fontWeight: '400' }}>
+                                {navText}
+                            </div>
                         </div>
-                        <div className={"bar"} style={{ marginLeft: '10px', fontSize: '14px', fontWeight: '400' }}>
-                            {navText}
-                        </div>
+
+                        <img src={cuet_logo} alt='DBL_Ceramics_Logo' className={toggle ? "sidebar logo w-[60px] h-auto m-auto" : "logo w-[60px] h-auto m-auto  transition-transform transform-gpu hover:scale-125 "} />
+                        {/* <img src={bcc_logo} alt='DBL_Ceramics_Logo' className={toggle ? "sidebar logo" : "logo"} /> */}
+                        {/* <img src={edge_logo} alt='DBL_Ceramics_Logo' className={toggle ? "sidebar logo" : "logo"} /> */}
+                        {/* <img src={ict_division_logo} alt='DBL_Ceramics_Logo' className={toggle ? "sidebar logo" : "logo"} /> */}
+                        {/* <img src={sla_logo} alt='DBL_Ceramics_Logo' className={toggle ? "sidebar logo" : "logo"} /> */}
+                        <div className={toggle ? "sidebar logo text-white  h-auto m-auto" : "logo text-white  h-auto m-auto"}>Chittagong University of Engineering & Technology</div>
+
                     </div>
 
-                    <img src={cuet_logo} alt='DBL_Ceramics_Logo' className={toggle ? "sidebar logo w-[45px] h-auto m-auto" : "logo w-[45px] h-auto m-auto"} />
-                    <img src={bcc_logo} alt='DBL_Ceramics_Logo' className={toggle ? "sidebar logo" : "logo"} />
-                    <img src={edge_logo} alt='DBL_Ceramics_Logo' className={toggle ? "sidebar logo" : "logo"} />
-                    <img src={ict_division_logo} alt='DBL_Ceramics_Logo' className={toggle ? "sidebar logo" : "logo"} />
-                    <img src={sla_logo} alt='DBL_Ceramics_Logo' className={toggle ? "sidebar logo" : "logo"} />
+
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <nav
+                            className={toggle ? "sidebar" : ""}
+                        >
+                            {!toggle ?
+                                <ul style={{ margin: '0px' }}>
+                                    <li>
+                                        <NavLink to="/" >
+                                            Home
+                                        </NavLink>
+                                    </li>
+                                    <li>
+                                        <NavLink to="/register">
+                                            Registration Form
+                                        </NavLink>
+                                    </li>
 
 
-                </div>
+                                </ul>
+                                :
+                                <div style={{ display: 'flex', flexDirection: 'column', width: '90%', margin: '15px auto', background: 'white' }}>
 
-
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <nav
-                        className={toggle ? "sidebar" : ""}
-                    >
-                        {!toggle ?
-                            <ul style={{ margin: '0px' }}>
-                                <li>
-                                    <NavLink to="/btl/inventory" >
-                                        About
-                                    </NavLink>
-                                </li>
-                                <li>
-                                    <NavLink to="/">
-                                        Registration Form
-                                    </NavLink>
-                                </li>
-                                
-
-                            </ul>
-                            :
-                            <div style={{ display: 'flex', flexDirection: 'column', width: '90%', margin: '15px auto', background: 'white' }}>
-
-                                {/* LOGO AND CROSS */}
-                                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '30px' }}>
-                                    <div>
-                                        <img src={cuet_logo} alt='DBL_Ceramics_Logo' className='full_icon' height='80' />
+                                    {/* LOGO AND CROSS */}
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '30px' }}>
+                                        <div className='flex items-center'>
+                                            <img src={cuet_logo} alt='DBL_Ceramics_Logo' className='full_icon' height='80' />
+                                            <img src={edge_logo} alt='DBL_Ceramics_Logo' className='max-w-[80px] h-[45px]' />
+                                        </div>
+                                        <div style={{ color: 'black', display: 'flex', alignItems: 'center' }}
+                                            onClick={toggleSideBar}
+                                            className='pointer'>
+                                            <img src={cross} alt='Close Navbar' className='h-[15px] hover:scale-110' />
+                                        </div>
                                     </div>
-                                    <div style={{ color: 'black', display: 'flex', alignItems: 'center' }}
-                                        onClick={toggleSideBar}
-                                        className='pointer'>
-                                        <img src={cross} alt='Close Navbar' height='15' />
-                                    </div>
-                                </div>
 
-                                {/* NAV ELEMENT */}
-                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                    <ul className='sideNav'>
-                                        <li>
-                                            <NavLink to="/btl/inventory"
-                                                onClick={toggleSideBar}
-                                            >
-                                                <img src={DBLLogo} style={{ width: "28px", height: "28px", marginRight: '10px' }} alt="Inventory" />
-                                                <span style={styles.navText}>
-                                                    About
-                                                </span>
+                                    {/* NAV ELEMENT */}
+                                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                        <ul className='sideNav'>
+                                            <li>
+                                                <NavLink to="/"
+                                                    onClick={toggleSideBar}
+                                                >
+                                                    <img src={DBLLogo} style={{ width: "28px", height: "28px", marginRight: '10px' }} alt="Inventory" />
+                                                    <span style={styles.navText}>
+                                                        Home
+                                                    </span>
 
-                                            </NavLink>
-                                        </li>
-                                        <li>
-                                            <NavLink to="/"
-                                                onClick={toggleSideBar}
-                                            >
-                                                <img src={DBLLogo} style={{ width: "28px", height: "28px", marginRight: '10px' }} alt="Requests" />
-                                                <span style={styles.navText}>
-                                                    Registration Form
-                                                </span>
-                                            </NavLink>
-                                        </li>
-                                        {/* <li>
+                                                </NavLink>
+                                            </li>
+                                            <li>
+                                                <NavLink to="/register"
+                                                    onClick={toggleSideBar}
+                                                >
+                                                    <img src={DBLLogo} style={{ width: "28px", height: "28px", marginRight: '10px' }} alt="Requests" />
+                                                    <span style={styles.navText}>
+                                                        Registration Form
+                                                    </span>
+                                                </NavLink>
+                                            </li>
+                                            {/* <li>
                                             <NavLink to="/btl/jobs"
                                                 onClick={toggleSideBar}
                                             >
@@ -219,7 +220,7 @@ const Navbar = (props) => {
                                             </NavLink>
                                         </li> */}
 
-                                        {/* <li>
+                                            {/* <li>
                                             <NavLink to="/login"
                                                 onClick={() => {
                                                     toggleSideBar();
@@ -235,21 +236,21 @@ const Navbar = (props) => {
 
                                             </NavLink>
                                         </li> */}
-                                    </ul>
+                                        </ul>
+                                    </div>
+
                                 </div>
 
-                            </div>
+                            }
 
-                        }
+                        </nav>
+                    </div>
 
-                    </nav>
+
+
                 </div>
-
-                
-
-            </div>
-            {/* <AuthVerify /> */}
-        </header>
+                {/* <AuthVerify /> */}
+            </header>
         </>
     )
 }

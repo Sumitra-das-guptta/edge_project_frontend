@@ -7,6 +7,8 @@ import {
 } from "react-router-dom";
 
 
+
+
 // import LoaderDBL from './Components/Common/LoaderDBL';
 
 // const loading = (
@@ -15,7 +17,9 @@ import {
 
 
 const RegistrationForm = React.lazy(() => import('./Components/RegistrationForm'));
+const Home = React.lazy(() => import('./Components/Home'));
 const Navbar = React.lazy(() => import('./Components/Navbar'));
+const Footer = React.lazy(() => import('./Components/Common/Footer'));
 
 
 const App = () => {
@@ -33,7 +37,7 @@ const App = () => {
               display: 'flex',
               flexDirection: 'column',
             }}>
-              <Navbar />
+            <Navbar />
             <Routes>
 
               {/* LOG IN */}
@@ -45,15 +49,20 @@ const App = () => {
               /> */}
               <Route path="/" name="Home"
                 element={
-<RegistrationForm />
-                  
+                  <Home />
+
                 }
               />
 
+              <Route path="/register" name="Home"
+                element={
+                  <RegistrationForm />
 
+                }
+              />
 
             </Routes>
-
+            <Footer />
           </div>
         </div>
       </React.Suspense>
