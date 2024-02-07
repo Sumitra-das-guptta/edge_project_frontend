@@ -130,7 +130,8 @@ const Navbar = (props) => {
                             </div>
                         </div>
 
-                        <img src={cuet_logo} alt='DBL_Ceramics_Logo' className={toggle ? "sidebar logo w-[60px] h-auto m-auto" : "logo w-[60px] h-auto m-auto  transition-transform transform-gpu hover:scale-125 "} />
+
+                        <img src={cuet_logo} alt='DBL_Ceramics_Logo' className={toggle ? "sidebar logo w-[60px] h-auto m-auto" : "logo w-[60px] h-auto m-[0px] transition-transform transform-gpu hover:scale-125 "} />
                         {/* <img src={bcc_logo} alt='DBL_Ceramics_Logo' className={toggle ? "sidebar logo" : "logo"} /> */}
                         {/* <img src={edge_logo} alt='DBL_Ceramics_Logo' className={toggle ? "sidebar logo" : "logo"} /> */}
                         {/* <img src={ict_division_logo} alt='DBL_Ceramics_Logo' className={toggle ? "sidebar logo" : "logo"} /> */}
@@ -149,6 +150,11 @@ const Navbar = (props) => {
                                     <li>
                                         <NavLink to="/" >
                                             Home
+                                        </NavLink>
+                                    </li>
+                                    <li>
+                                        <NavLink to="/about" >
+                                            About
                                         </NavLink>
                                     </li>
                                     <li>
@@ -185,6 +191,18 @@ const Navbar = (props) => {
                                                     <img src={DBLLogo} style={{ width: "28px", height: "28px", marginRight: '10px' }} alt="Inventory" />
                                                     <span style={styles.navText}>
                                                         Home
+                                                    </span>
+
+                                                </NavLink>
+                                            </li>
+
+                                            <li>
+                                                <NavLink to="/about"
+                                                    onClick={toggleSideBar}
+                                                >
+                                                    <img src={DBLLogo} style={{ width: "28px", height: "28px", marginRight: '10px' }} alt="Inventory" />
+                                                    <span style={styles.navText}>
+                                                        About
                                                     </span>
 
                                                 </NavLink>

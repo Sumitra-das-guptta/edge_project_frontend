@@ -63,17 +63,17 @@ const Home = () => {
             </div>
             <div className='flex justify-around flex-wrap'>
             <a href="https://edge.gov.bd/" target="_blank">
-                    <img src={edge_logo} alt='edge' className=' mb-3 h-[80px] cursor-pointer transition-transform transform-gpu hover:scale-125 '/>
+                    <img src={edge_logo} alt='edge' className=' mb-3 mr-3 h-auto max-h-[80px] cursor-pointer transition-transform transform-gpu hover:scale-125 '/>
                 </a>
 
                 <a href="https://bcc.gov.bd/" target="_blank">
-                <img src={bcc_logo} alt='edge' className='mb-3 h-[80px] cursor-pointer transition-transform transform-gpu hover:scale-125 '/>
+                <img src={bcc_logo} alt='edge' className='mb-3 mr-3 h-auto max-h-[80px] cursor-pointer transition-transform transform-gpu hover:scale-125 '/>
                 </a>
                 <a href="https://ictd.gov.bd/" target="_blank">
-                    <img src={ict_division_logo} alt='edge' className='mb-3 h-[80px] cursor-pointer transition-transform transform-gpu hover:scale-125 '/>
+                    <img src={ict_division_logo} alt='edge' className='mb-3 mr-3 h-auto max-h-[80px] cursor-pointer transition-transform transform-gpu hover:scale-125 '/>
                 </a>
                 <a href="https://sla.gov.bd/" target="_blank">
-                    <img src={sla_logo} alt='edge' className='mb-3 h-[80px] cursor-pointer transition-transform transform-gpu hover:scale-125 '/>
+                    <img src={sla_logo} alt='edge' className='mb-3 mr-3 h-auto max-h-[80px] cursor-pointer transition-transform transform-gpu hover:scale-125 '/>
                 </a>
             </div>
 

@@ -20,7 +20,7 @@ const RegistrationForm = React.lazy(() => import('./Components/RegistrationForm'
 const Home = React.lazy(() => import('./Components/Home'));
 const Navbar = React.lazy(() => import('./Components/Navbar'));
 const Footer = React.lazy(() => import('./Components/Common/Footer'));
-
+const UnderMaintenance = React.lazy(() => import('./Components/Common/UnderMaintenance'));
 
 const App = () => {
 
@@ -47,6 +47,7 @@ const App = () => {
                   
                 }
               /> */}
+              <Route exact path="/about" name="Page 500" element={<UnderMaintenance />} />
               <Route path="/" name="Home"
                 element={
                   <Home />

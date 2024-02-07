@@ -58,7 +58,14 @@ const ResponseModal = (props) => {
         {props?.footerMessage &&
           <div className="response-modal-footer">
             <div className='cursor-pointer'
-              onClick={() => props.handleFooterClick()}>
+              onClick={() => {
+                if (props?.usedPurpose === 'Success') {
+                  props.handleFooterClick();
+                }
+                else {
+                  props.setModalVisible(false);
+                }
+              }}>
               {props?.footerMessage}
             </div>
           </div>

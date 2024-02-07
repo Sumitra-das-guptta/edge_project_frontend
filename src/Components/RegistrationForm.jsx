@@ -202,7 +202,7 @@ const RegistrationForm = () => {
         linkedinProfile: "",
         projectRepository: "",
         freelancingProfile: "",
-        file: ""
+        file: null
 
 
     }
@@ -442,7 +442,6 @@ const RegistrationForm = () => {
     };
 
     const handleChangeAddress = (address, section, updatedValue) => {
-        debugger
         setValues({
             ...values,
             [address]: {
@@ -519,7 +518,8 @@ const RegistrationForm = () => {
 
 
                     {/* QUESTION 2 */}
-                    <div className='flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm'>
+                    <div 
+                    className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.candidateName && errors?.candidateName) ? 'bg-[#ff000014]' : ''}` }>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px", width: '50%' }} className='required'>
                             2. Trainee Name
                         </div>
@@ -561,7 +561,8 @@ const RegistrationForm = () => {
 
 
                     {/* QUESTION 3 */}
-                    <div className='flex flex-col sm:flex-row items-start sm:items-center bg-[#77889914] p-2.5 rounded-sm'>
+                    <div 
+                    className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.fatherName && errors?.fatherName) ? 'bg-[#ff000014]' : 'bg-[#77889914]'}`}>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px", width: '50%' }} className='required'>
                             2. Father's Name
                         </div>
@@ -602,7 +603,7 @@ const RegistrationForm = () => {
 
 
                     {/* QUESTION 4 */}
-                    <div className='flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm'>
+                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.motherName && errors?.motherName) ? 'bg-[#ff000014]' : ''}` }>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px", width: '50%' }} className='required'>
                             4. Mother's Name
                         </div>
@@ -643,7 +644,7 @@ const RegistrationForm = () => {
                     </div>
 
                     {/* QUESTION 5 */}
-                    <div className='flex flex-col sm:flex-row items-start sm:items-center bg-[#77889914] p-2.5 rounded-sm'>
+                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.gender && errors?.gender) ? 'bg-[#ff000014]' : 'bg-[#77889914]'}`}>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
                             className='required w-full sm:w-[50%] text-left'>
                             5. Gender
@@ -667,7 +668,7 @@ const RegistrationForm = () => {
                     </div>
 
                     {/* QUESTION 6 */}
-                    <div className='flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm'>
+                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.religion && errors?.religion) ? 'bg-[#ff000014]' : ''}` }>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
                             className='required w-full sm:w-[50%] text-left'>
                             6. Religion
@@ -691,7 +692,7 @@ const RegistrationForm = () => {
                     </div>
 
                     {/* QUESTION 7 */}
-                    <div className='flex flex-col sm:flex-row items-start sm:items-center bg-[#77889914] p-2.5 rounded-sm'>
+                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.birthDate && errors?.birthDate) ? 'bg-[#ff000014]' : 'bg-[#77889914]'}`}>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
                             className='required w-full sm:w-[50%] text-left'>
                             7. Date of Birth
@@ -733,7 +734,7 @@ const RegistrationForm = () => {
                     </div>
 
                     {/* QUESTION 8 */}
-                    <div className='flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm'>
+                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.nationality && errors?.nationality) ? 'bg-[#ff000014]' : ''}` }>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
                             className='required w-full sm:w-[50%] text-left'>
                             8. Nationality
@@ -775,7 +776,7 @@ const RegistrationForm = () => {
                     </div>
 
                     {/* QUESTION 9 */}
-                    <div className='flex flex-col sm:flex-row items-start sm:items-center bg-[#77889914] p-2.5 rounded-sm'>
+                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.identityNo && errors?.identityNo) ? 'bg-[#ff000014]' : 'bg-[#77889914]'}`}>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
                             className='required w-full sm:w-[50%] text-left'>
 
@@ -819,7 +820,7 @@ const RegistrationForm = () => {
                     </div>
 
                     {/* QUESTION 10 */}
-                    <div className='flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm'>
+                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.presentAddress && errors?.presentAddress) ? 'bg-[#ff000014]' : ''}` }>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
                             className='required w-full sm:w-[50%] text-left'>
                             10. Present Address
@@ -1004,7 +1005,8 @@ const RegistrationForm = () => {
                     </div>
 
                     {/* QUESTION 11 */}
-                    <div className='flex flex-col sm:flex-row items-start sm:items-center bg-[#77889914] p-2.5 rounded-sm'>
+                    <div 
+                    className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.permanentAddress && errors?.permanentAddress) ? 'bg-[#ff000014]' : 'bg-[#77889914]'}`}>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
                             className='required w-full sm:w-[50%] text-left'>
                             10. Permanent Address
@@ -1190,7 +1192,7 @@ const RegistrationForm = () => {
                     </div>
 
                     {/* QUESTION 12 */}
-                    <div className='flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm'>
+                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.mobileNumber && errors?.mobileNumber) ? 'bg-[#ff000014]' : ''}` }>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
                             className='required w-full sm:w-[50%] text-left'>
                             12. Mobile Number
@@ -1232,7 +1234,7 @@ const RegistrationForm = () => {
                     </div>
 
                     {/* QUESTION 13 */}
-                    <div className='flex flex-col sm:flex-row items-start sm:items-center bg-[#77889914] p-2.5 rounded-sm'>
+                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.gurdianMobileNumber && errors?.gurdianMobileNumber) ? 'bg-[#ff000014]' : 'bg-[#77889914]'}`}>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
                             className='required w-full sm:w-[50%] text-left'>
                             13. Gurdian's Mobile Number
@@ -1274,7 +1276,7 @@ const RegistrationForm = () => {
                     </div>
 
                     {/* QUESTION 14 */}
-                    <div className='flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm'>
+                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.email && errors?.email) ? 'bg-[#ff000014]' : ''}` }>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
                             className='required w-full sm:w-[50%] text-left'>
                             14. Email Address
@@ -1316,7 +1318,7 @@ const RegistrationForm = () => {
                     </div>
 
                     {/* QUESTION 15 */}
-                    <div className='flex flex-col sm:flex-row items-start sm:items-center bg-[#77889914] px-2.5 py-5 rounded-sm'>
+                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.universityName && errors?.universityName) ? 'bg-[#ff000014]' : 'bg-[#77889914]'}`}>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600' }}
                             className='required w-full sm:w-[50%] text-left'>
                             15.  University Name
@@ -1370,7 +1372,7 @@ const RegistrationForm = () => {
                     </div>
 
                     {/* QUESTION 16 */}
-                    <div className='flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm'>
+                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.departmentName && errors?.departmentName) ? 'bg-[#ff000014]' : ''}` }>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
                             className='required w-full sm:w-[50%] text-left'>
                             16. Name of Dept./Institute/Center
@@ -1412,7 +1414,7 @@ const RegistrationForm = () => {
                     </div>
 
                     {/* QUESTION 17 */}
-                    <div className='flex flex-col sm:flex-row items-start sm:items-center bg-[#77889914] p-2.5 rounded-sm'>
+                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.subject && errors?.subject) ? 'bg-[#ff000014]' : 'bg-[#77889914]'}`}>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
                             className='required w-full sm:w-[50%] text-left'>
                             17. Name of Subject/Diploma/Group
@@ -1454,7 +1456,7 @@ const RegistrationForm = () => {
                     </div>
 
                     {/* QUESTION 18 */}
-                    <div className='flex flex-col sm:flex-row items-start sm:items-center px-2.5 py-5 rounded-sm'>
+                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.levelOfEducation && errors?.levelOfEducation) ? 'bg-[#ff000014]' : ''}` }>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600' }}
                             className='required w-full sm:w-[50%] text-left'>
                             18. Level of Education
@@ -1508,7 +1510,7 @@ const RegistrationForm = () => {
                     </div>
 
                     {/* QUESTION 19 */}
-                    <div className='flex flex-col sm:flex-row items-start sm:items-center bg-[#77889914] p-2.5 rounded-sm'>
+                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.linkedinProfile && errors?.linkedinProfile) ? 'bg-[#ff000014]' : 'bg-[#77889914]'}`}>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
                             className='w-full sm:w-[50%] text-left'>
                             19.  Linkedin Profile Link
@@ -1550,7 +1552,7 @@ const RegistrationForm = () => {
                     </div>
 
                     {/* QUESTION 20 */}
-                    <div className='flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm'>
+                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.projectRepository && errors?.projectRepository) ? 'bg-[#ff000014]' : ''}` }>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
                             className='w-full sm:w-[50%] text-left'>
                             20.  Link of Project Repository
@@ -1592,7 +1594,7 @@ const RegistrationForm = () => {
                     </div>
 
                     {/* QUESTION 21 */}
-                    <div className='flex flex-col sm:flex-row items-start sm:items-center bg-[#77889914] p-2.5 rounded-sm'>
+                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.freelancingProfile && errors?.freelancingProfile) ? 'bg-[#ff000014]' : 'bg-[#77889914]'}`}>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
                             className='w-full sm:w-[50%] text-left'>
                             21.  Link of Freelancing Profile
@@ -1634,7 +1636,7 @@ const RegistrationForm = () => {
                     </div>
 
                     {/* QUESTION 22 */}
-                    <div className='flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm'>
+                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.file && errors?.file) ? 'bg-[#ff000014]' : ''}` }>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
                             className='required w-full sm:w-[50%] text-left'>
                             22.  Upload Picture
@@ -1720,7 +1722,7 @@ const RegistrationForm = () => {
 
                     {/* SUBMIT BUTTON */}
                     <div className='flex justify-end'>
-                        <div className='bg-[#1960cb] text-white px-8 py-2 rounded-sm cursor-pointer w-fit font-semibold transition-transform transform-gpu hover:scale-125'
+                        <div className='bg-[#1960cb] hover:bg-blue-900 text-white px-8 py-2 rounded cursor-pointer w-fit font-medium transition-transform transform-gpu active:scale-75' tabIndex={0}
                             onClick={() => handleSubmit()}>
                             Submit
                         </div>
