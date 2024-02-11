@@ -1,5 +1,6 @@
 import React from 'react'
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useEffect } from 'react';
 import Select from 'react-select';
 import { useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -50,10 +51,15 @@ const RegistrationForm = () => {
     let gender = ['Male', 'Female', 'Other'];
     let religion = ['Islam', 'Hinduism', 'Buddhism', 'Christanity'];
     let levelOfEducation = [
-        { value: 1, label: 'Secondary / Equivalent' },
-        { value: 2, label: 'Higher Secondary / Equivalent' },
-        { value: 3, label: 'Undergraduate' },
-        { value: 4, label: 'Post-Graduate' },
+        { value: 1, label: '1st Semester' },
+        { value: 2, label: '2nd Semester' },
+        { value: 3, label: '3rd Semester' },
+        { value: 4, label: '4th Semester' },
+        { value: 5, label: '5th Semester' },
+        { value: 6, label: '6th Semester' },
+        { value: 7, label: '7th Semester' },
+        { value: 8, label: '8th Semester' },
+
 
     ];
     let divisionList = [
@@ -402,6 +408,12 @@ const RegistrationForm = () => {
         },
     });
 
+    useEffect(() => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        })
+    }, []);
     const profileImageChange = (e) => {
         setValues({ ...values, file: e?.target?.files[0] });
         var reader = new FileReader();

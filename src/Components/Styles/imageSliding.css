@@ -12,14 +12,39 @@
     height: var(--img-height); */
     animation: rightToLeft 1s ease-out 1 forwards;
   }
+
+  .rightToLeftSliding {
+    /* object-fit: cover;
+    object-position: 100% 0;
+    width: 0;
+    height: var(--img-height); */
+    animation: rightToLeft 1s ease-out 1 forwards;
+  }
+
+  .leftToRightSliding {
+    /* object-fit: cover;
+    object-position: 100% 0;
+    width: 0;
+    height: var(--img-height); */
+    animation: slideRight 1s linear 1 forwards;
+  }
   
   @keyframes rightToLeft {
     from {
-        transform: translateX(100%);
+        transform: translateX(50%);
       }
       to {
         transform: translateX(0);
       }
+  }
+
+  @keyframes slideRight {
+    0% {
+      transform: translateX(-50%); /* Start off-screen left */
+    }
+    100% {
+      transform: translateX(0); /* Move to off-screen right */
+    }
   }
 
 
@@ -54,4 +79,16 @@
     --border-gradient-color-1: #ef4444;
     --border-gradient-color-2: #3b82f6;
     border-image: linear-gradient(to right, var(--border-gradient-color-1), var(--border-gradient-color-2)) 1;
+  }
+
+  .sliding-text {
+    white-space: nowrap; /* Prevent text from wrapping */
+    overflow: hidden; /* Hide overflow text */
+    height: 100%; /* Set height to 100% to ensure the animation covers the entire text */
+    transition: height 5s linear; /* Use a transition to gradually change the height */
+  }
+  
+  /* On hover, set the height to 0 to hide the text */
+  .sliding-text:hover {
+    height: 0;
   }

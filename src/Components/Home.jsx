@@ -27,7 +27,7 @@ const Home = () => {
         <div className='mx-[2%] sm:mx-[10%] mt-[14vh] mb-6'>
             <div className='flex flex-col-reverse sm:flex-row justify-between items-center'>
                 <div className='w-full sm:w-[60%]'>
-                    <div className='font-bold text-4xl bg-gradient-to-r from-red-500 to-blue-500 text-transparent bg-clip-text mb-3'>
+                    <div className='font-bold text-4xl bg-gradient-to-r from-red-500 to-blue-500 text-transparent bg-clip-text pb-3'>
                         Welcome to Enhancing Digital Government & Economy (EDGE) Project of Bangladesh
                     </div>
                     {/* <div className='font-bold text-2xl bg-gradient-to-r from-blue-100 to-blue-900 text-transparent bg-clip-text'>
@@ -52,7 +52,7 @@ const Home = () => {
             </div>
 
             <div className='imageSliding cursor-pointer text-white text-base px-8 py-3 rounded m-auto w-fit bg-gradient-to-r from-blue-500 to-[#191970]
-          hover:font-bold transition-transform transform-gpu active:scale-90'
+           ' tabIndex={0}
                 onClick={() => navigate('/register')}>
                 Apply Now
             </div>
