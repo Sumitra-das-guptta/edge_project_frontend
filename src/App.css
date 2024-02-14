@@ -1,4 +1,5 @@
 @import "./Components/Styles/NavbarStyles.css";
+@import "./Components/Styles/LoaderStyle.css";
 #root {
   /* max-width: 1280px; */
   margin: 0 auto;

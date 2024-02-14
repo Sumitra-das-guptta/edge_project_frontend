@@ -17,6 +17,7 @@ import DeleteIcon from "../assets/Icons/DeleteIcon.svg";
 import universityList from './Common/UniversityList';
 import { CreateApplicant } from './APIs/ApplicantCrudApis';
 import ResponseModal from './Common/ResponseModal';
+import Loader from './Common/Loader';
 const customError = {
     float: 'right',
     marginRight: "6px",
@@ -34,6 +35,7 @@ const RegistrationForm = () => {
     const navigate = useNavigate();
     const inputRef = useRef();
     const [responseModal, setResponseModal] = useState({ usedPurpose: '', visible: false, message: '', footerMessage: '' })
+    const [loaderVisible, setLoaderVisible] = useState(false);
     const [SUPPORTED_FORMATS, setSUPPORTED_FORMATS] = useState([
         "image/jpg",
         "image/jpeg",
@@ -382,9 +384,9 @@ const RegistrationForm = () => {
             formData.append("formdata", JSON.stringify(dataForSubmit));
             formData.append("image", inputFile?.imageFile);
 
-            // setShowLoader(true);
+            setLoaderVisible(true);
             CreateApplicant(formData).then((response) => {
-                //   setShowLoader(false);
+                setLoaderVisible(false);
                 if (response[0]) {
                     setResponseModal({
                         ...responseModal,
@@ -495,6 +497,9 @@ const RegistrationForm = () => {
                 <ResponseModal usedPurpose={responseModal?.usedPurpose} message={responseModal?.message} footerMessage={responseModal?.footerMessage} handleFooterClick={handleFooterClick}
                     setModalVisible={handleResponseModalVisibility}
                 />
+            }
+            {loaderVisible &&
+            <Loader usedPurpose={'WholePage'}/>
             }
             <div className='mx-[2%] sm:mx-[10%] mt-[14vh] mb-6 border-2 border-[#e5e7eb] p-5 rounded shadow-[0px_0px_9px_0px]'>
                 <img src={edge_header} alt='edge_heading' className='w-full' />
