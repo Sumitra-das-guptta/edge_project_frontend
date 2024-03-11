@@ -4,7 +4,7 @@ import axios from "axios";
 export const CreateApplicant = (formData) => {
 
     return (
-        axios.post(`http://127.0.0.1:8000/api/candidates`, formData, {
+        axios.post(`https://phpstack-1175179-4378849.cloudwaysapps.com/api/candidates`, formData, {
             headers: {
                 // 'Authorization': 'Bearer ' + token,
                 'Content-Type': 'multipart/form-data'
@@ -54,7 +54,7 @@ export const CreateOTPForLogIn = (email) => {
     let data = new FormData();
     data.append('email', email);
     return (
-        axios.post(`http://127.0.0.1:8000/api/request-otp`, data, {
+        axios.post(`https://phpstack-1175179-4378849.cloudwaysapps.com/api/request-otp`, data, {
             // headers: {
             //     // 'Authorization': 'Bearer ' + token,
             //     'Content-Type': 'application/json'
@@ -93,7 +93,7 @@ export const ValidateOTPForLogIn = (otp, email) => {
     data.append('otp', otp);
 
     return (
-        axios.post(`http://127.0.0.1:8000/api/verify-otp`, data, {
+        axios.post(`https://phpstack-1175179-4378849.cloudwaysapps.com/api/verify-otp`, data, {
             // headers: {
             //     // 'Authorization': 'Bearer ' + token,
             //     'Content-Type': 'application/json'
