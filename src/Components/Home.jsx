@@ -53,7 +53,7 @@ const Home = () => {
 
             <div className='imageSliding cursor-pointer text-white text-base px-8 py-3 rounded m-auto w-fit bg-gradient-to-r from-blue-500 to-[#191970]
            ' tabIndex={0}
-                onClick={() => navigate('/register')}>
+                onClick={() => navigate('/login')}>
                 Apply Now
             </div>
 

@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
-import DBLLogo from '../assets/Icons/DBLLogo.svg';
-import marketingTrackerIcon from '../assets/icons/marketingTrackerIcon.svg';
+import homeIcon from '../assets/Icons/homeIcon.svg';
+import aboutIcon from '../assets/Icons/aboutIcon.svg';
 import cuet_logo from '../assets/icons/CUET_Vector_logo.png';
 import edge_logo from '../assets/icons/edge_logo.png';
 import bcc_logo from '../assets/icons/Bangladesh_Computer_Council_Logo.svg.png';
@@ -10,13 +10,6 @@ import ict_division_logo from '../assets/icons/ict_division_logo.png';
 import sla_logo from '../assets/icons/smart_leadership_academy_logo.svg';
 import cross from '../assets/Icons/cross.svg';
 import ProfileImg from '../assets/Icons/DummyProfilePicture.svg';
-// import Profile from "../Common/Profile"
-// import { GetPersonalInfo } from '../../APIs/LoginAPIs';
-// import Server from '../../../Server';
-// import Inventory from '../../assets/Icons/Inventory.svg';
-// import Request from '../../assets/Icons/Request.svg';
-// import Job from '../../assets/Icons/Job.svg';
-// import ApprovalHistory from '../../assets/Icons/ApprovalHistory.svg';
 import Pencil from '../assets/Pencil.png';
 
 const styles = {
@@ -88,26 +81,11 @@ const Navbar = (props) => {
         }
 
     };
-
-    // useEffect(() => {
-    //     GetPersonalInfo().then((retailers) => {
-    //         if (retailers[0]) {
-    //             setUserDetails({ ...retailers[0] });
-    //             localStorage.setItem('userDetails', JSON.stringify(retailers[0]));
-    //         }
-    //     })
-
-    // }, []);
-
     useEffect(() => {
         if (currentPath.includes('register')) {
             setNavText('Registration Form');
         } else if (currentPath.includes('home')) {
             setNavText('Home')
-        } else if (currentPath.includes('job')) {
-            setNavText('Job')
-        } else if (currentPath.includes('approval')) {
-            setNavText('Approval History')
         }
         else {
             setNavText('Home');
@@ -136,12 +114,14 @@ const Navbar = (props) => {
                         {/* <img src={edge_logo} alt='DBL_Ceramics_Logo' className={toggle ? "sidebar logo" : "logo"} /> */}
                         {/* <img src={ict_division_logo} alt='DBL_Ceramics_Logo' className={toggle ? "sidebar logo" : "logo"} /> */}
                         {/* <img src={sla_logo} alt='DBL_Ceramics_Logo' className={toggle ? "sidebar logo" : "logo"} /> */}
-                        <div className={toggle ? "sidebar logo text-white  h-auto m-auto" : "logo text-white  h-auto m-auto"}>Chittagong University of Engineering & Technology</div>
+                        <div className={toggle ? "sidebar logo text-white h-auto m-auto" : "logo text-white h-auto m-auto font-bold text-lg"}>
+                        &nbsp;Institute of Information & Communication Technology (IICT), CUET
+                        </div>
 
                     </div>
 
 
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px' }}>
                         <nav
                             className={toggle ? "sidebar" : ""}
                         >
@@ -157,13 +137,6 @@ const Navbar = (props) => {
                                             About
                                         </NavLink>
                                     </li>
-                                    <li>
-                                        <NavLink to="/register">
-                                            Registration Form
-                                        </NavLink>
-                                    </li>
-
-
                                 </ul>
                                 :
                                 <div style={{ display: 'flex', flexDirection: 'column', width: '90%', margin: '15px auto', background: 'white' }}>
@@ -188,7 +161,7 @@ const Navbar = (props) => {
                                                 <NavLink to="/"
                                                     onClick={toggleSideBar}
                                                 >
-                                                    <img src={DBLLogo} style={{ width: "28px", height: "28px", marginRight: '10px' }} alt="Inventory" />
+                                                    <img src={homeIcon} style={{ width: "28px", height: "28px", marginRight: '10px' }} alt="Inventory" />
                                                     <span style={styles.navText}>
                                                         Home
                                                     </span>
@@ -200,60 +173,13 @@ const Navbar = (props) => {
                                                 <NavLink to="/about"
                                                     onClick={toggleSideBar}
                                                 >
-                                                    <img src={DBLLogo} style={{ width: "28px", height: "28px", marginRight: '10px' }} alt="Inventory" />
+                                                    <img src={aboutIcon} style={{ width: "28px", height: "28px", marginRight: '10px' }} alt="Inventory" />
                                                     <span style={styles.navText}>
                                                         About
                                                     </span>
 
                                                 </NavLink>
-                                            </li>
-                                            <li>
-                                                <NavLink to="/register"
-                                                    onClick={toggleSideBar}
-                                                >
-                                                    <img src={DBLLogo} style={{ width: "28px", height: "28px", marginRight: '10px' }} alt="Requests" />
-                                                    <span style={styles.navText}>
-                                                        Registration Form
-                                                    </span>
-                                                </NavLink>
-                                            </li>
-                                            {/* <li>
-                                            <NavLink to="/btl/jobs"
-                                                onClick={toggleSideBar}
-                                            >
-                                                <img src={DBLLogo} style={{ width: "28px", height: "28px", marginRight: '10px' }} alt="Jobs" />
-                                                <span style={styles.navText}>
-                                                    Jobs
-                                                </span>
-                                            </NavLink>
-                                        </li>
-                                        <li>
-                                            <NavLink to="/btl/approval_history"
-                                                onClick={toggleSideBar}
-                                            >
-                                                <img src={DBLLogo} style={{ width: "28px", height: "28px", marginRight: '10px' }} alt="history" />
-                                                <span style={styles.navText}>
-                                                    Approval History
-                                                </span>
-                                            </NavLink>
-                                        </li> */}
-
-                                            {/* <li>
-                                            <NavLink to="/login"
-                                                onClick={() => {
-                                                    toggleSideBar();
-                                                    window.location.reload();
-                                                }}
-                                                style={{ position: 'absolute', bottom: '20px', }}
-                                            >
-
-                                                <img src={DBLLogo} style={{ width: "28px", height: "28px", marginRight: '10px' }} alt="addRetailer" />
-                                                <span style={styles.navText}>
-                                                    Log Out
-                                                </span>
-
-                                            </NavLink>
-                                        </li> */}
+                                            </li>   
                                         </ul>
                                     </div>
 

@@ -9,6 +9,7 @@ import {
 
 
 
+
 // import LoaderDBL from './Components/Common/LoaderDBL';
 
 // const loading = (
@@ -22,9 +23,11 @@ const About = React.lazy(() => import('./Components/About'));
 const Navbar = React.lazy(() => import('./Components/Navbar'));
 const Footer = React.lazy(() => import('./Components/Common/Footer'));
 const UnderMaintenance = React.lazy(() => import('./Components/Common/UnderMaintenance'));
-
+const Login = React.lazy(() => import('./Components/Login'));
+const LoginVerification = React.lazy(() => import('./Components/LoginVerification'));
 const App = () => {
-
+  const localStorageData = localStorage?.userInfo ? JSON.parse(localStorage.getItem('userInfo')) : '';
+  const [userPrivilege, setUserPrivilege] = useState(localStorageData?.privilege ? localStorageData?.privilege : '');
 
   return (
     <HashRouter>
@@ -42,6 +45,8 @@ const App = () => {
             <Routes>
 
               {/* LOG IN */}
+              <Route path="/login" element={<Login />} />
+              <Route path="/loginVerification" element={<LoginVerification setUserPrivilege={setUserPrivilege} />} />
               {/* <Route path="/register" name="register"
                 element={
 
@@ -58,10 +63,18 @@ const App = () => {
                 }
               />
 
-              <Route path="/register" name="Home"
-                element={
-                  <RegistrationForm />
+              {localStorageData &&
+                <Route path="/register" name="Home"
+                  element={
+                    <RegistrationForm />
 
+                  }
+                />}
+
+              {/* ROUTES REDIRECTION TO LOGGED IN USER DASHBOARD */}
+              <Route path="/*"
+                element={
+                  <Navigate to='/' />
                 }
               />
 

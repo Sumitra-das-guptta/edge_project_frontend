@@ -10,7 +10,7 @@ const styles = {
     }
 }
 const About = () => {
-    const [isVisible, setIsVisible] = useState([]);
+    const [isVisible, setIsVisible] = useState(['section_1', 'section_2']);
     const handleClickCollapsibleSection = (updatedCollapsibleSectionValue) => {
         if (isVisible?.includes(updatedCollapsibleSectionValue)) {
             let dummy_array = isVisible?.filter(eachSection => eachSection !== updatedCollapsibleSectionValue);
@@ -34,7 +34,7 @@ const About = () => {
                     style={{ width: '20px', marginRight: '20px', rotate: isVisible?.includes('section_1') ? '' : '180deg' }} />
             </div>
             <div
-                className='text-sm font-medium p-2.5 bg-gradient-to-r from-gray-400 to-gray-900 text-transparent bg-clip-text text-left'
+                className='text-sm font-medium py-2.5 px-8 text-justify bg-gradient-to-r from-gray-400 to-gray-900 text-transparent bg-clip-text'
                 style={{ display: isVisible?.includes('section_1') ? 'block' : 'none' }}>
                 EDGE Project works on creating the enabling environment for digital government and
                 the digital economy.
@@ -67,11 +67,8 @@ const About = () => {
                 (BNDA) with the establishment of Digital Leadership Academy (DLA) and Center for 4IR and accelerating the
                 development of Smart Bangladesh by ensuring cyber security, providing cloud services and providing digital
                 literacy.
-                <br /><br />
-                <div className='font-bold text-lg text-slate-400'>Trainees will acquire skills in the following priority areas: </div>
-                (i) Understanding the job market, (ii) Developing a freelancing profile and learning how to bid, (iii) Real-life software
-                or project work, (iv) Effective business communication, (v) Professional workplace norms,
-                and (vi) Navigating online project repositories.
+                {/* <br /><br /> */}
+
             </div>
 
             <div
@@ -84,7 +81,7 @@ const About = () => {
             </div>
 
             <div
-                className='text-sm font-medium p-2.5 bg-gradient-to-r from-gray-400 to-gray-900 text-transparent bg-clip-text text-left'
+                className='text-sm font-medium py-2.5 px-8 text-justify bg-gradient-to-r from-gray-400 to-gray-900 text-transparent bg-clip-text'
                 style={{ display: isVisible?.includes('section_2') ? 'block' : 'none' }}>
                 Eligibility Criteria for Trainees:<br /><br />
                 1. For Foundation Skills Program: Candidates below 35 years of age who completed their higher secondary
@@ -105,7 +102,7 @@ const About = () => {
                     style={{ width: '20px', marginRight: '20px', rotate: isVisible?.includes('section_3') ? '' : '180deg' }} />
             </div>
 
-            <div className='text-sm font-medium p-2.5 bg-gradient-to-r from-gray-400 to-gray-900 text-transparent bg-clip-text text-left'
+            <div className='text-sm font-medium py-2.5 px-8 text-justify bg-gradient-to-r from-gray-400 to-gray-900 text-transparent bg-clip-text'
                 style={{ display: isVisible?.includes('section_3') ? 'block' : 'none' }}>
                 The IICT, CUET and Department of CSE, CUET combinedly will conduct midterm and final assessments. Upon successful completion of the program, and based on the final evaluation
                 (with at least an 60% score and 80% attendance), each participant will be jointly awarded a certificate by
@@ -131,7 +128,7 @@ const About = () => {
                     style={{ width: '20px', marginRight: '20px', rotate: isVisible?.includes('section_4') ? '' : '180deg' }} />
             </div>
 
-            <div className='text-sm font-medium p-2.5 bg-gradient-to-r from-gray-400 to-gray-900 text-transparent bg-clip-text text-left'
+            <div className='text-sm font-medium py-2.5 px-8 text-justify bg-gradient-to-r from-gray-400 to-gray-900 text-transparent bg-clip-text'
                 style={{ display: isVisible?.includes('section_4') ? 'block' : 'none' }}>
 
                 <div className='font-semibold text-lg text-slate-500'>Foundation Skills Program:</div>
@@ -142,6 +139,34 @@ const About = () => {
                 <div className='pl-3'>1. Front-End Developer (React) </div>
                 <div className='pl-3'>2. Linux </div>
                 <div className='pl-3'>3. PHP(Laravel)</div>
+            </div>
+
+            {/* COURSE FACILITIES */}
+            <div
+                className='rightToLeftSliding cursor-pointer font-bold text-4xl bg-gradient-to-r from-blue-400 to-[#191970] text-transparent bg-clip-text text-left flex justify-between mb-4'
+                style={styles?.collpasedSection}
+                onClick={() => handleClickCollapsibleSection('section_5')}>
+                <div>Course Facilities</div>
+                <img src={collapseUpIcon}
+                    style={{ width: '20px', marginRight: '20px', rotate: isVisible?.includes('section_5') ? '' : '180deg' }} />
+            </div>
+
+            <div className='text-sm font-medium py-2.5 px-8 text-justify bg-gradient-to-r from-gray-400 to-gray-900 text-transparent bg-clip-text'
+                style={{ display: isVisible?.includes('section_5') ? 'block' : 'none' }}>
+
+                <div className='font-bold text-lg text-slate-400'>Trainees will acquire skills in the following priority areas: </div>
+                (i) Understanding the job market, (ii) Developing a freelancing profile and learning how to bid, (iii) Real-life software
+                or project work, (iv) Effective business communication, (v) Professional workplace norms,
+                and (vi) Navigating online project repositories.
+
+                <br /><br />
+                <div className='font-bold text-lg text-slate-400 flex flex-col'>Benefits for the Students: </div>
+                <div>(i) After successful completion each trainee will be awarded a certificate</div>
+                <div>(ii) No training fee required (All expenses will be covered by the Project)</div>
+                <div>(iii) Training KIT (Printed Course Curriculum, Pen, pad, Bag, ID Card)</div>
+                <div>(iv) Regular refreshment (once in every 3 hrs session)</div>
+                <div>(v) Participate in Opening and closing ceremony</div>
+                <div>(vi) Trainer from Industry and academia.</div>
             </div>
         </div>
     )

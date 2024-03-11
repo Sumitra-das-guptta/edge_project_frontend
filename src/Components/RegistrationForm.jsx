@@ -33,6 +33,8 @@ const styles = {
 }
 const RegistrationForm = () => {
     const navigate = useNavigate();
+    // To Receive data sent using react router
+    const { state } = useLocation();
     const inputRef = useRef();
     const [responseModal, setResponseModal] = useState({ usedPurpose: '', visible: false, message: '', footerMessage: '' })
     const [loaderVisible, setLoaderVisible] = useState(false);
@@ -302,10 +304,10 @@ const RegistrationForm = () => {
                         return stringValue.length === 13;
                     }
                 ),
-            email: Yup.string()
-                .required("Email Address is required")
-                .email("Not a proper email")
-                .max(250, "Maximum 250 characters allowed"),
+            // email: Yup.string()
+            //     .required("Email Address is required")
+            //     .email("Not a proper email")
+            //     .max(250, "Maximum 250 characters allowed"),
             levelOfEducation: Yup.string()
                 .required("Level of Education is required"),
             subject: Yup.string()
@@ -343,69 +345,81 @@ const RegistrationForm = () => {
                 ),
         }),
         onSubmit: (values) => {
-            let dataForSubmit = {
-                courseName: values?.courseName,
-                "trainingOrganizerUniversity": values?.trainingOrganizerUniversity,
-                "organizerDeptOrInstituteOrCenter": values?.organizerDeptOrInstituteOrCenter,
-                "candidateName": values?.candidateName,
-                "fatherName": values?.fatherName,
-                "motherName": values?.motherName,
-                "gender": values?.gender,
-                "religion": values?.religion,
-                "birthDate": values?.birthDate,
-                "nationality": values?.nationality,
-                "presentAddressRoadNo": values?.presentAddress?.roadNo,
-                "presentAddressThanaName": values?.presentAddress?.thanaName,
-                "presentAddressDistrictName": districtList?.filter(eachDistrict => eachDistrict?.value === values?.presentAddress?.districtName)?.[0]?.label,
-                "presentAddressDivisionName": divisionList?.filter(eachDivision => eachDivision?.value === values?.presentAddress?.divisionName)?.[0]?.label,
-                "permanentAddressRoadNo": values?.permanentAddress?.roadNo,
-                "permanentAddressThanaName": values?.permanentAddress?.thanaName,
-                "permanentAddressDistrictName": districtList?.filter(eachDistrict => eachDistrict?.value === values?.permanentAddress?.districtName)?.[0]?.label,
-                "permanentAddressDivisionName": divisionList?.filter(eachDivision => eachDivision?.value === values?.permanentAddress?.divisionName)?.[0]?.label,
-                "mobileNumber": values?.mobileNumber,
-                "gurdianMobileNumber": values?.gurdianMobileNumber,
-                "levelOfEducation": values?.levelOfEducation,
-                "subjectName": values?.subject,
-                "universityName": universityList?.filter(eachUniversity => eachUniversity?.value === values?.universityName)?.[0]?.label,
-                "departmentName": values?.departmentName,
-                "trainingLocation": values?.trainingLocation,
-                "linkedinProfile": values?.linkedinProfile !== "" ? values?.linkedinProfile : null,
-                "projectRepository": values?.projectRepository !== "" ? values?.projectRepository : null,
-                "freelancingProfile": values?.freelancingProfile !== "" ? values?.freelancingProfile : null,
-                "email": values?.email,
-                "identityNo": values?.identityNo
-            };
+            if (state?.email) {
+                let dataForSubmit = {
+                    courseName: values?.courseName,
+                    "trainingOrganizerUniversity": values?.trainingOrganizerUniversity,
+                    "organizerDeptOrInstituteOrCenter": values?.organizerDeptOrInstituteOrCenter,
+                    "candidateName": values?.candidateName,
+                    "fatherName": values?.fatherName,
+                    "motherName": values?.motherName,
+                    "gender": values?.gender,
+                    "religion": values?.religion,
+                    "birthDate": values?.birthDate,
+                    "nationality": values?.nationality,
+                    "presentAddressRoadNo": values?.presentAddress?.roadNo,
+                    "presentAddressThanaName": values?.presentAddress?.thanaName,
+                    "presentAddressDistrictName": districtList?.filter(eachDistrict => eachDistrict?.value === values?.presentAddress?.districtName)?.[0]?.label,
+                    "presentAddressDivisionName": divisionList?.filter(eachDivision => eachDivision?.value === values?.presentAddress?.divisionName)?.[0]?.label,
+                    "permanentAddressRoadNo": values?.permanentAddress?.roadNo,
+                    "permanentAddressThanaName": values?.permanentAddress?.thanaName,
+                    "permanentAddressDistrictName": districtList?.filter(eachDistrict => eachDistrict?.value === values?.permanentAddress?.districtName)?.[0]?.label,
+                    "permanentAddressDivisionName": divisionList?.filter(eachDivision => eachDivision?.value === values?.permanentAddress?.divisionName)?.[0]?.label,
+                    "mobileNumber": values?.mobileNumber,
+                    "gurdianMobileNumber": values?.gurdianMobileNumber,
+                    "levelOfEducation": values?.levelOfEducation,
+                    "subjectName": values?.subject,
+                    "universityName": universityList?.filter(eachUniversity => eachUniversity?.value === values?.universityName)?.[0]?.label,
+                    "departmentName": values?.departmentName,
+                    "trainingLocation": values?.trainingLocation,
+                    "linkedinProfile": values?.linkedinProfile !== "" ? values?.linkedinProfile : null,
+                    "projectRepository": values?.projectRepository !== "" ? values?.projectRepository : null,
+                    "freelancingProfile": values?.freelancingProfile !== "" ? values?.freelancingProfile : null,
+                    "email": state?.email,
+                    "identityNo": values?.identityNo
+                };
 
-            let formData = new FormData();
-            // formData.append(
-            //     "formdata",
-            //     new Blob([JSON.stringify(dataForSubmit)], { type: "application/json" })
-            // );
-            formData.append("formdata", JSON.stringify(dataForSubmit));
-            formData.append("image", inputFile?.imageFile);
+                let formData = new FormData();
+                // formData.append(
+                //     "formdata",
+                //     new Blob([JSON.stringify(dataForSubmit)], { type: "application/json" })
+                // );
+                formData.append("formdata", JSON.stringify(dataForSubmit));
+                formData.append("image", inputFile?.imageFile);
 
-            setLoaderVisible(true);
-            CreateApplicant(formData).then((response) => {
-                setLoaderVisible(false);
-                if (response[0]) {
-                    setResponseModal({
-                        ...responseModal,
-                        visible: true,
-                        usedPurpose: 'Success',
-                        message: 'Successfully updated',
-                        footerMessage: 'Back'
-                    });
-                } else {
-                    // setError(createSalesManagerResponse[1]);
-                    setResponseModal({
-                        ...responseModal,
-                        visible: true,
-                        usedPurpose: 'Error',
-                        message: response[1],
-                        footerMessage: 'Close'
-                    });
-                }
-            });
+                setLoaderVisible(true);
+                CreateApplicant(formData).then((response) => {
+                    setLoaderVisible(false);
+                    if (response[0]) {
+                        setResponseModal({
+                            ...responseModal,
+                            visible: true,
+                            usedPurpose: 'Success',
+                            message: 'Successfully updated',
+                            footerMessage: 'Back'
+                        });
+                    } else {
+                        // setError(createSalesManagerResponse[1]);
+                        setResponseModal({
+                            ...responseModal,
+                            visible: true,
+                            usedPurpose: 'Error',
+                            message: response[1],
+                            footerMessage: 'Close'
+                        });
+                    }
+                });
+
+            }
+            else {
+                setResponseModal({
+                    ...responseModal,
+                    visible: true,
+                    usedPurpose: 'Error',
+                    message: 'Please Verify your email first',
+                    footerMessage: 'Close'
+                });
+            }
 
         },
     });
@@ -490,6 +504,7 @@ const RegistrationForm = () => {
             visible: visibleState
         })
     }
+    console.log(state, "print state..........")
     return (
         <>
             {/* RESPONSE MODAL */}
@@ -499,7 +514,7 @@ const RegistrationForm = () => {
                 />
             }
             {loaderVisible &&
-            <Loader usedPurpose={'WholePage'}/>
+                <Loader usedPurpose={'WholePage'} />
             }
             <div className='mx-[2%] sm:mx-[10%] mt-[14vh] mb-6 border-2 border-[#e5e7eb] p-5 rounded shadow-[0px_0px_9px_0px]'>
                 <img src={edge_header} alt='edge_heading' className='w-full' />
@@ -535,8 +550,8 @@ const RegistrationForm = () => {
 
 
                     {/* QUESTION 2 */}
-                    <div 
-                    className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.candidateName && errors?.candidateName) ? 'bg-[#ff000014]' : ''}` }>
+                    <div
+                        className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.candidateName && errors?.candidateName) ? 'bg-[#ff000014]' : ''}`}>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px", width: '50%' }} className='required'>
                             2. Trainee Name
                         </div>
@@ -578,8 +593,8 @@ const RegistrationForm = () => {
 
 
                     {/* QUESTION 3 */}
-                    <div 
-                    className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.fatherName && errors?.fatherName) ? 'bg-[#ff000014]' : 'bg-[#77889914]'}`}>
+                    <div
+                        className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.fatherName && errors?.fatherName) ? 'bg-[#ff000014]' : 'bg-[#77889914]'}`}>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px", width: '50%' }} className='required'>
                             2. Father's Name
                         </div>
@@ -620,7 +635,7 @@ const RegistrationForm = () => {
 
 
                     {/* QUESTION 4 */}
-                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.motherName && errors?.motherName) ? 'bg-[#ff000014]' : ''}` }>
+                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.motherName && errors?.motherName) ? 'bg-[#ff000014]' : ''}`}>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px", width: '50%' }} className='required'>
                             4. Mother's Name
                         </div>
@@ -685,7 +700,7 @@ const RegistrationForm = () => {
                     </div>
 
                     {/* QUESTION 6 */}
-                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.religion && errors?.religion) ? 'bg-[#ff000014]' : ''}` }>
+                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.religion && errors?.religion) ? 'bg-[#ff000014]' : ''}`}>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
                             className='required w-full sm:w-[50%] text-left'>
                             6. Religion
@@ -751,7 +766,7 @@ const RegistrationForm = () => {
                     </div>
 
                     {/* QUESTION 8 */}
-                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.nationality && errors?.nationality) ? 'bg-[#ff000014]' : ''}` }>
+                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.nationality && errors?.nationality) ? 'bg-[#ff000014]' : ''}`}>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
                             className='required w-full sm:w-[50%] text-left'>
                             8. Nationality
@@ -837,7 +852,7 @@ const RegistrationForm = () => {
                     </div>
 
                     {/* QUESTION 10 */}
-                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.presentAddress && errors?.presentAddress) ? 'bg-[#ff000014]' : ''}` }>
+                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.presentAddress && errors?.presentAddress) ? 'bg-[#ff000014]' : ''}`}>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
                             className='required w-full sm:w-[50%] text-left'>
                             10. Present Address
@@ -845,28 +860,28 @@ const RegistrationForm = () => {
                         {/* ANSWER INPUT SECTION 10 */}
                         <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
                             {/* ROAD NO/HOUSE NO */}
-                            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>     
-                            <div className='flex flex-col'>
-                                <div>
-                                    <input
-                                    type='text'
-                                    style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
-                                    className='focusClearanceFields'
-                                    value={values?.presentAddress?.roadNo}
-                                    placeholder="Write Road No/House No"
-                                    onChange={(e) => handleChangeAddress('presentAddress', 'roadNo', e.target.value)}
+                            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
+                                <div className='flex flex-col'>
+                                    <div>
+                                        <input
+                                            type='text'
+                                            style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
+                                            className='focusClearanceFields'
+                                            value={values?.presentAddress?.roadNo}
+                                            placeholder="Write Road No/House No"
+                                            onChange={(e) => handleChangeAddress('presentAddress', 'roadNo', e.target.value)}
 
-                                />
-                                <span style={{
-                                    float: "right",
-                                    marginLeft: '-20px',
-                                    position: "relative",
-                                    zIndex: 2,
-                                }}>
-                                    <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
-                                </span>
-                                </div>
-                                <span className='text-xs font-medium'>Road/House No</span>
+                                        />
+                                        <span style={{
+                                            float: "right",
+                                            marginLeft: '-20px',
+                                            position: "relative",
+                                            zIndex: 2,
+                                        }}>
+                                            <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
+                                        </span>
+                                    </div>
+                                    <span className='text-xs font-medium'>Road/House No</span>
                                 </div>
 
                                 {/* ERROR MESSAGE SHOWING TOOLTIP */}
@@ -885,27 +900,27 @@ const RegistrationForm = () => {
                             {/* Thana Name */}
                             <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
                                 <div className='flex flex-col'>
-                                <div>
-                                <input
-                                    type='text'
-                                    style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
-                                    className='focusClearanceFields'
-                                    value={values?.presentAddress?.thanaName}
-                                    placeholder="Write Thana Name"
-                                    onChange={(e) => handleChangeAddress('presentAddress', 'thanaName', e.target.value)}
+                                    <div>
+                                        <input
+                                            type='text'
+                                            style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
+                                            className='focusClearanceFields'
+                                            value={values?.presentAddress?.thanaName}
+                                            placeholder="Write Thana Name"
+                                            onChange={(e) => handleChangeAddress('presentAddress', 'thanaName', e.target.value)}
 
 
-                                />
-                                <span style={{
-                                    float: "right",
-                                    marginLeft: '-20px',
-                                    position: "relative",
-                                    zIndex: 2,
-                                }}>
-                                    <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
-                                </span>
-                                </div>
-                                <span className='text-xs font-medium'>Thana</span>
+                                        />
+                                        <span style={{
+                                            float: "right",
+                                            marginLeft: '-20px',
+                                            position: "relative",
+                                            zIndex: 2,
+                                        }}>
+                                            <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
+                                        </span>
+                                    </div>
+                                    <span className='text-xs font-medium'>Thana</span>
                                 </div>
                                 {/* ERROR MESSAGE SHOWING TOOLTIP */}
                                 {touched?.presentAddress && touched?.presentAddress?.thanaName
@@ -1022,8 +1037,8 @@ const RegistrationForm = () => {
                     </div>
 
                     {/* QUESTION 11 */}
-                    <div 
-                    className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.permanentAddress && errors?.permanentAddress) ? 'bg-[#ff000014]' : 'bg-[#77889914]'}`}>
+                    <div
+                        className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.permanentAddress && errors?.permanentAddress) ? 'bg-[#ff000014]' : 'bg-[#77889914]'}`}>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
                             className='required w-full sm:w-[50%] text-left'>
                             10. Permanent Address
@@ -1033,29 +1048,29 @@ const RegistrationForm = () => {
                             {/* ROAD NO/HOUSE NO */}
                             <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
                                 <div className='flex flex-col'>
-                                <div>
-                                <input
-                                    type='text'
-                                    style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
-                                    className='focusClearanceFields'
-                                    value={values?.permanentAddress?.roadNo}
-                                    placeholder="Write Road No/House No"
-                                    onChange={(e) => handleChangeAddress('permanentAddress', 'roadNo', e.target.value)}
+                                    <div>
+                                        <input
+                                            type='text'
+                                            style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
+                                            className='focusClearanceFields'
+                                            value={values?.permanentAddress?.roadNo}
+                                            placeholder="Write Road No/House No"
+                                            onChange={(e) => handleChangeAddress('permanentAddress', 'roadNo', e.target.value)}
 
-                                />
-                                <span style={{
-                                    float: "right",
-                                    marginLeft: '-20px',
-                                    position: "relative",
-                                    zIndex: 2,
-                                }}>
-                                    <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
-                                </span>
+                                        />
+                                        <span style={{
+                                            float: "right",
+                                            marginLeft: '-20px',
+                                            position: "relative",
+                                            zIndex: 2,
+                                        }}>
+                                            <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
+                                        </span>
+                                    </div>
+                                    <span className='text-xs font-medium'>Road/House No</span>
                                 </div>
-                                <span className='text-xs font-medium'>Road/House No</span>
-                                </div>
-                                
-                                
+
+
 
                                 {/* ERROR MESSAGE SHOWING TOOLTIP */}
                                 {touched?.permanentAddress && touched?.permanentAddress?.roadNo
@@ -1072,28 +1087,28 @@ const RegistrationForm = () => {
                             </div>
                             {/* Thana Name */}
                             <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
-                            <div className='flex flex-col'>
-                                <div>
-                                <input
-                                    type='text'
-                                    style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
-                                    className='focusClearanceFields'
-                                    value={values?.permanentAddress?.thanaName}
-                                    placeholder="Write Thana Name"
-                                    onChange={(e) => handleChangeAddress('permanentAddress', 'thanaName', e.target.value)}
+                                <div className='flex flex-col'>
+                                    <div>
+                                        <input
+                                            type='text'
+                                            style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
+                                            className='focusClearanceFields'
+                                            value={values?.permanentAddress?.thanaName}
+                                            placeholder="Write Thana Name"
+                                            onChange={(e) => handleChangeAddress('permanentAddress', 'thanaName', e.target.value)}
 
 
-                                />
-                                <span style={{
-                                    float: "right",
-                                    marginLeft: '-20px',
-                                    position: "relative",
-                                    zIndex: 2,
-                                }}>
-                                    <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
-                                </span>
-                                </div>
-                                <span className='text-xs font-medium'>Thana</span>
+                                        />
+                                        <span style={{
+                                            float: "right",
+                                            marginLeft: '-20px',
+                                            position: "relative",
+                                            zIndex: 2,
+                                        }}>
+                                            <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
+                                        </span>
+                                    </div>
+                                    <span className='text-xs font-medium'>Thana</span>
                                 </div>
                                 {/* ERROR MESSAGE SHOWING TOOLTIP */}
                                 {touched?.permanentAddress && touched?.permanentAddress?.thanaName
@@ -1209,7 +1224,7 @@ const RegistrationForm = () => {
                     </div>
 
                     {/* QUESTION 12 */}
-                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.mobileNumber && errors?.mobileNumber) ? 'bg-[#ff000014]' : ''}` }>
+                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.mobileNumber && errors?.mobileNumber) ? 'bg-[#ff000014]' : ''}`}>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
                             className='required w-full sm:w-[50%] text-left'>
                             12. Mobile Number
@@ -1293,12 +1308,11 @@ const RegistrationForm = () => {
                     </div>
 
                     {/* QUESTION 14 */}
-                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.email && errors?.email) ? 'bg-[#ff000014]' : ''}` }>
+                    {/* <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.email && errors?.email) ? 'bg-[#ff000014]' : ''}`}>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
                             className='required w-full sm:w-[50%] text-left'>
                             14. Email Address
                         </div>
-                        {/* ANSWER INPUT SECTION 14 */}
                         <div style={{ marginBottom: '20px' }}>
                             <div style={{ display: 'flex', alignItems: 'center' }}>
                                 <input
@@ -1319,7 +1333,7 @@ const RegistrationForm = () => {
                                     <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
                                 </span>
 
-                                {/* ERROR MESSAGE SHOWING TOOLTIP */}
+                                
                                 {touched?.email && errors?.email
                                     &&
                                     <span style={{ ...customError, marginTop: '-8px' }}>
@@ -1332,7 +1346,7 @@ const RegistrationForm = () => {
                                 }
                             </div>
                         </div>
-                    </div>
+                    </div> */}
 
                     {/* QUESTION 15 */}
                     <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.universityName && errors?.universityName) ? 'bg-[#ff000014]' : 'bg-[#77889914]'}`}>
@@ -1389,7 +1403,7 @@ const RegistrationForm = () => {
                     </div>
 
                     {/* QUESTION 16 */}
-                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.departmentName && errors?.departmentName) ? 'bg-[#ff000014]' : ''}` }>
+                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.departmentName && errors?.departmentName) ? 'bg-[#ff000014]' : ''}`}>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
                             className='required w-full sm:w-[50%] text-left'>
                             16. Name of Dept./Institute/Center
@@ -1473,7 +1487,7 @@ const RegistrationForm = () => {
                     </div>
 
                     {/* QUESTION 18 */}
-                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.levelOfEducation && errors?.levelOfEducation) ? 'bg-[#ff000014]' : ''}` }>
+                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.levelOfEducation && errors?.levelOfEducation) ? 'bg-[#ff000014]' : ''}`}>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600' }}
                             className='required w-full sm:w-[50%] text-left'>
                             18. Level of Education
@@ -1569,7 +1583,7 @@ const RegistrationForm = () => {
                     </div>
 
                     {/* QUESTION 20 */}
-                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.projectRepository && errors?.projectRepository) ? 'bg-[#ff000014]' : ''}` }>
+                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.projectRepository && errors?.projectRepository) ? 'bg-[#ff000014]' : ''}`}>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
                             className='w-full sm:w-[50%] text-left'>
                             20.  Link of Project Repository
@@ -1653,7 +1667,7 @@ const RegistrationForm = () => {
                     </div>
 
                     {/* QUESTION 22 */}
-                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.file && errors?.file) ? 'bg-[#ff000014]' : ''}` }>
+                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.file && errors?.file) ? 'bg-[#ff000014]' : ''}`}>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
                             className='required w-full sm:w-[50%] text-left'>
                             22.  Upload Picture

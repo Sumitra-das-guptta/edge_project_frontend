@@ -46,7 +46,7 @@ const ResponseModal = (props) => {
         }}>
           <span className="text-xl font-normal float-right text-black hover:text-red-600 hover:font-bold hover:cursor-pointer" onClick={() => props.setModalVisible(false)}>&times;</span>
           <div className='m-[15px] text-center' >
-            {props?.usedPurpose}
+            {props?.usedPurpose === 'Error' ? 'Failed!' : props?.usedPurpose}
           </div>
         </div>
 
