@@ -45,13 +45,39 @@ const RegistrationForm = () => {
         "image/png",
         "image/bmp",
     ]);
+    const minYear = moment().subtract(35, 'year');
     // FILE SIZE VALIDATION
     const [SUPPORTED_SIZE, setSUPPORTED_SIZE] = useState(10 * 1000000);
-    let courseName = [
-        'Frontend Development',
-        'Backend Development',
-        'Networking'
-    ]
+    let courseList = [
+        { value: 1, label: 'Basic networking' },
+        { value: 2, label: 'Hardware Maintenance' },
+        { value: 3, label: 'CNC & 3D Printing for Industrial Automation' },
+        { value: 4, label: 'Environmental Experience Design (EXD)' },
+        { value: 5, label: 'Industrial Automation' },
+        { value: 6, label: 'Graphics design' },
+        { value: 7, label: 'Microsoft word & excel' },
+        { value: 8, label: 'Microsoft Word & PowerPoint' },
+        { value: 9, label: 'Basic Web Development' },
+        { value: 10, label: 'Basic programming with Python' },
+        { value: 11, label: 'Video Production and Editing' },
+        { value: 12, label: 'Embark on DevOps' },
+        { value: 13, label: 'Software Aided Civil Engineering Design and Analysis' },
+        { value: 14, label: 'Computer Aided Engineering Design' },
+        { value: 15, label: 'Engineering Design and Analysis with MATLAB' },
+        { value: 16, label: 'Digital Design for Industrial Control' },
+        { value: 17, label: 'Power System Operation and Service Design' },
+        { value: 18, label: 'GIS and its Application' },
+        { value: 19, label: 'Remote Sensing and its Application' },
+        { value: 20, label: 'Data Analytics in Oil, Gas and Energy Industry' },
+        { value: 21, label: 'Mobile app development (Android/ Flutter/ IOS)' },
+        { value: 22, label: 'Front-End Developer (React / NodeJS / VueJS/ Angular JS)' },
+        { value: 23, label: 'Java (any popular framework)' },
+        { value: 24, label: 'PHP (Laravel)' },
+        { value: 25, label: 'Python (Dijango)' }
+    ];
+    ;
+    
+    let subjectList = [{value: 1, label: 'BSC'}, {value: 2, label: 'MSC'}];
     let gender = ['Male', 'Female', 'Other'];
     let religion = ['Islam', 'Hinduism', 'Buddhism', 'Christanity'];
     let levelOfEducation = [
@@ -178,7 +204,7 @@ const RegistrationForm = () => {
     }
 
     const formData = {
-        courseName: 'Frontend Development',
+        courseName: '',
         trainingOrganizerUniversity: 'CUET',
         organizerDeptOrInstituteOrCenter: 'IICT',
         candidateName: "",
@@ -250,7 +276,7 @@ const RegistrationForm = () => {
                 .required("Gender is required"),
             religion: Yup.string()
                 .required("Religion is required"),
-            birthDate: Yup.date()
+            birthDate: Yup.date().min(minYear, 'Must be lower than 35 years')
                 .required("Date of bith is required"),
             nationality: Yup.string()
                 .required("Nationality is required"),
@@ -347,7 +373,7 @@ const RegistrationForm = () => {
         onSubmit: (values) => {
             if (state?.email) {
                 let dataForSubmit = {
-                    courseName: values?.courseName,
+                    courseName: courseList?.filter(eachCourse => eachCourse?.value === values?.courseName)?.[0]?.label,
                     "trainingOrganizerUniversity": values?.trainingOrganizerUniversity,
                     "organizerDeptOrInstituteOrCenter": values?.organizerDeptOrInstituteOrCenter,
                     "candidateName": values?.candidateName,
@@ -368,7 +394,7 @@ const RegistrationForm = () => {
                     "mobileNumber": values?.mobileNumber,
                     "gurdianMobileNumber": values?.gurdianMobileNumber,
                     "levelOfEducation": values?.levelOfEducation,
-                    "subjectName": values?.subject,
+                    "subjectName": subjectList?.filter(eachSubject => eachSubject?.value === values?.subject)?.[0]?.label,
                     "universityName": universityList?.filter(eachUniversity => eachUniversity?.value === values?.universityName)?.[0]?.label,
                     "departmentName": values?.departmentName,
                     "trainingLocation": values?.trainingLocation,
@@ -504,7 +530,7 @@ const RegistrationForm = () => {
             visible: visibleState
         })
     }
-    console.log(state, "print state..........")
+    console.log(formData, "print state..........")
     return (
         <>
             {/* RESPONSE MODAL */}
@@ -525,29 +551,41 @@ const RegistrationForm = () => {
                 {/* Registration form questions */}
                 <div style={{ display: 'flex', flexDirection: 'column', marginTop: '20px' }}>
                     {/* QUESTION 1 */}
-                    <div className='flex flex-col sm:flex-row items-start sm:items-center bg-[#77889914] p-2.5 rounded-sm'>
-                        <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
+                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.universityName && errors?.universityName) ? 'bg-[#ff000014]' : 'bg-[#77889914]'}`}>
+                        <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600' }}
                             className='required w-full sm:w-[50%] text-left'>
-                            1. Choose  preferred course
+                            1.  Choose preferred course
                         </div>
                         {/* ANSWER INPUT SECTION 1 */}
-                        <div style={{ marginBottom: '20px' }}>
-                            {
-                                courseName.map((eachCourse, index) => (
-                                    <div className='flex items-center'>
-                                        <input
-                                            type='radio'
-                                            checked={values?.courseName === eachCourse}
-                                            style={{ width: '17px', height: '17px' }}
-                                            onChange={() => { handleChangeValue('courseName', eachCourse) }}
+                        <div style={{}}>
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <Select
+                                    className='did-floating-select w-[200px]'
+                                    placeholder='Select Course Name'
+                                    name='type'
+                                    options={courseList}
+                                    value={(courseList?.filter(item => item?.value === values?.courseName))}
+                                    onChange={e => {
+                                        handleChangeValue("courseName", e?.value)
+                                    }}
+                                    menuPortalTarget={document.body}
+                                    styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
+                                />
+
+                                {/* ERROR MESSAGE SHOWING TOOLTIP */}
+                                {touched?.courseName && errors?.courseName
+                                    &&
+                                    <span style={{ ...customError, marginTop: '-8px' }}>
+                                        <ErrorTooltip
+                                            content={errors?.courseName}
+                                            origin={'courseName'}
+                                            placement="right"
                                         />
-                                        <div className='pl-4 text-sm'>{eachCourse}</div>
-                                    </div>
-                                ))
-                            }
+                                    </span>
+                                }
+                            </div>
                         </div>
                     </div>
-
 
                     {/* QUESTION 2 */}
                     <div
@@ -596,7 +634,7 @@ const RegistrationForm = () => {
                     <div
                         className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.fatherName && errors?.fatherName) ? 'bg-[#ff000014]' : 'bg-[#77889914]'}`}>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px", width: '50%' }} className='required'>
-                            2. Father's Name
+                            3. Father's Name
                         </div>
                         {/* ANSWER INPUT SECTION 3 */}
                         <div style={{ marginBottom: '20px' }}>
@@ -1041,7 +1079,7 @@ const RegistrationForm = () => {
                         className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.permanentAddress && errors?.permanentAddress) ? 'bg-[#ff000014]' : 'bg-[#77889914]'}`}>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
                             className='required w-full sm:w-[50%] text-left'>
-                            10. Permanent Address
+                            11. Permanent Address
                         </div>
                         {/* ANSWER INPUT SECTION 10 */}
                         <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
@@ -1349,31 +1387,14 @@ const RegistrationForm = () => {
                     </div> */}
 
                     {/* QUESTION 15 */}
-                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.universityName && errors?.universityName) ? 'bg-[#ff000014]' : 'bg-[#77889914]'}`}>
+                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.universityName && errors?.universityName) ? 'bg-[#ff000014]' : ''}`}>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600' }}
                             className='required w-full sm:w-[50%] text-left'>
-                            15.  University Name
+                            14.  University Name
                         </div>
                         {/* ANSWER INPUT SECTION 15 */}
                         <div style={{}}>
                             <div style={{ display: 'flex', alignItems: 'center' }}>
-                                {/* <input
-                                type='text'
-                                style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
-                                className='focusClearanceFields'
-                                value={values?.universityName}
-                                placeholder="Write University Name"
-                                onChange={(e) => handleChangeValue('universityName', e.target.value)}
-
-                            />
-                            <span style={{
-                                float: "right",
-                                marginLeft: '-20px',
-                                position: "relative",
-                                zIndex: 2,
-                            }}>
-                                <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
-                            </span> */}
                                 <Select
                                     className='did-floating-select w-[200px]'
                                     placeholder='Select University Name'
@@ -1403,10 +1424,10 @@ const RegistrationForm = () => {
                     </div>
 
                     {/* QUESTION 16 */}
-                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.departmentName && errors?.departmentName) ? 'bg-[#ff000014]' : ''}`}>
+                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.departmentName && errors?.departmentName) ? 'bg-[#ff000014]' : 'bg-[#77889914]'}`}>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
                             className='required w-full sm:w-[50%] text-left'>
-                            16. Name of Dept./Institute/Center
+                            15. Name of Dept./Institute/Center
                         </div>
                         {/* ANSWER INPUT SECTION 16 */}
                         <div style={{ marginBottom: '20px' }}>
@@ -1445,20 +1466,20 @@ const RegistrationForm = () => {
                     </div>
 
                     {/* QUESTION 17 */}
-                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.subject && errors?.subject) ? 'bg-[#ff000014]' : 'bg-[#77889914]'}`}>
+                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.subject && errors?.subject) ? 'bg-[#ff000014]' : ''}`}>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
                             className='required w-full sm:w-[50%] text-left'>
-                            17. Name of Subject/Diploma/Group
+                            16. Name of Subject/Diploma/Group
                         </div>
                         {/* ANSWER INPUT SECTION 17 */}
                         <div style={{ marginBottom: '20px' }}>
                             <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <input
+                                {/* <input
                                     type='text'
                                     style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
                                     className='focusClearanceFields'
                                     value={values?.subject}
-                                    placeholder="Write  Subject/Diploma/Group Name"
+                                    placeholder="Write Subject/Diploma/Group Name"
                                     onChange={(e) => handleChangeValue('subject', e.target.value)}
 
                                 />
@@ -1469,8 +1490,19 @@ const RegistrationForm = () => {
                                     zIndex: 2,
                                 }}>
                                     <img src={Pencil} alt='pencil' style={{ height: '15px', width: '15px' }} />
-                                </span>
-
+                                </span> */}
+                                <Select
+                                    className='did-floating-select w-[200px]'
+                                    placeholder='Select Subject'
+                                    name='type'
+                                    options={subjectList}
+                                    value={(subjectList?.filter(item => item?.value === values?.subject))}
+                                    onChange={e => {
+                                        handleChangeValue("subject", e?.value)
+                                    }}
+                                    menuPortalTarget={document.body}
+                                    styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
+                                />
                                 {/* ERROR MESSAGE SHOWING TOOLTIP */}
                                 {touched?.subject && errors?.subject
                                     &&
@@ -1487,10 +1519,10 @@ const RegistrationForm = () => {
                     </div>
 
                     {/* QUESTION 18 */}
-                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.levelOfEducation && errors?.levelOfEducation) ? 'bg-[#ff000014]' : ''}`}>
+                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.levelOfEducation && errors?.levelOfEducation) ? 'bg-[#ff000014]' : 'bg-[#77889914]'}`}>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600' }}
                             className='required w-full sm:w-[50%] text-left'>
-                            18. Level of Education
+                            17. Level of Education
                         </div>
                         {/* ANSWER INPUT SECTION 15 */}
                         <div style={{}}>
@@ -1541,10 +1573,10 @@ const RegistrationForm = () => {
                     </div>
 
                     {/* QUESTION 19 */}
-                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.linkedinProfile && errors?.linkedinProfile) ? 'bg-[#ff000014]' : 'bg-[#77889914]'}`}>
+                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.linkedinProfile && errors?.linkedinProfile) ? 'bg-[#ff000014]' : ''}`}>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
                             className='w-full sm:w-[50%] text-left'>
-                            19.  Linkedin Profile Link
+                            18.  Linkedin Profile Link
                         </div>
                         {/* ANSWER INPUT SECTION 19 */}
                         <div style={{ marginBottom: '20px' }}>
@@ -1583,10 +1615,10 @@ const RegistrationForm = () => {
                     </div>
 
                     {/* QUESTION 20 */}
-                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.projectRepository && errors?.projectRepository) ? 'bg-[#ff000014]' : ''}`}>
+                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.projectRepository && errors?.projectRepository) ? 'bg-[#ff000014]' : 'bg-[#77889914]'}`}>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
                             className='w-full sm:w-[50%] text-left'>
-                            20.  Link of Project Repository
+                            19.  Link of Project Repository
                         </div>
                         {/* ANSWER INPUT SECTION 20 */}
                         <div style={{ marginBottom: '20px' }}>
@@ -1625,10 +1657,10 @@ const RegistrationForm = () => {
                     </div>
 
                     {/* QUESTION 21 */}
-                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.freelancingProfile && errors?.freelancingProfile) ? 'bg-[#ff000014]' : 'bg-[#77889914]'}`}>
+                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.freelancingProfile && errors?.freelancingProfile) ? 'bg-[#ff000014]' : ''}`}>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
                             className='w-full sm:w-[50%] text-left'>
-                            21.  Link of Freelancing Profile
+                            20.  Link of Freelancing Profile
                         </div>
                         {/* ANSWER INPUT SECTION 21 */}
                         <div style={{ marginBottom: '20px' }}>
@@ -1667,10 +1699,10 @@ const RegistrationForm = () => {
                     </div>
 
                     {/* QUESTION 22 */}
-                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.file && errors?.file) ? 'bg-[#ff000014]' : ''}`}>
+                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.file && errors?.file) ? 'bg-[#ff000014]' : 'bg-[#77889914]'}`}>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
                             className='required w-full sm:w-[50%] text-left'>
-                            22.  Upload Picture
+                            21.  Upload Picture
                         </div>
                         {/* ANSWER INPUT SECTION 22 */}
                         <div style={{ marginBottom: '20px' }} className='flex justify-between w-full sm:w-1/2'>
