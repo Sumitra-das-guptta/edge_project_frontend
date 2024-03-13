@@ -421,7 +421,7 @@ const RegistrationForm = () => {
                             ...responseModal,
                             visible: true,
                             usedPurpose: 'Success',
-                            message: 'Successfully updated',
+                            message: 'Registration Completed Successfully',
                             footerMessage: 'Back'
                         });
                     } else {
@@ -530,7 +530,7 @@ const RegistrationForm = () => {
             visible: visibleState
         })
     }
-    console.log(formData, "print state..........")
+
     return (
         <>
             {/* RESPONSE MODAL */}
