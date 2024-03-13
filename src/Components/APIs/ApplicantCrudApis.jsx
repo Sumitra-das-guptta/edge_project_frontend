@@ -66,7 +66,7 @@ export const CreateOTPForLogIn = (email) => {
             })
             .catch(err => {
                 console.log(err);
-                if (err.response) {debugger
+                if (err.response) {
                     // Request made and server responded
                     if (err?.response?.status === 500) {
                         return ([false, 'Something went wrong!'])

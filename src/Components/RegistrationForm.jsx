@@ -542,7 +542,7 @@ const RegistrationForm = () => {
             {loaderVisible &&
                 <Loader usedPurpose={'WholePage'} />
             }
-            <div className='mx-[2%] sm:mx-[10%] mt-[14vh] mb-6 border-2 border-[#e5e7eb] p-5 rounded shadow-[0px_0px_9px_0px]'>
+            <div className='mx-[2%] sm:mx-[10%] mt-[13vh] mb-6 border-2 border-[#e5e7eb] p-5 rounded shadow-[0px_0px_9px_0px]'>
                 <img src={edge_header} alt='edge_heading' className='w-full' />
                 <div style={{ fontSize: '20px', fontWeight: '600' }}>Enhancing Digital Government & Economy (EDGE) Project</div>
                 <div style={{ fontSize: '14px' }}>Digital Skills Training initiative for students, a premier
