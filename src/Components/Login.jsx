@@ -66,19 +66,19 @@ const styles = {
 const Login = () => {
 
     const navigate = useNavigate();
-    const [phone, setPhone] = useState("");
+    const [email, setEmail] = useState("");
     const [error, setError] = useState();
     const [showLoader, setShowLoader] = useState(false);
 
 
 
     const generateOTP = () => {
-        if (phone) {
+        if (email) {
             setShowLoader(true);
-            CreateOTPForLogIn(phone).then(response => {
+            CreateOTPForLogIn(email).then(response => {
                 setShowLoader(false);
                 if (response[0]) {
-                    navigate('/loginVerification', { state: { phone: phone } });
+                    navigate('/loginVerification', { state: { email: email } });
                 }
                 else {
                     setError(response[1] ? response[1] : 'An Unexpected Error Occurred.');
@@ -119,7 +119,7 @@ const Login = () => {
                 {/* Registration form questions */}
                 <div style={{ display: 'flex', flexDirection: 'column', marginTop: '20px' }}>
                     <div style={styles.logIn}>
-                        Email Verifcation
+                        Email Verification
                     </div>
 
                     <div style={styles.normalText}>
@@ -134,9 +134,9 @@ const Login = () => {
                                 type='text'
                                 style={{ maxWidth: '250px', width: '-webkit-fill-available', background: 'transparent', border: 'none', borderBottom: '1px solid #BDBDBD', fontWeight: '600', fontSize: '14px', color: 'black', marginLeft: '10px', paddingBottom: '8px', paddingRight: '20px' }}
                                 className='focusClearanceFields'
-                                value={phone}
+                                value={email}
                                 placeholder="Write email address"
-                                onChange={(e) => setPhone(e.target.value)}
+                                onChange={(e) => setEmail(e.target.value)}
 
                             />
                             <span style={{
@@ -158,7 +158,7 @@ const Login = () => {
                     {error && <span style={{ color: 'red' }}>{error}</span>}
 
                     <div
-                        style={{ ...styles.buttonStyle, background: phone ? '#2A3C50' : '#BDBDBD', marginTop: '30px' }}
+                        style={{ ...styles.buttonStyle, background: email ? '#2A3C50' : '#BDBDBD', marginTop: '30px' }}
                         onClick={generateOTP}
                     >
                         Next

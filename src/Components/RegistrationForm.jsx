@@ -7,8 +7,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import edge_header from '../assets/newEdgeHeader.jpg';
 import Pencil from '../assets/Pencil.png';
 import uploadFileIcon from '../assets/icons/uploadFileIcon.svg';
-import FileTypeSpecificIcon from './Common/FileTypeSpecificIconView';
-import cancelIcon from '../assets/icons/cancelIcon.svg';
 import ErrorTooltip from './Common/ErrorTooltip';
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -26,11 +24,6 @@ const customError = {
     zIndex: '2',
     color: 'red'
 };
-const styles = {
-    question: {
-
-    }
-}
 const RegistrationForm = () => {
     const navigate = useNavigate();
     // To Receive data sent using react router
@@ -48,36 +41,8 @@ const RegistrationForm = () => {
     const minYear = moment().subtract(35, 'year');
     // FILE SIZE VALIDATION
     const [SUPPORTED_SIZE, setSUPPORTED_SIZE] = useState(10 * 1000000);
-    let courseList = [
-        { value: 1, label: 'Basic networking' },
-        { value: 2, label: 'Hardware Maintenance' },
-        { value: 3, label: 'CNC & 3D Printing for Industrial Automation' },
-        { value: 4, label: 'Environmental Experience Design (EXD)' },
-        { value: 5, label: 'Industrial Automation' },
-        { value: 6, label: 'Graphics design' },
-        { value: 7, label: 'Microsoft word & excel' },
-        { value: 8, label: 'Microsoft Word & PowerPoint' },
-        { value: 9, label: 'Basic Web Development' },
-        { value: 10, label: 'Basic programming with Python' },
-        { value: 11, label: 'Video Production and Editing' },
-        { value: 12, label: 'Embark on DevOps' },
-        { value: 13, label: 'Software Aided Civil Engineering Design and Analysis' },
-        { value: 14, label: 'Computer Aided Engineering Design' },
-        { value: 15, label: 'Engineering Design and Analysis with MATLAB' },
-        { value: 16, label: 'Digital Design for Industrial Control' },
-        { value: 17, label: 'Power System Operation and Service Design' },
-        { value: 18, label: 'GIS and its Application' },
-        { value: 19, label: 'Remote Sensing and its Application' },
-        { value: 20, label: 'Data Analytics in Oil, Gas and Energy Industry' },
-        { value: 21, label: 'Mobile app development (Android/ Flutter/ IOS)' },
-        { value: 22, label: 'Front-End Developer (React / NodeJS / VueJS/ Angular JS)' },
-        { value: 23, label: 'Java (any popular framework)' },
-        { value: 24, label: 'PHP (Laravel)' },
-        { value: 25, label: 'Python (Dijango)' }
-    ];
-    ;
-    
-    let subjectList = [{value: 1, label: 'BSC'}, {value: 2, label: 'MSC'}];
+
+    let subjectList = [{ value: 1, label: 'BSC' }, { value: 2, label: 'MSC' }];
     let gender = ['Male', 'Female', 'Other'];
     let religion = ['Islam', 'Hinduism', 'Buddhism', 'Christanity'];
     let levelOfEducation = [
@@ -206,7 +171,7 @@ const RegistrationForm = () => {
     const formData = {
         courseName: '',
         trainingOrganizerUniversity: 'CUET',
-        organizerDeptOrInstituteOrCenter: 'IICT',
+        organizerDeptOrInstituteOrCenter: '',
         candidateName: "",
         fatherName: "",
         motherName: "",
@@ -260,9 +225,9 @@ const RegistrationForm = () => {
         initialValues: formData,
         // enableReinitialize: true,
         validationSchema: Yup.object({
-            courseName: Yup.string()
-                .required("Course is required")
-                .max(250, "Maximum 250 characters allowed"),
+            // courseName: Yup.string()
+            //     .required("Course is required")
+            //     .max(250, "Maximum 250 characters allowed"),
             candidateName: Yup.string()
                 .required("Name is required")
                 .max(250, "Maximum 250 characters allowed"),
@@ -371,11 +336,11 @@ const RegistrationForm = () => {
                 ),
         }),
         onSubmit: (values) => {
-            if (state?.email) {
+            if (state?.email && state?.course && state?.organizerDeptOrInstituteOrCenter) {
                 let dataForSubmit = {
-                    courseName: courseList?.filter(eachCourse => eachCourse?.value === values?.courseName)?.[0]?.label,
+                    courseName: state?.course,
                     "trainingOrganizerUniversity": values?.trainingOrganizerUniversity,
-                    "organizerDeptOrInstituteOrCenter": values?.organizerDeptOrInstituteOrCenter,
+                    "organizerDeptOrInstituteOrCenter": state?.organizerDeptOrInstituteOrCenter,
                     "candidateName": values?.candidateName,
                     "fatherName": values?.fatherName,
                     "motherName": values?.motherName,
@@ -455,6 +420,10 @@ const RegistrationForm = () => {
             top: 0,
             behavior: 'smooth'
         })
+        if (!state) {
+            navigate('/login')
+
+        }
     }, []);
     const profileImageChange = (e) => {
         setValues({ ...values, file: e?.target?.files[0] });
@@ -551,38 +520,15 @@ const RegistrationForm = () => {
                 {/* Registration form questions */}
                 <div style={{ display: 'flex', flexDirection: 'column', marginTop: '20px' }}>
                     {/* QUESTION 1 */}
-                    <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.universityName && errors?.universityName) ? 'bg-[#ff000014]' : 'bg-[#77889914]'}`}>
+                    <div className='flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm bg-[#77889914]'>
                         <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600' }}
                             className='required w-full sm:w-[50%] text-left'>
-                            1.  Choose preferred course
+                            1.  Your Chosen Course
                         </div>
                         {/* ANSWER INPUT SECTION 1 */}
-                        <div style={{}}>
-                            <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <Select
-                                    className='did-floating-select w-[200px]'
-                                    placeholder='Select Course Name'
-                                    name='type'
-                                    options={courseList}
-                                    value={(courseList?.filter(item => item?.value === values?.courseName))}
-                                    onChange={e => {
-                                        handleChangeValue("courseName", e?.value)
-                                    }}
-                                    menuPortalTarget={document.body}
-                                    styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
-                                />
-
-                                {/* ERROR MESSAGE SHOWING TOOLTIP */}
-                                {touched?.courseName && errors?.courseName
-                                    &&
-                                    <span style={{ ...customError, marginTop: '-8px' }}>
-                                        <ErrorTooltip
-                                            content={errors?.courseName}
-                                            origin={'courseName'}
-                                            placement="right"
-                                        />
-                                    </span>
-                                }
+                        <div>
+                            <div style={{ fontWeight: '700', margin: 'auto', paddingLeft: '8px', marginBottom: '10px' }}>
+                                {state?.course ? state?.course : 'Not Selected Yet!'}
                             </div>
                         </div>
                     </div>
@@ -629,7 +575,6 @@ const RegistrationForm = () => {
                         </div>
                     </div>
 
-
                     {/* QUESTION 3 */}
                     <div
                         className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.fatherName && errors?.fatherName) ? 'bg-[#ff000014]' : 'bg-[#77889914]'}`}>
@@ -670,7 +615,6 @@ const RegistrationForm = () => {
                             </div>
                         </div>
                     </div>
-
 
                     {/* QUESTION 4 */}
                     <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.motherName && errors?.motherName) ? 'bg-[#ff000014]' : ''}`}>
@@ -1700,12 +1644,17 @@ const RegistrationForm = () => {
 
                     {/* QUESTION 22 */}
                     <div className={`flex flex-col sm:flex-row items-start sm:items-center p-2.5 rounded-sm ${(touched?.file && errors?.file) ? 'bg-[#ff000014]' : 'bg-[#77889914]'}`}>
-                        <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600', marginBottom: "20px" }}
-                            className='required w-full sm:w-[50%] text-left'>
-                            21.  Upload Picture
+                        <div className='flex flex-col w-full sm:w-[50%]'>
+                            <div style={{ display: 'flex', fontSize: '14px', fontWeight: '600' }}
+                                className='required text-left'>
+                                21.  Upload Picture
+
+                            </div>
+                            <span className='text-left text-xs text-blue-600'>Passport size formal picture is mandatory</span>
                         </div>
+
                         {/* ANSWER INPUT SECTION 22 */}
-                        <div style={{ marginBottom: '20px' }} className='flex justify-between w-full sm:w-1/2'>
+                        <div className='flex justify-between w-full sm:w-1/2'>
                             <div style={{ display: 'flex', alignItems: 'center' }}>
 
                                 <img

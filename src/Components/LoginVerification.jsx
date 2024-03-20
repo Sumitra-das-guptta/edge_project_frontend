@@ -117,8 +117,8 @@ const LoginVerification = (props) => {
     };
 
     const generateOTP = () => {
-        if (state?.phone) {
-            CreateOTPForLogIn(state?.phone).then(response => {
+        if (state?.email) {
+            CreateOTPForLogIn(state?.email).then(response => {
             }).catch(error => {
                 console.log(error);
             })
@@ -127,14 +127,14 @@ const LoginVerification = (props) => {
 
     const handleLogin = () => {
 
-        if (otp?.length === 4 && state?.phone) {
-            ValidateOTPForLogIn(otp, state?.phone).then(response => {
+        if (otp?.length === 4 && state?.email) {
+            ValidateOTPForLogIn(otp, state?.email).then(response => {
                 if (response[0]) {
-                    localStorage.setItem("userInfo", JSON.stringify(state?.phone));
+                    localStorage.setItem("userInfo", JSON.stringify(state?.email));
                     props.setUserPrivilege('user');
 
 
-                    navigate('/register', { state: { email: state?.phone } });
+                    navigate('/register/1', { state: { email: state?.email } });
 
 
                 }
@@ -178,7 +178,7 @@ const LoginVerification = (props) => {
                     </div>
 
                     <div style={styles.normalText}>
-                        Enter the 4 digit verification code sent to your email at {state?.phone}. &nbsp;
+                        Enter the 4 digit verification code sent to your email at {state?.email}. &nbsp;
                         <span style={{ textDecoration: 'none', color: '#1877F2', cursor: 'pointer' }} onClick={() => navigate('/login')}>Change email</span>
                     </div>
 

@@ -18,6 +18,8 @@ import {
 
 
 const RegistrationForm = React.lazy(() => import('./Components/RegistrationForm'));
+const RegistrationFormStep1 = React.lazy(() => import('./Components/RegistrationFormStep1'));
+
 const Home = React.lazy(() => import('./Components/Home'));
 const About = React.lazy(() => import('./Components/About'));
 const Navbar = React.lazy(() => import('./Components/Navbar'));
@@ -64,12 +66,22 @@ const App = () => {
               />
 
               {localStorageData &&
-                <Route path="/register" name="Home"
-                  element={
-                    <RegistrationForm />
+                (
+                  <>
+                    <Route path="/register/2" name="Register"
+                      element={
+                        <RegistrationForm />
+                      }
+                    />
+                    <Route path="/register/1" name="Register"
+                      element={
+                        <RegistrationFormStep1 />
+                      }
+                    />
+                  </>
+                )
+              }
 
-                  }
-                />}
 
               {/* ROUTES REDIRECTION TO LOGGED IN USER DASHBOARD */}
               <Route path="/*"
