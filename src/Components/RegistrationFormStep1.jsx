@@ -62,19 +62,19 @@ const RegistrationFormStep1 = () => {
     const navigate = useNavigate();
     const { state } = useLocation();
     const [allDepartment, setAllDepartment] = useState([
-        'Basic Networking (60 Hrs.)', 
-        'Hardware Maintenance (60 Hrs.)', 
+        'Basic Networking (60 Hrs.)',
+        'Hardware Maintenance (60 Hrs.)',
         'Graphics Design (60 Hrs.)',
-        'Microsoft Word & Excel (60 Hrs.)', 
-        'Microsoft Word & Powerpoint (60 Hrs.)', 
-        'Basic Web Development (60 Hrs.)', 
+        'Microsoft Word & Excel (60 Hrs.)',
+        'Microsoft Word & Powerpoint (60 Hrs.)',
+        'Basic Web Development (60 Hrs.)',
         'Basic Programming with Python (60 Hrs.)',
-        'Video Production & Editing (60 Hrs.)', 
-        'Embark on DevOps (80 Hrs.)', 
+        'Video Production & Editing (60 Hrs.)',
+        'Embark on DevOps (80 Hrs.)',
         'Engineering Design & Analysis with MATLAB (80 Hrs.)',
         'Mobile App Development (80 Hrs.)']);
     const [mechanicalDepartment, setMechanicalDepartment] = useState([
-        'CNC & 3D Printing for Industrial Automation (60 Hrs.)', 
+        'CNC & 3D Printing for Industrial Automation (60 Hrs.)',
         'Computer Aided Engineering Design (80 Hrs.)',
         'Engineering Design & Analysis with MATLAB (80 Hrs.)'
     ]);
@@ -83,14 +83,17 @@ const RegistrationFormStep1 = () => {
     ]);
     const [electricalDepartment, setElectricalDepartment] = useState([
         'Digital Design for Industrial Control (80 Hrs.)',
-        'Power System Operation & Service Design (80 Hrs.)', 
+        'Power System Operation & Service Design (80 Hrs.)',
         'Engineering Design & Analysis with MATLAB (80 Hrs.)']);
     const [architechtureDepartment, setArchitechtureDepartment] = useState([
         'Environmental Experience Design (EXD) (60 Hrs.)'
     ]);
     const [urpDepartment, setUrpDepartment] = useState([
-        'GIS & its Application (80 Hrs.)', 
+        'GIS & its Application (80 Hrs.)',
         'Remote Sensing & its Application (80 Hrs.)']);
+    const [wreDepartment, setWreDepartment] = useState([
+        'GIS & its Application (80 Hrs.)'
+    ]);
     const [pmeDepartment, setPmeDepartment] = useState([
         'Data Analytics in Oil, Gas and Energy Industry (80 Hrs.)'
     ]);
@@ -98,7 +101,7 @@ const RegistrationFormStep1 = () => {
         'Industrial Automation (60 Hrs.)'
     ]);
     const [eteDepartment, setEteDepartment] = useState([
-        'Basic Web Development (60 Hrs.)', 
+        'Basic Web Development (60 Hrs.)',
         'Basic Programming with Python (60 Hrs.)',
         'Embark on DevOps (80 Hrs.)'
     ]);
@@ -302,6 +305,27 @@ const RegistrationFormStep1 = () => {
                                             checked={selectedCourse === eachCourse && organizerDeptOrInstituteOrCenter === 'Urban & Regional Planning'}
                                             style={{ width: '15px', height: '15px', cursor: 'pointer' }}
                                             onChange={() => { handleChangeCourse(eachCourse, 'Urban & Regional Planning') }}
+                                        />
+                                        <div className='pl-4 text-sm'>{eachCourse}</div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* STUDENTS OF WATER RESOURCES ENGINEERING */}
+                        <div className='pb-4'>
+                            <div className='font-bold text-base text-blue-700 mb-3 text-left'>
+                                Only for Students of Water Resources Engineering
+                            </div>
+
+                            <div>
+                                {wreDepartment.map((eachCourse, index) => (
+                                    <div className='flex items-center mb-2'>
+                                        <input
+                                            type='radio'
+                                            checked={selectedCourse === eachCourse && organizerDeptOrInstituteOrCenter === 'Water Resources Engineering'}
+                                            style={{ width: '15px', height: '15px', cursor: 'pointer' }}
+                                            onChange={() => { handleChangeCourse(eachCourse, 'Water Resources Engineering') }}
                                         />
                                         <div className='pl-4 text-sm'>{eachCourse}</div>
                                     </div>

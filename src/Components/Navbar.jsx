@@ -86,6 +86,8 @@ const Navbar = (props) => {
             setNavText('Registration Form');
         } else if (currentPath.includes('home')) {
             setNavText('Home')
+        } else if (currentPath.includes('login')) {
+            setNavText('Email Verification')
         }
         else {
             setNavText('Home');
@@ -115,7 +117,7 @@ const Navbar = (props) => {
                         {/* <img src={ict_division_logo} alt='DBL_Ceramics_Logo' className={toggle ? "sidebar logo" : "logo"} /> */}
                         {/* <img src={sla_logo} alt='DBL_Ceramics_Logo' className={toggle ? "sidebar logo" : "logo"} /> */}
                         <div className={toggle ? "sidebar logo text-white h-auto m-auto" : "logo text-white h-auto m-auto font-bold text-lg"}>
-                        &nbsp;Institute of Information & Communication Technology (IICT), CUET
+                            &nbsp;Institute of Information & Communication Technology (IICT), CUET
                         </div>
 
                     </div>
@@ -179,7 +181,7 @@ const Navbar = (props) => {
                                                     </span>
 
                                                 </NavLink>
-                                            </li>   
+                                            </li>
                                         </ul>
                                     </div>
 
