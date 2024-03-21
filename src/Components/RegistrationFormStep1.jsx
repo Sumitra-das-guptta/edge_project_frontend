@@ -61,24 +61,50 @@ const styles = {
 const RegistrationFormStep1 = () => {
     const navigate = useNavigate();
     const { state } = useLocation();
-    const [allDepartment, setAllDepartment] = useState(['Basic Networking (60 Hrs.)', 'Hardware Maintenance (60 Hrs.)', 'Graphics Design (60 Hrs.)',
-        'Microsoft Word & Excel (60 Hrs.)', 'Microsoft Word & Powerpoint (60 Hrs.)', 'Basic Web Development (60 Hrs.)', 'Basic Programming with Python (60 Hrs.)',
-        'Video Production & Editing (60 Hrs.)', 'Embark on DevOps (80 Hrs.)', 'Engineering Design & Analysis with MATLAB (80 Hrs.)',
+    const [allDepartment, setAllDepartment] = useState([
+        'Basic Networking (60 Hrs.)', 
+        'Hardware Maintenance (60 Hrs.)', 
+        'Graphics Design (60 Hrs.)',
+        'Microsoft Word & Excel (60 Hrs.)', 
+        'Microsoft Word & Powerpoint (60 Hrs.)', 
+        'Basic Web Development (60 Hrs.)', 
+        'Basic Programming with Python (60 Hrs.)',
+        'Video Production & Editing (60 Hrs.)', 
+        'Embark on DevOps (80 Hrs.)', 
+        'Engineering Design & Analysis with MATLAB (80 Hrs.)',
         'Mobile App Development (80 Hrs.)']);
     const [mechanicalDepartment, setMechanicalDepartment] = useState([
-        'CNC & 3D Printing for Industrial Automation (60 Hrs.)', 'Computer Aided Engineering Design (80 Hrs.)',
+        'CNC & 3D Printing for Industrial Automation (60 Hrs.)', 
+        'Computer Aided Engineering Design (80 Hrs.)',
         'Engineering Design & Analysis with MATLAB (80 Hrs.)'
     ]);
-    const [civilDepartment, setCivilDepartment] = useState(['Software Aided Engineering Design & Analysis (80 Hrs.)']);
-    const [electricalDepartment, setElectricalDepartment] = useState(['Digital Design for Industrial Control (80 Hrs.)',
-        'Power System Operation & Service Design (80 Hrs.)', 'Engineering Design & Analysis with MATLAB (80 Hrs.)']);
-    const [architechtureDepartment, setArchitechtureDepartment] = useState(['Environmental Experience Design (EXD) (60 Hrs.)']);
-    const [urpDepartment, setUrpDepartment] = useState(['GIS & its Application (80 Hrs.)', 'Remote Sensing & its Application (80 Hrs.)']);
-    const [pmeDepartment, setPmeDepartment] = useState(['Data Analytics in Oil, Gas and Energy Industry (80 Hrs.)']);
-    const [mechatronicsDepartment, setMechatronicsDepartment] = useState(['Industrial Automation (60 Hrs.)']);
-    const [eteDepartment, setEteDepartment] = useState(['Basic Web Development (60 Hrs.)', 'Basic Programming with Python (60 Hrs.)',
-        'Embark on DevOps (80 Hrs.)']);
-    const [bmeDepartment, setBmeDepartment] = useState(['Basic Programming with Python (60 Hrs.)']);
+    const [civilDepartment, setCivilDepartment] = useState([
+        'Software Aided Civil Engineering Design & Analysis (80 Hrs.)'
+    ]);
+    const [electricalDepartment, setElectricalDepartment] = useState([
+        'Digital Design for Industrial Control (80 Hrs.)',
+        'Power System Operation & Service Design (80 Hrs.)', 
+        'Engineering Design & Analysis with MATLAB (80 Hrs.)']);
+    const [architechtureDepartment, setArchitechtureDepartment] = useState([
+        'Environmental Experience Design (EXD) (60 Hrs.)'
+    ]);
+    const [urpDepartment, setUrpDepartment] = useState([
+        'GIS & its Application (80 Hrs.)', 
+        'Remote Sensing & its Application (80 Hrs.)']);
+    const [pmeDepartment, setPmeDepartment] = useState([
+        'Data Analytics in Oil, Gas and Energy Industry (80 Hrs.)'
+    ]);
+    const [mechatronicsDepartment, setMechatronicsDepartment] = useState([
+        'Industrial Automation (60 Hrs.)'
+    ]);
+    const [eteDepartment, setEteDepartment] = useState([
+        'Basic Web Development (60 Hrs.)', 
+        'Basic Programming with Python (60 Hrs.)',
+        'Embark on DevOps (80 Hrs.)'
+    ]);
+    const [bmeDepartment, setBmeDepartment] = useState([
+        'Basic Programming with Python (60 Hrs.)'
+    ]);
     const [selectedCourse, setSelectedCourse] = useState('');
     const [responseModal, setResponseModal] = useState({ usedPurpose: '', visible: false, message: '', footerMessage: '' })
     const [organizerDeptOrInstituteOrCenter, setOrganizerDeptOrInstituteOrCenter] = useState('');
