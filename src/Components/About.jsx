@@ -106,7 +106,7 @@ const About = () => {
 
             <div className='text-sm font-medium py-2.5 px-8 text-justify bg-gradient-to-r from-gray-400 to-gray-900 text-transparent bg-clip-text'
                 style={{ display: isVisible?.includes('section_3') ? 'block' : 'none' }}>
-                The IICT, CUET and Department of CSE, CUET combinedly will conduct midterm and final assessments. Upon successful completion of the program, and based on the final evaluation
+                The IICT, CUET will conduct midterm and final assessments. Upon successful completion of the program, and based on the final evaluation
                 (with at least an 60% score and 80% attendance), each participant will be jointly awarded a certificate by
                 the IICT, CUET and EDGE. Number of trainees and expenditure will be counted based on the successful completion of training.
                 Overall assessment of trainee performance will be based on the following score distribution (indicative):
@@ -139,13 +139,17 @@ const About = () => {
                     <div className='pl-3'>(ii) Hardware Maintenance </div>
                     <div className='pl-3'>(iii) CNC & 3D Printing for Industrial Automation </div>
                     <div className='pl-3'>(iv) Environmental Experience Design (EXD) </div>
-                    <div className='pl-3'>(iii) Industrial Automation </div>
-                    <div className='pl-3'>(iii) Graphics design  </div>
-                    <div className='pl-3'>(iii) Microsoft word & excel </div>
-                    <div className='pl-3'>(iii) Microsoft Word & PowerPoint </div>
-                    <div className='pl-3'>(iii) Basic Web Development  </div>
-                    <div className='pl-3'>(iii) Basic programming with Python </div>
-                    <div className='pl-3'>(iii) Video Production and Editing </div>
+                    <div className='pl-3'>(v) Industrial Automation </div>
+                    <div className='pl-3'>(vi) Graphics design  </div>
+                    <div className='pl-3'>(vii) Microsoft word & excel </div>
+                    <div className='pl-3'>(viii) Microsoft Word & PowerPoint </div>
+                    <div className='pl-3'>(ix) Basic Web Development  </div>
+                    <div className='pl-3'>(x) Basic programming with Python </div>
+                    <div className='pl-3'>(xi) Video Production and Editing </div>
+                    <div className='pl-3'>(xii) Digital Marketing </div>
+                    <div className='pl-3'>(xiii) Search Engine Optimization </div>
+                    <div className='pl-3'>(xiv) Software Testing </div>
+                
                 </div>
                 <br />
                 <div>
@@ -163,7 +167,16 @@ const About = () => {
                     <div className='pl-3'>(xi) Front-End Developer (React / NodeJS / VueJS/ Angular JS)</div>
                     <div className='pl-3'>(xii) Java (any popular framework)</div>
                     <div className='pl-3'>(xiii) PHP (Laravel)</div>
-                    <div className='pl-3'>(xiv) Python (Dijango)</div>
+                    <div className='pl-3'>(xiv) Python (Django)</div>
+                    <div className='pl-3'>(xv) C# .NET</div>
+                    <div className='pl-3'>(xvi) Database (MySQL / Oracle / SQL Server)</div>
+                    <div className='pl-3'>(xvii) Quality Assurance & Software Testing</div>
+                    <div className='pl-3'>(xviii) WordPress</div>
+                    <div className='pl-3'>(xix) User Experience (UX) Design</div>
+                    <div className='pl-3'>(xx) Full Stack Development with ReactJSC, DOT NET(.NET 6.0 &.NET Web API) & SQL Server</div>
+                    <div className='pl-3'>(xxi) Value System Engineering for Building New Ventures</div>
+
+
                 </div>
 
             </div>

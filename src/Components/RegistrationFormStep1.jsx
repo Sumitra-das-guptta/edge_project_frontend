@@ -64,19 +64,33 @@ const RegistrationFormStep1 = () => {
     const [allDepartment, setAllDepartment] = useState([
         'Basic Networking (60 Hrs.)',
         'Hardware Maintenance (60 Hrs.)',
+        'Digital Marketing (60 Hrs.)',
         'Graphics Design (60 Hrs.)',
         'Microsoft Word & Excel (60 Hrs.)',
         'Microsoft Word & Powerpoint (60 Hrs.)',
+        'Search Engine Optimization (60 Hrs.)',
+        'Software Testing (60 Hrs.)',
         'Basic Web Development (60 Hrs.)',
         'Basic Programming with Python (60 Hrs.)',
         'Video Production & Editing (60 Hrs.)',
+        'C# .NET (80 Hrs.)',
+        'Full Stack Development with ReactJSC, DOT NET(.NET 6.0 &.NET Web API) & SQL Server (80 Hrs.)',
+        'Value System Engineering for Building New Ventures (80 Hrs.)',
+        'Database (MySQL / Oracle / SQL Server) (80 Hrs.)',
+        'Front-End Developer (React / NodeJS / VueJS / Angular JS) (80 Hrs.)',
+        'Java (any popular framework) (80 Hrs.)',
+        'PHP (Laravel) (80 Hrs.)',
+        'Python (Django) (80 Hrs.)',
+        'Quality Assurance & Software Testing (80 Hrs.)',
+        'WordPress (80 Hrs.)',
+        'User Experience (UX) Design (80 Hrs.)',
         'Embark on DevOps (80 Hrs.)',
-        'Engineering Design & Analysis with MATLAB (80 Hrs.)',
+        // 'Engineering Design & Analysis with MATLAB (80 Hrs.)',
         'Mobile App Development (80 Hrs.)']);
     const [mechanicalDepartment, setMechanicalDepartment] = useState([
         'CNC & 3D Printing for Industrial Automation (60 Hrs.)',
-        'Computer Aided Engineering Design (80 Hrs.)',
-        'Engineering Design & Analysis with MATLAB (80 Hrs.)'
+        // 'Computer Aided Engineering Design (80 Hrs.)',
+        // 'Engineering Design & Analysis with MATLAB (80 Hrs.)'
     ]);
     const [civilDepartment, setCivilDepartment] = useState([
         'Software Aided Civil Engineering Design & Analysis (80 Hrs.)'
@@ -84,7 +98,8 @@ const RegistrationFormStep1 = () => {
     const [electricalDepartment, setElectricalDepartment] = useState([
         'Digital Design for Industrial Control (80 Hrs.)',
         'Power System Operation & Service Design (80 Hrs.)',
-        'Engineering Design & Analysis with MATLAB (80 Hrs.)']);
+        // 'Engineering Design & Analysis with MATLAB (80 Hrs.)'
+    ]);
     const [architechtureDepartment, setArchitechtureDepartment] = useState([
         'Environmental Experience Design (EXD) (60 Hrs.)'
     ]);
@@ -229,7 +244,7 @@ const RegistrationFormStep1 = () => {
                         </div>
 
                         {/* STUDENTS OF CIVIL ENGINEERING */}
-                        <div className='pb-4'>
+                        {/* <div className='pb-4'>
                             <div className='font-bold text-base text-blue-700 mb-3 text-left'>
                                 Only for Students of Civil Engineering
                             </div>
@@ -247,7 +262,7 @@ const RegistrationFormStep1 = () => {
                                     </div>
                                 ))}
                             </div>
-                        </div>
+                        </div> */}
 
                         {/* STUDENTS OF EEE */}
                         <div className='pb-4'>
@@ -334,7 +349,7 @@ const RegistrationFormStep1 = () => {
                         </div>
 
                         {/* STUDENTS OF Petroleum And Mining ENGINEERING */}
-                        <div className='pb-4'>
+                        {/* <div className='pb-4'>
                             <div className='font-bold text-base text-blue-700 mb-3 text-left'>
                                 Only for Students of Petroleum And Mining Engineering
                             </div>
@@ -352,10 +367,10 @@ const RegistrationFormStep1 = () => {
                                     </div>
                                 ))}
                             </div>
-                        </div>
+                        </div> */}
 
                         {/* STUDENTS OF Mechatronics & Industrial ENGINEERING */}
-                        <div className='pb-4'>
+                        {/* <div className='pb-4'>
                             <div className='font-bold text-base text-blue-700 mb-3 text-left'>
                                 Only for Students of Mechatronics & Industrial Engineering
                             </div>
@@ -373,7 +388,7 @@ const RegistrationFormStep1 = () => {
                                     </div>
                                 ))}
                             </div>
-                        </div>
+                        </div> */}
 
                         {/* STUDENTS OF Electronics & Telecommunication ENGINEERING */}
                         <div className='pb-4'>
