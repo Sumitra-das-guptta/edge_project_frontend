@@ -117,7 +117,7 @@ const Login = () => {
                     learning opportunity presented by the EDGE Project of the Bangladesh Computer Council,
                     ICT Division </div>
                 {/* Registration form questions */}
-                <div style={{ display: 'flex', flexDirection: 'column', marginTop: '20px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', margin: '20px auto auto auto', width: '70%' }}>
                     <div style={styles.logIn}>
                         Email Verification
                     </div>
