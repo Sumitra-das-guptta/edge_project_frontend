@@ -74,7 +74,7 @@ const RegistrationFormStep1 = () => {
         'Basic Programming with Python (60 Hrs.)',
         'Video Production & Editing (60 Hrs.)',
         'C# .NET (80 Hrs.)',
-        'Full Stack Development with ReactJSC, DOT NET(.NET 6.0 &.NET Web API) & SQL Server (80 Hrs.)',
+        'Full Stack Development with ReactJS, DOT NET(.NET 6.0 &.NET Web API) & SQL Server (80 Hrs.)',
         'Value System Engineering for Building New Ventures (80 Hrs.)',
         'Database (MySQL / Oracle / SQL Server) (80 Hrs.)',
         'Front-End Developer (React / NodeJS / VueJS / Angular JS) (80 Hrs.)',
@@ -370,7 +370,7 @@ const RegistrationFormStep1 = () => {
                         </div> */}
 
                         {/* STUDENTS OF Mechatronics & Industrial ENGINEERING */}
-                        {/* <div className='pb-4'>
+                        <div className='pb-4'>
                             <div className='font-bold text-base text-blue-700 mb-3 text-left'>
                                 Only for Students of Mechatronics & Industrial Engineering
                             </div>
@@ -388,7 +388,7 @@ const RegistrationFormStep1 = () => {
                                     </div>
                                 ))}
                             </div>
-                        </div> */}
+                        </div>
 
                         {/* STUDENTS OF Electronics & Telecommunication ENGINEERING */}
                         <div className='pb-4'>
