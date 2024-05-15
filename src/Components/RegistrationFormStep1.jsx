@@ -90,7 +90,7 @@ const RegistrationFormStep1 = () => {
     const [mechanicalDepartment, setMechanicalDepartment] = useState([
         'CNC & 3D Printing for Industrial Automation (60 Hrs.)',
         // 'Computer Aided Engineering Design (80 Hrs.)',
-        // 'Engineering Design & Analysis with MATLAB (80 Hrs.)'
+        'Engineering Design & Analysis with MATLAB (80 Hrs.)'
     ]);
     const [civilDepartment, setCivilDepartment] = useState([
         'Software Aided Civil Engineering Design & Analysis (80 Hrs.)'
