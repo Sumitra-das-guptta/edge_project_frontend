@@ -370,7 +370,7 @@ const RegistrationFormStep1 = () => {
                         </div> */}
 
                         {/* STUDENTS OF Mechatronics & Industrial ENGINEERING */}
-                        <div className='pb-4'>
+                        {/* <div className='pb-4'>
                             <div className='font-bold text-base text-blue-700 mb-3 text-left'>
                                 Only for Students of Mechatronics & Industrial Engineering
                             </div>
@@ -388,7 +388,7 @@ const RegistrationFormStep1 = () => {
                                     </div>
                                 ))}
                             </div>
-                        </div>
+                        </div> */}
 
                         {/* STUDENTS OF Electronics & Telecommunication ENGINEERING */}
                         <div className='pb-4'>
