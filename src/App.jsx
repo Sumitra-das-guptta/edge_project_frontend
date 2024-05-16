@@ -19,6 +19,7 @@ import {
 
 const RegistrationForm = React.lazy(() => import('./Components/RegistrationForm'));
 const RegistrationFormStep1 = React.lazy(() => import('./Components/RegistrationFormStep1'));
+const RegistrationFormForFoundational = React.lazy(() => import('./Components/RegistrationFormForFoundational'));
 
 const Home = React.lazy(() => import('./Components/Home'));
 const About = React.lazy(() => import('./Components/About'));
@@ -76,6 +77,11 @@ const App = () => {
                     <Route path="/register/1" name="Register"
                       element={
                         <RegistrationFormStep1 />
+                      }
+                    />
+                    <Route path="/register/3" name="Register"
+                      element={
+                        <RegistrationFormForFoundational />
                       }
                     />
                   </>
