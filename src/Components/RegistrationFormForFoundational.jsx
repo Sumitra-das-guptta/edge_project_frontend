@@ -47,6 +47,8 @@ const RegistrationFormForFoundational = () => {
         // { value: 1, label: 'SSC/Equivalent' },
         { value: 2, label: 'HSC/Equivalent' },
         { value: 3, label: 'BSC/Equivalent' },
+        { value: 4, label: 'MSC/Equivalent' },
+
 
     ];
     let divisionList = [
