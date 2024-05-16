@@ -61,7 +61,7 @@ const styles = {
 const RegistrationFormStep1 = () => {
     const navigate = useNavigate();
     const { state } = useLocation();
-    const [allDepartment, setAllDepartment] = useState([
+    const [foundationalCourse, setFoundationalCourse] = useState([
         'Basic Networking (60 Hrs.)',
         'Hardware Maintenance (60 Hrs.)',
         'Digital Marketing (60 Hrs.)',
@@ -72,7 +72,9 @@ const RegistrationFormStep1 = () => {
         'Software Testing (60 Hrs.)',
         'Basic Web Development (60 Hrs.)',
         'Basic Programming with Python (60 Hrs.)',
-        'Video Production & Editing (60 Hrs.)',
+        'Video Production & Editing (60 Hrs.)'
+        ]);
+    const [allDepartment, setAllDepartment] = useState([
         'C# .NET (80 Hrs.)',
         'Full Stack Development with ReactJS, DOT NET(.NET 6.0 &.NET Web API) & SQL Server (80 Hrs.)',
         'Value System Engineering for Building New Ventures (80 Hrs.)',
@@ -126,20 +128,35 @@ const RegistrationFormStep1 = () => {
     const [selectedCourse, setSelectedCourse] = useState('');
     const [responseModal, setResponseModal] = useState({ usedPurpose: '', visible: false, message: '', footerMessage: '' })
     const [organizerDeptOrInstituteOrCenter, setOrganizerDeptOrInstituteOrCenter] = useState('');
-    const handleChangeCourse = (course, organizer) => {
+    const [isFoundational, setIsFoundational] = useState(false);
+
+    const handleChangeCourse = (course, organizer, updateFoudational) => {
         setSelectedCourse(course);
         setOrganizerDeptOrInstituteOrCenter(organizer);
+        setIsFoundational(updateFoudational);
     }
 
     const handleOnClickNext = () => {
         if (state?.email) {
-            navigate('/register/2', {
-                state: {
-                    email: state?.email,
-                    course: selectedCourse,
-                    organizerDeptOrInstituteOrCenter: organizerDeptOrInstituteOrCenter
-                }
-            });
+            if(isFoundational === true) {
+                navigate('/register/3', {
+                    state: {
+                        email: state?.email,
+                        course: selectedCourse,
+                        organizerDeptOrInstituteOrCenter: organizerDeptOrInstituteOrCenter
+                    }
+                });
+            }
+            else {
+                navigate('/register/2', {
+                    state: {
+                        email: state?.email,
+                        course: selectedCourse,
+                        organizerDeptOrInstituteOrCenter: organizerDeptOrInstituteOrCenter
+                    }
+                });
+            }
+            
         }
         else {
             setResponseModal({
@@ -201,6 +218,26 @@ const RegistrationFormStep1 = () => {
                         Choose your preferred course
                     </div>
                     <div className='m-auto'>
+                        {/* OPEN FOR ALL INTERMEDIATE STUDENTS */}
+                        <div className='pb-4'>
+                            <div className='font-bold text-base text-blue-700 mb-3 text-left'>
+                                Open for All Intermediate(HSC/Equivalent) passed students
+                            </div>
+
+                            <div>
+                                {foundationalCourse.map((eachCourse, index) => (
+                                    <div className='flex items-center mb-2'>
+                                        <input
+                                            type='radio'
+                                            checked={selectedCourse === eachCourse && organizerDeptOrInstituteOrCenter === 'IICT'}
+                                            style={{ width: '15px', height: '15px', cursor: 'pointer' }}
+                                            onChange={() => { handleChangeCourse(eachCourse, 'IICT', true) }}
+                                        />
+                                        <div className='pl-4 text-sm'>{eachCourse}</div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
                         {/* OPEN FOR ALL DEPARTMENT'S STUDENTS */}
                         <div className='pb-4'>
                             <div className='font-bold text-base text-blue-700 mb-3 text-left'>
@@ -214,7 +251,7 @@ const RegistrationFormStep1 = () => {
                                             type='radio'
                                             checked={selectedCourse === eachCourse && organizerDeptOrInstituteOrCenter === 'IICT'}
                                             style={{ width: '15px', height: '15px', cursor: 'pointer' }}
-                                            onChange={() => { handleChangeCourse(eachCourse, 'IICT') }}
+                                            onChange={() => { handleChangeCourse(eachCourse, 'IICT', false) }}
                                         />
                                         <div className='pl-4 text-sm'>{eachCourse}</div>
                                     </div>
@@ -235,7 +272,7 @@ const RegistrationFormStep1 = () => {
                                             type='radio'
                                             checked={selectedCourse === eachCourse && organizerDeptOrInstituteOrCenter === 'Mechanical Engineering'}
                                             style={{ width: '15px', height: '15px', cursor: 'pointer' }}
-                                            onChange={() => { handleChangeCourse(eachCourse, 'Mechanical Engineering') }}
+                                            onChange={() => { handleChangeCourse(eachCourse, 'Mechanical Engineering', false) }}
                                         />
                                         <div className='pl-4 text-sm'>{eachCourse}</div>
                                     </div>
@@ -256,7 +293,7 @@ const RegistrationFormStep1 = () => {
                                             type='radio'
                                             checked={selectedCourse === eachCourse && organizerDeptOrInstituteOrCenter === 'Civil Engineering'}
                                             style={{ width: '15px', height: '15px', cursor: 'pointer' }}
-                                            onChange={() => { handleChangeCourse(eachCourse, 'Civil Engineering') }}
+                                            onChange={() => { handleChangeCourse(eachCourse, 'Civil Engineering', false) }}
                                         />
                                         <div className='pl-4 text-sm'>{eachCourse}</div>
                                     </div>
@@ -277,7 +314,7 @@ const RegistrationFormStep1 = () => {
                                             type='radio'
                                             checked={selectedCourse === eachCourse && organizerDeptOrInstituteOrCenter === 'Electrical & Electronics Engineering'}
                                             style={{ width: '15px', height: '15px', cursor: 'pointer' }}
-                                            onChange={() => { handleChangeCourse(eachCourse, 'Electrical & Electronics Engineering') }}
+                                            onChange={() => { handleChangeCourse(eachCourse, 'Electrical & Electronics Engineering', false) }}
                                         />
                                         <div className='pl-4 text-sm'>{eachCourse}</div>
                                     </div>
@@ -298,7 +335,7 @@ const RegistrationFormStep1 = () => {
                                             type='radio'
                                             checked={selectedCourse === eachCourse && organizerDeptOrInstituteOrCenter === 'Architechture'}
                                             style={{ width: '15px', height: '15px', cursor: 'pointer' }}
-                                            onChange={() => { handleChangeCourse(eachCourse, 'Architechture') }}
+                                            onChange={() => { handleChangeCourse(eachCourse, 'Architechture', false) }}
                                         />
                                         <div className='pl-4 text-sm'>{eachCourse}</div>
                                     </div>
@@ -319,7 +356,7 @@ const RegistrationFormStep1 = () => {
                                             type='radio'
                                             checked={selectedCourse === eachCourse && organizerDeptOrInstituteOrCenter === 'Urban & Regional Planning'}
                                             style={{ width: '15px', height: '15px', cursor: 'pointer' }}
-                                            onChange={() => { handleChangeCourse(eachCourse, 'Urban & Regional Planning') }}
+                                            onChange={() => { handleChangeCourse(eachCourse, 'Urban & Regional Planning', false) }}
                                         />
                                         <div className='pl-4 text-sm'>{eachCourse}</div>
                                     </div>
@@ -340,7 +377,7 @@ const RegistrationFormStep1 = () => {
                                             type='radio'
                                             checked={selectedCourse === eachCourse && organizerDeptOrInstituteOrCenter === 'Water Resources Engineering'}
                                             style={{ width: '15px', height: '15px', cursor: 'pointer' }}
-                                            onChange={() => { handleChangeCourse(eachCourse, 'Water Resources Engineering') }}
+                                            onChange={() => { handleChangeCourse(eachCourse, 'Water Resources Engineering', false) }}
                                         />
                                         <div className='pl-4 text-sm'>{eachCourse}</div>
                                     </div>
@@ -361,7 +398,7 @@ const RegistrationFormStep1 = () => {
                                             type='radio'
                                             checked={selectedCourse === eachCourse && organizerDeptOrInstituteOrCenter === 'Petroleum And Mining Engineering'}
                                             style={{ width: '15px', height: '15px', cursor: 'pointer' }}
-                                            onChange={() => { handleChangeCourse(eachCourse, 'Petroleum And Mining Engineering') }}
+                                            onChange={() => { handleChangeCourse(eachCourse, 'Petroleum And Mining Engineering', false) }}
                                         />
                                         <div className='pl-4 text-sm'>{eachCourse}</div>
                                     </div>
@@ -382,7 +419,7 @@ const RegistrationFormStep1 = () => {
                                             type='radio'
                                             checked={selectedCourse === eachCourse && organizerDeptOrInstituteOrCenter === 'Mechatronics & Industrial Engineering'}
                                             style={{ width: '15px', height: '15px', cursor: 'pointer' }}
-                                            onChange={() => { handleChangeCourse(eachCourse, 'Mechatronics & Industrial Engineering') }}
+                                            onChange={() => { handleChangeCourse(eachCourse, 'Mechatronics & Industrial Engineering', false) }}
                                         />
                                         <div className='pl-4 text-sm'>{eachCourse}</div>
                                     </div>
@@ -403,7 +440,7 @@ const RegistrationFormStep1 = () => {
                                             type='radio'
                                             checked={selectedCourse === eachCourse && organizerDeptOrInstituteOrCenter === 'Electronics & Telecommunication Engineering'}
                                             style={{ width: '15px', height: '15px', cursor: 'pointer' }}
-                                            onChange={() => { handleChangeCourse(eachCourse, 'Electronics & Telecommunication Engineering') }}
+                                            onChange={() => { handleChangeCourse(eachCourse, 'Electronics & Telecommunication Engineering', false) }}
                                         />
                                         <div className='pl-4 text-sm'>{eachCourse}</div>
                                     </div>
@@ -424,7 +461,7 @@ const RegistrationFormStep1 = () => {
                                             type='radio'
                                             checked={selectedCourse === eachCourse && organizerDeptOrInstituteOrCenter === 'Biomedical Engineering'}
                                             style={{ width: '15px', height: '15px', cursor: 'pointer' }}
-                                            onChange={() => { handleChangeCourse(eachCourse, 'Biomedical Engineering') }}
+                                            onChange={() => { handleChangeCourse(eachCourse, 'Biomedical Engineering', false) }}
                                         />
                                         <div className='pl-4 text-sm'>{eachCourse}</div>
                                     </div>
