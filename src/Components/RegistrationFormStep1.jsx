@@ -260,7 +260,7 @@ const RegistrationFormStep1 = () => {
                         </div>
 
                         {/* STUDENTS OF MECHANICAL ENGINEERING */}
-                        <div className='pb-4'>
+                        {/* <div className='pb-4'>
                             <div className='font-bold text-base text-blue-700 mb-3 text-left'>
                                 Only for Students of Mechanical Engineering
                             </div>
@@ -278,7 +278,7 @@ const RegistrationFormStep1 = () => {
                                     </div>
                                 ))}
                             </div>
-                        </div>
+                        </div> */}
 
                         {/* STUDENTS OF CIVIL ENGINEERING */}
                         {/* <div className='pb-4'>
@@ -302,7 +302,7 @@ const RegistrationFormStep1 = () => {
                         </div> */}
 
                         {/* STUDENTS OF EEE */}
-                        <div className='pb-4'>
+                        {/* <div className='pb-4'>
                             <div className='font-bold text-base text-blue-700 mb-3 text-left'>
                                 Only for Students of Electrical & Electronics Engineering
                             </div>
@@ -320,10 +320,10 @@ const RegistrationFormStep1 = () => {
                                     </div>
                                 ))}
                             </div>
-                        </div>
+                        </div> */}
 
                         {/* STUDENTS OF ARCHITECHTURE ENGINEERING */}
-                        <div className='pb-4'>
+                        {/* <div className='pb-4'>
                             <div className='font-bold text-base text-blue-700 mb-3 text-left'>
                                 Only for Students of Architechture Department
                             </div>
@@ -341,10 +341,10 @@ const RegistrationFormStep1 = () => {
                                     </div>
                                 ))}
                             </div>
-                        </div>
+                        </div> */}
 
                         {/* STUDENTS OF Urban & Regional Planning DEPARTMENT */}
-                        <div className='pb-4'>
+                        {/* <div className='pb-4'>
                             <div className='font-bold text-base text-blue-700 mb-3 text-left'>
                                 Only for Students of Urban & Regional Planning Department
                             </div>
@@ -362,10 +362,10 @@ const RegistrationFormStep1 = () => {
                                     </div>
                                 ))}
                             </div>
-                        </div>
+                        </div> */}
 
                         {/* STUDENTS OF WATER RESOURCES ENGINEERING */}
-                        <div className='pb-4'>
+                        {/* <div className='pb-4'>
                             <div className='font-bold text-base text-blue-700 mb-3 text-left'>
                                 Only for Students of Water Resources Engineering
                             </div>
@@ -383,7 +383,7 @@ const RegistrationFormStep1 = () => {
                                     </div>
                                 ))}
                             </div>
-                        </div>
+                        </div> */}
 
                         {/* STUDENTS OF Petroleum And Mining ENGINEERING */}
                         {/* <div className='pb-4'>
@@ -428,7 +428,7 @@ const RegistrationFormStep1 = () => {
                         </div> */}
 
                         {/* STUDENTS OF Electronics & Telecommunication ENGINEERING */}
-                        <div className='pb-4'>
+                        {/* <div className='pb-4'>
                             <div className='font-bold text-base text-blue-700 mb-3 text-left'>
                                 Only for Students of Electronics & Telecommunication Engineering
                             </div>
@@ -446,10 +446,10 @@ const RegistrationFormStep1 = () => {
                                     </div>
                                 ))}
                             </div>
-                        </div>
+                        </div> */}
 
                         {/* STUDENTS OF BIOMEDICAL ENGINEERING */}
-                        <div className='pb-4'>
+                        {/* <div className='pb-4'>
                             <div className='font-bold text-base text-blue-700 mb-3 text-left'>
                                 Only for Students of Biomedical Engineering
                             </div>
@@ -467,7 +467,7 @@ const RegistrationFormStep1 = () => {
                                     </div>
                                 ))}
                             </div>
-                        </div>
+                        </div> */}
                     </div>
 
                     {/* NEXT BUTTON */}
